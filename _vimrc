@@ -7,6 +7,7 @@ call neobundle#rc(expand('~/vimfiles/bundle'))
 
 NeoBundleFetch 'Shougo/noebundle.vim'
 
+NeoBundle 'tpope/vim-sensible' " Some default options
 NeoBundle 'Lokaltog/powerline'
 NeoBundle 'mattn/emmet-vim'
 NeoBundle 'scrooloose/nerdtree'
@@ -19,11 +20,11 @@ NeoBundle 'PProvost/vim-ps1'
 NeoBundle 'vim-scripts/Conque-Shell'
 NeoBundle 'genoma/vim-less'
 NeoBundle 'vim-scripts/DirDiff.vim'
+NeoBundle 'vim-scripts/taglist.vim'
 
 "}}}
 
 colorscheme slate
-"set guifont=Source\ Code\ Pro\ for\ Powerline\ 11
 set guifont=DejaVu_Sans_Mono_for_Powerline
 "" global options {{{
 noremap <A-n> :bnext<CR>
@@ -52,103 +53,7 @@ if has("autocmd")
   augroup vimrcEx
   au!
 endif
-
-
-"" from sensible.vim {{{
-
-" sensible.vim - Defaults everyone can agree on
-" Maintainer:   Tim Pope <http://tpo.pe/>
-" Version:      1.0
-
-if exists('g:loaded_sensible') || &compatible
-  finish
-else
-  let g:loaded_sensible = 1
-endif
-
-if has('autocmd')
-  filetype plugin indent on
-endif
-if has('syntax') && !exists('g:syntax_on')
-  syntax enable
-endif
-
-" Use :help 'option' to see the documentation for the given option.
-
-set autoindent
-set backspace=indent,eol,start
-set complete-=i
-set smarttab
-
-set nrformats-=octal
-set shiftround
-
-set ttimeout
-set ttimeoutlen=100
-
-set incsearch
-" Use <C-L> to clear the highlighting of :set hlsearch.
-if maparg('<C-L>', 'n') ==# ''
-  nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
-endif
-
-set laststatus=2
-set ruler
-set showcmd
-set wildmenu
-
-if !&scrolloff
-  set scrolloff=1
-endif
-if !&sidescrolloff
-  set sidescrolloff=5
-endif
-set display+=lastline
-
-if &encoding ==# 'latin1' && has('gui_running')
-  set encoding=utf-8
-endif
-
-if &listchars ==# 'eol:$'
-  set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
-  if !has('win32') && (&termencoding ==# 'utf-8' || &encoding ==# 'utf-8')
-    let &listchars = "tab:\u21e5 ,trail:\u2423,extends:\u21c9,precedes:\u21c7,nbsp:\u00b7"
-  endif
-endif
-
-if &shell =~# 'fish$'
-  set shell=/bin/bash
-endif
-
-set autoread
-"set fileformats+=mac
-
-if &history < 1000
-  set history=1000
-endif
-if &tabpagemax < 50
-  set tabpagemax=50
-endif
-if !empty(&viminfo)
-  set viminfo^=!
-endif
-
-" Allow color schemes to do bright colors without forcing bold.
-if &t_Co == 8 && $TERM !~# '^linux'
-  set t_Co=16
-endif
-
-" Load matchit.vim, but only if the user hasn't installed a newer version.
-if !exists('g:loaded_matchit') && findfile('plugin/matchit.vim', &rtp) ==# ''
-  runtime! macros/matchit.vim
-endif
-
-inoremap <C-U> <C-G>u<C-U>
-
 ""}}}
-""}}}
-
-
 
 "" NERDTree {{{
 "close vim if nerdtree is the unique opened buffer
@@ -158,7 +63,6 @@ let g:NERDTreeWinPos="right"
 
 map <F9> :NERDTreeToggle<CR>
 ""}}}
-
 
 "" Taglist {{{
 let Tlist_Ctags_Cmd="C:/NoInstall_Programs/ctags58/ctags.exe"
@@ -173,86 +77,6 @@ nmap <F7> :TagbarToggle<CR>
 "" PoshComplete {{{
 autocmd FileType ps1 :setl omnifunc=poshcomplete#CompleteCommand
 ""}}}
-
-
-if 0
-"" OmniSharp {{{
-"  " OmniSharp won't work without this setting
-"  filetype plugin on
-"  
-"  "This is the default value, setting it isn't actually necessary
-"  let g:OmniSharp_host = "http://localhost:2000"
-"  
-"  "Showmatch significantly slows down omnicomplete
-"  "when the first match contains parentheses.
-"  set noshowmatch
-"  "Set autocomplete function to OmniSharp (if not using YouCompleteMe completion plugin)
-"  autocmd FileType cs setlocal omnifunc=OmniSharp#Complete
-"  
-"  "Super tab settings
-"  "let g:SuperTabDefaultCompletionType = 'context'
-"  "let g:SuperTabContextDefaultCompletionType = "<c-x><c-o>"
-"  "let g:SuperTabDefaultCompletionTypeDiscovery = ["&omnifunc:<c-x><c-o>","&completefunc:<c-x><c-n>"]
-"  "let g:SuperTabClosePreviewOnPopupClose = 1
-"  
-"  "don't autoselect first item in omnicomplete, show if only one item (for preview)
-"  "remove preview if you don't want to see any documentation whatsoever.
-"  set completeopt=longest,menuone,preview
-"  " Fetch full documentation during omnicomplete requests. 
-"  " There is a performance penalty with this (especially on Mono)
-"  " By default, only Type/Method signatures are fetched. Full documentation can still be fetched when
-"  " you need it with the :OmniSharpDocumentation command.
-"  " let g:omnicomplete_fetch_documentation=1
-"  
-"  "Move the preview window (code documentation) to the bottom of the screen, so it doesn't move the code!
-"  "You might also want to look at the echodoc plugin
-"  set splitbelow
-"  
-"  nnoremap <F5> :wa!<cr>:OmniSharpBuild<cr>
-"  " Builds can run asynchronously with vim-dispatch installed
-"  "nnoremap <F5> :wa!<cr>:OmniSharpBuildAsync<cr>
-"  
-"  "The following commands are contextual, based on the current cursor position.
-"  
-"  nnoremap <F12> :OmniSharpGotoDefinition<cr>
-"  nnoremap gd :OmniSharpGotoDefinition<cr>
-"  nnoremap <leader>fi :OmniSharpFindImplementations<cr>
-"  nnoremap <leader>ft :OmniSharpFindType<cr>
-"  nnoremap <leader>fs :OmniSharpFindSymbol<cr>
-"  nnoremap <leader>fu :OmniSharpFindUsages<cr>
-"  nnoremap <leader>fm :OmniSharpFindMembersInBuffer<cr>
-"  nnoremap <leader>tt :OmniSharpTypeLookup<cr>
-"  nnoremap <leader>dc :OmniSharpDocumentation<cr>
-"  "show type information automatically when the cursor stops moving
-"  autocmd CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()
-"  set updatetime=500
-"  set cmdheight=2
-"  "I find contextual code actions so useful that I have it mapped to the spacebar
-"  nnoremap <space> :OmniSharpGetCodeActions<cr>
-"  
-"  " rename with dialog
-"  nnoremap <leader>nm :OmniSharpRename<cr>
-"  nnoremap <F2> :OmniSharpRename<cr>      
-"  " rename without dialog - with cursor on the symbol to rename... ':Rename newname'
-"  command! -nargs=1 Rename :call OmniSharp#RenameTo("<args>")
-"  
-"  " Force OmniSharp to reload the solution. Useful when switching branches etc.
-"  nnoremap <leader>rl :OmniSharpReloadSolution<cr>
-"  nnoremap <leader>cf :OmniSharpCodeFormat<cr>
-"  " Load the current .cs file to the nearest project
-"  nnoremap <leader>tp :OmniSharpAddToProject<cr>
-"  " Automatically add new cs files to the nearest project on save
-"  autocmd BufWritePost *.cs call OmniSharp#AddToProject()
-"  " (Experimental - uses vim-dispatch or vimproc plugin) - Start the omnisharp server for the current solution
-"  nnoremap <leader>ss :OmniSharpStartServer<cr>
-"  nnoremap <leader>sp :OmniSharpStopServer<cr>
-"  
-"  " Add syntax highlighting for types and interfaces
-"  nnoremap <leader>th :OmniSharpHighlightTypes<cr>
-"  "Don't ask to save when changing buffers (i.e. when jumping to a type definition)
-"  set hidden
-"  ""}}}OmniSharp
-endif
 
 "" VimOrganizer {{{
 
@@ -439,10 +263,8 @@ endfunction
 
 ""}}}
 
-
 "" Powerline {{{
 set rtp+=~/vimfiles/bundle/powerline/powerline/bindings/vim
-
 "" }}}
 " vim:set ft=vim et sw=2 fdm=marker:
 "
