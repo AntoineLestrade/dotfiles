@@ -1,0 +1,10 @@
+[user]
+	name = Antoine Lestrade
+	email = antoine.lestrade@gmail.com
+[diff]
+	tool = vimdiff
+[alias]
+	d = difftool
+	prettylog = log --pretty=oneline --graph --all --decorate --abbrev-commit
+[difftool]
+	prompt = false
