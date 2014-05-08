@@ -1,6 +1,3 @@
-
-           
-
 "" NeoBundle {{{
 set runtimepath+=~/vimfiles/bundle/neobundle.vim/
 call neobundle#rc(expand('~/vimfiles/bundle'))
@@ -21,6 +18,10 @@ NeoBundle 'vim-scripts/Conque-Shell'
 NeoBundle 'genoma/vim-less'
 NeoBundle 'vim-scripts/DirDiff.vim'
 NeoBundle 'vim-scripts/taglist.vim'
+NeoBundle 'OrangeT/vim-csharp' " CSharp enhancements (including razor syntax)
+
+"Vim Org-Mode
+NeoBundle 'jceb/vim-orgmode'
 
 "}}}
 
@@ -266,6 +267,7 @@ endfunction
 "" Powerline {{{
 set rtp+=~/vimfiles/bundle/powerline/powerline/bindings/vim
 "" }}}
+
 " vim:set ft=vim et sw=2 fdm=marker:
 "
 
