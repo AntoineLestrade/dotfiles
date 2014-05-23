@@ -6,5 +6,6 @@
 [alias]
 	d = difftool
 	prettylog = log --pretty=oneline --graph --all --decorate --abbrev-commit
+	pushdev = push "origin" development:development
 [difftool]
 	prompt = false

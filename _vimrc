@@ -5,7 +5,10 @@ call neobundle#rc(expand('~/vimfiles/bundle'))
 NeoBundleFetch 'Shougo/noebundle.vim'
 
 NeoBundle 'tpope/vim-sensible' " Some default options
-NeoBundle 'Lokaltog/powerline'
+if has("python")
+  NeoBundle 'Lokaltog/powerline'
+endif
+
 NeoBundle 'mattn/emmet-vim'
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'dterei/VimBookmarking'
@@ -265,7 +268,9 @@ endfunction
 ""}}}
 
 "" Powerline {{{
-set rtp+=~/vimfiles/bundle/powerline/powerline/bindings/vim
+if has("python")
+  set rtp+=~/vimfiles/bundle/powerline/powerline/bindings/vim
+endif
 "" }}}
 
 " vim:set ft=vim et sw=2 fdm=marker:
