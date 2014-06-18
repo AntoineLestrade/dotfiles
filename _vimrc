@@ -25,6 +25,7 @@ NeoBundle 'OrangeT/vim-csharp' " CSharp enhancements (including razor syntax)
 
 "Vim Org-Mode
 NeoBundle 'jceb/vim-orgmode'
+NeoBundle 'tpope/vim-speeddating' " vim-orgmode dependency
 
 "}}}
 
