@@ -1,4 +1,8 @@
+" source $VIMRUNTIME/mswin.vim
+" behave mswin
+
 "" NeoBundle {{{
+
 set runtimepath+=~/vimfiles/bundle/neobundle.vim/
 call neobundle#rc(expand('~/vimfiles/bundle'))
 
@@ -9,7 +13,8 @@ if has("python")
   NeoBundle 'Lokaltog/powerline'
 endif
 
-NeoBundle 'mattn/emmet-vim'
+NeoBundle 'mattn/emmet-vim' " HTML enhancements
+NeoBundle 'gregsexton/MatchTag' "Highlight matching tags
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'dterei/VimBookmarking'
 NeoBundle 'tpope/vim-dispatch'
@@ -23,9 +28,9 @@ NeoBundle 'vim-scripts/DirDiff.vim'
 NeoBundle 'vim-scripts/taglist.vim'
 NeoBundle 'OrangeT/vim-csharp' " CSharp enhancements (including razor syntax)
 
-"Vim Org-Mode
-NeoBundle 'jceb/vim-orgmode'
-NeoBundle 'tpope/vim-speeddating' " vim-orgmode dependency
+"Vim Org-Mode " Disabled: generates CTRL-X bug
+" NeoBundle 'jceb/vim-orgmode'
+" NeoBundle 'tpope/vim-speeddating' " vim-orgmode dependency
 
 "}}}
 
