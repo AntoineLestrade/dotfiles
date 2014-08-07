@@ -33,8 +33,10 @@ NeoBundle 'OrangeT/vim-csharp' " CSharp enhancements (including razor syntax)
 " NeoBundle 'tpope/vim-speeddating' " vim-orgmode dependency
 
 "}}}
+if has("gui_running")
+  colorscheme darkblue
+endif
 
-colorscheme slate
 set guifont=DejaVu_Sans_Mono_for_Powerline
 "" global options {{{
 noremap <A-n> :bnext<CR>
@@ -63,6 +65,10 @@ if has("autocmd")
   augroup vimrcEx
   au!
 endif
+
+set ts=4
+set sw=4
+set expandtab
 ""}}}
 
 "" NERDTree {{{

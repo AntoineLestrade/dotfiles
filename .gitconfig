@@ -8,6 +8,7 @@
 	prettylog = log --pretty=oneline --graph --all --decorate --abbrev-commit
 	pushdev = push "origin" development:development
 	pushacc = push "origin" acceptance:acceptance
+	pushmaster = push "origin" master:master
 [difftool]
 	prompt = false
 [core]
