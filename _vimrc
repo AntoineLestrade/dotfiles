@@ -42,8 +42,9 @@ set guifont=DejaVu_Sans_Mono_for_Powerline
 noremap <A-n> :bnext<CR>
 noremap <A-p> :bprevious<CR>
 
-
-source $VIMRUNTIME/mswin.vim
+if filereadable("$VIMRUNTIME/mswin.vim")
+  source $VIMRUNTIME/mswin.vim
+endif
 behave mswin
 
 set guioptions-=m
