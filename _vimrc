@@ -174,7 +174,7 @@ if has('vim_starting')
     set nocompatible
     execute 'set runtimepath& runtimepath+='.s:vimfiles_dir.'bundle/neobundle.vim/'
 endif
-call neobundle#begin(expand('~/vimfiles/bundle'))
+call neobundle#begin(expand(s:vimfiles_dir . 'bundle'))
 
 " Let NeoBundle manage NeoBundle
 NeoBundleFetch 'Shougo/neobundle.vim'
