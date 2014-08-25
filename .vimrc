@@ -1,9 +1,10 @@
-let s:beta_version         = 1
-let s:enable_powerline     = 0
-let s:enable_lightline     = 0
-let s:enable_airline       = 1
-let s:use_conemu_specifics = 0
-let s:use_mswin_vim        = 1
+let g:beta_version         = 1
+let g:enable_powerline     = 0
+let g:enable_lightline     = 0
+let g:enable_airline       = 1
+let g:use_conemu_specifics = 0
+let g:use_mswin_vim        = 1
+let g:enable_startify      = 1
 
 " Environment {{{
 
@@ -41,7 +42,7 @@ let s:use_mswin_vim        = 1
         return (s:vimfiles_dir . 'bundle/' . a:dir)
     endfunction
 
-if s:use_mswin_vim " {{{
+if g:use_mswin_vim " {{{
 " Set options and add mapping such that Vim behaves a lot like MS-Windows
 "
 " Maintainer:	Bram Moolenaar <Bram@vim.org>
@@ -152,7 +153,7 @@ endif
 " }}}
     " ConEmu specifics {{{
     " ConEmu
-if s:use_conemu_specifics && !empty($CONEMUBUILD)
+if g:use_conemu_specifics && !empty($CONEMUBUILD)
     echom "Running in conemu"
     set termencoding=utf8
     set term=xterm
@@ -204,13 +205,13 @@ Plugin 'spf13/vim-autoclose'
 Plugin 'vim-scripts/sessionman.vim'
 Plugin 'matchit.zip'
 Plugin 'kien/ctrlp.vim'
-if s:enable_powerline && has('python')
+if g:enable_powerline && has('python')
     Plugin 'Lokaltog/powerline'
-elseif s:enable_lightline
+elseif g:enable_lightline
     " A pretty statusline, bufferline integration
     Plugin 'itchyny/lightline.vim'
     Plugin 'bling/vim-bufferline'
-elseif s:enable_airline
+elseif g:enable_airline
     Plugin 'bling/vim-airline', {'gui': 1, 'terminal': 0 } " Powerline replacement
 endif
 Plugin 'Lokaltog/vim-easymotion'
@@ -220,15 +221,17 @@ Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'vim-scripts/Conque-Shell' "Shell integration
 Plugin 'vim-scripts/DirDiff.vim' " Perform recursive diff on two directories http://www.vim.org/scripts/script.php?script_id=102
 Plugin 'dterei/VimBookmarking' "Default keymapping: <F3> :ToggleBookmark; <F4> :PreviousBookmark; <F5> :NextBookmark
-Plugin 'mhinz/vim-startify'
+if g:enable_startify
+    Plugin 'mhinz/vim-startify'
+endif
 " }}}
 
 " ## Development - General {{{
 Plugin 'scrooloose/syntastic' "Enhanced syntax checker, Required external programs (see https://github.com/scrooloose/syntastic)
-"Plugin 'mhinz/vim-signify'
+Plugin 'mhinz/vim-signify'
 Plugin 'tpope/vim-git'
 Plugin 'tpope/vim-fugitive' " Git
-if s:beta_version
+if g:beta_version
     Plugin 'gregsexton/gitv'
 endif
 Plugin 'scrooloose/nerdcommenter'
@@ -584,7 +587,7 @@ if has('vim_starting')
     syntax on
     set background=dark
     set t_Co=256
-    if &t_Co < 256
+    if &t_Co < 256 || !has('gui')
         colorscheme default
     else
         try
@@ -599,7 +602,7 @@ endif
 " Plugins configuration {{{=============
 
 " ## Lightline {{{
-if s:enable_lightline
+if g:enable_lightline
     set laststatus=2
     set noshowmode
 
@@ -779,7 +782,7 @@ endif
 ""}}}
 
 " ## Airline {{{
-if s:enable_airline
+if g:enable_airline
     " Always show the statusline
     set laststatus=2
     " No need to show mode
@@ -790,7 +793,7 @@ endif
 ""}}}
 
 " ## Powerline {{{
-if s:enable_powerline
+if g:enable_powerline
     " Always show the statusline
     set laststatus=2
     " No need to show mode
@@ -870,7 +873,7 @@ let g:user_emmet_leader_key='<Leader>y'
 " }}}
 
 " vim-easymotion {{{
-if s:beta_version && 0
+if g:beta_version && 0
     "if neobundle#tap('vim-easymotion')
         call neobundle#config({
                     \   'autoload' : {
@@ -1078,6 +1081,7 @@ endif
 " end Fugitive }}}
 
 " ## Startify {{{
+if g:enable_startify
  " Startify, the fancy start page
     let g:ctrlp_reuse_window = 'startify' " don't split in startify
     "let g:startify_bookmarks = [
@@ -1090,6 +1094,7 @@ endif
     "    \ '   Source:      http://github.com/timss/vimconf',
     "    \ ''
     "    \ ]
+endif
 " }}}
 
 " ## ctrlp {{{
