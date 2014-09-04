@@ -224,6 +224,15 @@ Plugin 'dterei/VimBookmarking' "Default keymapping: <F3> :ToggleBookmark; <F4> :
 if g:enable_startify
     Plugin 'mhinz/vim-startify'
 endif
+
+if g:beta_version
+    Plugin 'hsitz/VimOrganizer'
+    "Plugin 'jceb/vim-orgmode'
+    Plugin 'xolox/vim-misc' " Vim-shell dependency
+    Plugin 'xolox/vim-shell'
+    Plugin 'chrisbra/NrrwRgn'
+endif
+
 " }}}
 
 " ## Development - General {{{
@@ -1094,6 +1103,13 @@ if g:enable_startify
     "    \ '   Source:      http://github.com/timss/vimconf',
     "    \ ''
     "    \ ]
+endif
+" }}}
+
+" ## VimOrganizer {{{
+if g:beta_version
+    au! BufRead,BufWrite,BufWritePost,BufNewFile *.org
+    au BufEnter *.org call org#SetOrgFileType()
 endif
 " }}}
 

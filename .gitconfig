@@ -12,4 +12,4 @@
 [difftool]
 	prompt = false
 [core]
-	autocrlf = true
+	autocrlf = false
