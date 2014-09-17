@@ -5,6 +5,7 @@ let g:enable_airline       = 1
 let g:use_conemu_specifics = 0
 let g:use_mswin_vim        = 1
 let g:enable_startify      = 1
+let g:enable_signify       = 1
 
 " Environment {{{
 
@@ -237,7 +238,9 @@ endif
 
 " ## Development - General {{{
 Plugin 'scrooloose/syntastic' "Enhanced syntax checker, Required external programs (see https://github.com/scrooloose/syntastic)
-Plugin 'mhinz/vim-signify'
+if g:enable_signify
+    Plugin 'mhinz/vim-signify'
+endif
 Plugin 'tpope/vim-git'
 Plugin 'tpope/vim-fugitive' " Git
 if g:beta_version
@@ -525,7 +528,7 @@ nnoremap gd :bdelete<CR>
 nnoremap gf <C-^>
 " }}}
 
-" Code folding options
+" ## Code folding options {{{
 nmap <leader>f0 :set foldlevel=0<CR>
 nmap <leader>f1 :set foldlevel=1<CR>
 nmap <leader>f2 :set foldlevel=2<CR>
@@ -536,7 +539,7 @@ nmap <leader>f6 :set foldlevel=6<CR>
 nmap <leader>f7 :set foldlevel=7<CR>
 nmap <leader>f8 :set foldlevel=8<CR>
 nmap <leader>f9 :set foldlevel=9<CR>
-
+" }}}
 
 " Use <C-L> to clear the highlighting of :set hlsearch.
 "if maparg('<C-L>', 'n') ==# ''
@@ -546,7 +549,7 @@ nmap <silent> <leader>/ :nohlsearch<CR><C-L>
 "endif
 
 " Delete without saving in register {{{
-" nmap <Del> "_dl
+nmap <Del> "_dl
 " }}}
 
 " Visual shifting (does not exit Visual mode) {{{
@@ -1085,9 +1088,14 @@ if isdirectory(expand(s:vimfiles_dir."bundle/vim-fugitive/"))
     nnoremap <silent> <leader>ge :Gedit<CR>
     " Mnemonic _i_nteractive
     nnoremap <silent> <leader>gi :Git add -p %<CR>
-    nnoremap <silent> <leader>gg :SignifyToggle<CR>
 endif
 " end Fugitive }}}
+
+" ## Signify {{{
+if isdirectory(expand(s:vimfiles_dir.'bundle/vim-signify')) && g:enable_startify
+     nnoremap <silent> <leader>gg :SignifyToggle<CR>
+ endif
+" }}}
 
 " ## Startify {{{
 if g:enable_startify
