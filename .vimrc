@@ -1,14 +1,17 @@
+" Switches {{{
 let g:beta_version         = 1
+let g:enable_easymotion    = 1
 let g:enable_powerline     = 0
-let g:enable_lightline     = 0
-let g:enable_airline       = 1
+let g:enable_lightline     = 1
+let g:enable_airline       = 0
 let g:use_conemu_specifics = 0
 let g:use_mswin_vim        = 1
 let g:enable_startify      = 1
 let g:enable_signify       = 1
+let g:enable_orgmode       = 1
+"}}}
 
 " Environment {{{
-
     " Identify platform {{{
         silent function! OSX()
             return has('macunix')
@@ -178,93 +181,99 @@ if filereadable(expand("~/_vimrc.local_before"))
 endif
 
 set nocompatible
-" Vundle {{{====================
+" NeoBundle {{{====================
 
 """ AutoInstall {{{
-if !filereadable(s:vimfiles_dir.'bundle/Vundle.vim/README.md')
-    echo 'Installing Vundle...'
+if !filereadable(s:vimfiles_dir.'bundle/neobundle.vim/README.md')
+    echo 'Installing NeoBundle...'
     echo ''
     "  silent execute '
     if !isdirectory(s:vimfiles_dir.'bundle')
         call mkdir(s:vimfiles_dir.'bundle')
     endif
-    silent execute '!git clone https://github.com/gmarik/Vundle.vim ' .s:vimfiles_dir.'bundle/Vundle.vim'
+    silent execute '!git clone https://github.com/Shougo/neobundle.vim ' .s:vimfiles_dir.'bundle/neobundle.vim'
 endif
 " }}}
 filetype off
-execute 'set runtimepath+='.s:vimfiles_dir.'bundle/Vundle.vim'
-call vundle#begin()
+execute 'set runtimepath+='.s:vimfiles_dir.'bundle/neobundle.vim'
 
-Plugin 'gmarik/Vundle.vim'
+call neobundle#begin(expand(s:vimfiles_dir.'bundle'))
+
+NeoBundleFetch 'Shougo/neobundle.vim'
 
 " ## General {{{
-Plugin 'scrooloose/nerdtree' " Tree explorer
-Plugin 'jistr/vim-nerdtree-tabs' " Extend NERDTree to keep it across multiple tabs
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-repeat'
-Plugin 'spf13/vim-autoclose'
-Plugin 'vim-scripts/sessionman.vim'
-Plugin 'matchit.zip'
-Plugin 'kien/ctrlp.vim'
+NeoBundle 'scrooloose/nerdtree' " Tree explorer
+NeoBundle 'jistr/vim-nerdtree-tabs' " Extend NERDTree to keep it across multiple tabs
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'tpope/vim-repeat'
+NeoBundle 'spf13/vim-autoclose'
+NeoBundle 'vim-scripts/sessionman.vim'
+NeoBundle 'matchit.zip'
+NeoBundle 'kien/ctrlp.vim'
 if g:enable_powerline && has('python')
-    Plugin 'Lokaltog/powerline'
+    NeoBundle 'Lokaltog/powerline'
 elseif g:enable_lightline
     " A pretty statusline, bufferline integration
-    Plugin 'itchyny/lightline.vim'
-    Plugin 'bling/vim-bufferline'
+    NeoBundle 'itchyny/lightline.vim'
+    NeoBundle 'bling/vim-bufferline'
 elseif g:enable_airline
-    Plugin 'bling/vim-airline', {'gui': 1, 'terminal': 0 } " Powerline replacement
+    NeoBundle 'bling/vim-airline', {'gui': 1, 'terminal': 0 } " Powerline replacement
 endif
-Plugin 'Lokaltog/vim-easymotion'
-Plugin 'flazz/vim-colorschemes'
-Plugin 'mbbill/undotree'
-Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'vim-scripts/Conque-Shell' "Shell integration
-Plugin 'vim-scripts/DirDiff.vim' " Perform recursive diff on two directories http://www.vim.org/scripts/script.php?script_id=102
-Plugin 'dterei/VimBookmarking' "Default keymapping: <F3> :ToggleBookmark; <F4> :PreviousBookmark; <F5> :NextBookmark
+if g:enable_easymotion
+    NeoBundleLazy 'Lokaltog/vim-easymotion'
+endif
+" NeoBundle 'flazz/vim-colorschemes'
+NeoBundle 'nanotech/jellybeans.vim'
+NeoBundle 'mbbill/undotree'
+"if g:beta_version
+"    NeoBundle 'Yggdroot/indentLine'
+"else
+    NeoBundle 'nathanaelkane/vim-indent-guides'
+"endif
+NeoBundle 'vim-scripts/Conque-Shell' "Shell integration
+NeoBundle 'vim-scripts/DirDiff.vim' " Perform recursive diff on two directories http://www.vim.org/scripts/script.php?script_id=102
+NeoBundle 'dterei/VimBookmarking' "Default keymapping: <F3> :ToggleBookmark; <F4> :PreviousBookmark; <F5> :NextBookmark
 if g:enable_startify
-    Plugin 'mhinz/vim-startify'
+    NeoBundle 'mhinz/vim-startify'
 endif
 
-if g:beta_version
-    Plugin 'hsitz/VimOrganizer'
-    "Plugin 'jceb/vim-orgmode'
-    Plugin 'xolox/vim-misc' " Vim-shell dependency
-    Plugin 'xolox/vim-shell'
-    Plugin 'chrisbra/NrrwRgn'
+if g:enable_orgmode
+    NeoBundle 'hsitz/VimOrganizer'
+    "NeoBundle 'jceb/vim-orgmode'
+    NeoBundle 'xolox/vim-misc' " Vim-shell dependency
+    NeoBundle 'xolox/vim-shell'
+    NeoBundle 'chrisbra/NrrwRgn'
 endif
 
 " }}}
 
 " ## Development - General {{{
-Plugin 'scrooloose/syntastic' "Enhanced syntax checker, Required external programs (see https://github.com/scrooloose/syntastic)
+NeoBundle 'scrooloose/syntastic' "Enhanced syntax checker, Required external programs (see https://github.com/scrooloose/syntastic)
 if g:enable_signify
-    Plugin 'mhinz/vim-signify'
+    NeoBundle 'mhinz/vim-signify'
 endif
-Plugin 'tpope/vim-git'
-Plugin 'tpope/vim-fugitive' " Git
-if g:beta_version
-    Plugin 'gregsexton/gitv'
-endif
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'godlygeek/tabular'
+NeoBundle 'tpope/vim-git' " Included are syntax, indent, and filetype plugin files for git, gitcommit, gitconfig, gitrebase, and gitsendemail
+NeoBundle 'tpope/vim-fugitive' " Git
+NeoBundleLazy 'gregsexton/gitv', { 'depends': ['tpope/vim-fugitive'], 'autoload': { 'commands': ['Gitv'] } }
+NeoBundle 'scrooloose/nerdcommenter'
+NeoBundle 'godlygeek/tabular'
 "if executable('ctags')
-Plugin 'majutsushi/tagbar'
+NeoBundle 'majutsushi/tagbar'
 "endif
 " }}}
 
 " ## Web development {{{
-Plugin 'mattn/emmet-vim' " HTML enhancements
-Plugin 'gregsexton/MatchTag' "Highlight matching tags | may I use matchit.zip
-Plugin 'hail2u/vim-css3-syntax'
-Plugin 'groenewege/vim-less'
-Plugin 'gorodinskiy/vim-coloresque'
-Plugin 'tpope/vim-haml'
+NeoBundleLazy 'mattn/emmet-vim' " HTML enhancements
+NeoBundle 'gregsexton/MatchTag' "Highlight matching tags | may I use matchit.zip
+NeoBundle 'hail2u/vim-css3-syntax'
+NeoBundle 'groenewege/vim-less'
+NeoBundle 'gorodinskiy/vim-coloresque'
+NeoBundle 'tpope/vim-haml'
 " }}}
 
 " ## MS Technologies dev {{{
-Plugin 'PProvost/vim-ps1'
-Plugin 'OrangeT/vim-csharp' " CSharp enhancements (including razor syntax, compilation)
+NeoBundle 'PProvost/vim-ps1'
+NeoBundle 'OrangeT/vim-csharp' " CSharp enhancements (including razor syntax, compilation)
 " }}}
 
 """" TOTEST  {{{
@@ -365,21 +374,11 @@ if 0
     " Fuzzy finder (files, mru, etc)
     Plugin 'kien/ctrlp.vim'
 
-
-    " Easy... motions... yeah.
-    Plugin 'Lokaltog/vim-easymotion'
-
-    " Glorious colorscheme
-    Plugin 'nanotech/jellybeans.vim'
-
     " Super easy commenting, toggle comments etc
     Plugin 'scrooloose/nerdcommenter'
 
     " Autoclose (, " etc
     Plugin 'Townk/vim-autoclose'
-
-    " Git wrapper inside Vim
-    Plugin 'tpope/vim-fugitive'
 
     " Handle surround chars like ''
     Plugin 'tpope/vim-surround'
@@ -406,8 +405,8 @@ if 0
 
 endif
 "}}}
-
-call vundle#end()
+call neobundle#end()
+"call vundle#end()
 " END Plugin}}}
 
 " Vim Setup {{{========================
@@ -428,7 +427,7 @@ set ruler                      " Show the line and column number of the cursor p
 set scrolloff=3                " Lines above/below cursor
 set splitright                 " Puts new vsplit windows to the right of the current
 set splitbelow                 " Puts new split windows to the bottom of the current
-set virtualedit=onemore        " Allow for cursor beyond last character
+set virtualedit=block          " Allow virtual editing in Visual block mode
 "}}}
 
 " ## Clipboard {{{
@@ -441,12 +440,12 @@ if has('clipboard')
 endif
 " }}}
 
-" Encoding {{{
+" ## Encoding {{{
 set encoding=utf-8
 set termencoding=utf-8
 "}}}
 
-" Tab Basic Settings {{{
+" ## Tab Basic Settings {{{
 set autoindent        " Copy indent from current line when starting a new line
 set expandtab         " Use the appropriate number of spaces to insert a <Tab>
 set shiftround        " Round indent to multiple of 'shiftwidth'
@@ -468,18 +467,18 @@ set matchpairs+=<:>
 set showmatch
 " }}}
 
-" Search Basic Settings {{{
+" ## Search Basic Settings {{{
 set incsearch  " Incremental searching
 set ignorecase " Ignore case in search patterns
 set smartcase  " Override the ignorecase option if the pattern contains upper case
 set hlsearch   " Highlight search patterns, support reloading
 "}}}
 
-" Backup Settings {{{
+" ## Backup Settings {{{
 set backup
 "}}}
 
-" Undo Basic {{{
+" ## Undo Basic {{{
 if has('persistent_undo')
     set undofile "Automatically saves undo history
     set undolevels=1000
@@ -487,13 +486,12 @@ if has('persistent_undo')
 endif
 "}}}
 
-" Wildmenu {{{
+" ## Wildmenu {{{
 set wildmenu
 set wildmode=longest:full,full
 "}}}
 
-" Cursor position when opening a file {{{
-
+" ## Cursor position when opening a file {{{
 " Instead of reverting the cursor to the last position in the buffer, we
 " set it to the first line when editing a git commit message
 au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
@@ -614,7 +612,7 @@ endif
 " Plugins configuration {{{=============
 
 " ## Lightline {{{
-if g:enable_lightline
+if g:enable_lightline && neobundle#tap('lightline.vim')
     set laststatus=2
     set noshowmode
 
@@ -765,8 +763,9 @@ if g:enable_lightline
         SyntasticCheck
         call lightline#update()
     endfunction
+    call neobundle#untap()
 endif
-""" }}}
+" LightLine }}}
 
 " ## spf13/vim-autoclose {{{
 let g:autoclose_vim_commentmode = 1 "Do not close doublequote while editing vim files
@@ -881,220 +880,258 @@ endif
 "}}}
 
 " Emmet {{{
-let g:user_emmet_leader_key='<Leader>y'
+if neobundle#tap('emmet-vim')
+    let g:user_emmet_leader_key='<Leader>y'
+    call neobundle#config({
+        \   'autoload': {
+        \       'filetypes': [
+        \           'html',
+        \           'cshtml',
+        \           'xhttml',
+        \           'css',
+        \           'sass',
+        \           'scss',
+        \           'styl',
+        \           'xml',
+        \           'xls',
+        \           'markdown',
+        \           'htmldjango',
+        \       ]
+        \   },
+        \})
+    call neobundle#untap()
+endif
 " }}}
 
-" vim-easymotion {{{
-if g:beta_version && 0
-    "if neobundle#tap('vim-easymotion')
-        call neobundle#config({
-                    \   'autoload' : {
-                    \     'mappings' : [['sxno', '<Plug>(easymotion-']],
-                    \     'functions' : [
-                    \       'EasyMotion#User',
-                    \       'EasyMotion#JK',
-                    \       'EasyMotion#is_active',
-                    \     ],
-                    \   }
-                    \ })
-        " map  ; <Plug>(easymotion-prefix)
-        " omap ; <Plug>(easymotion-prefix)
-        " vmap ; <Plug>(easymotion-prefix)
-        function! neobundle#tapped.hooks.on_post_source(bundle) "{{{
-            EMCommandLineNoreMap <Space> <CR>
-            EMCommandLineNoreMap <C-j> <Space>
-            if ! g:EasyMotion_do_shade
-                highlight! link EasyMotionIncSearch IncSearch
-            endif
-            highlight! link EasyMotionMoveHL Search
-        endfunction "}}}
-        function! neobundle#tapped.hooks.on_source(bundle) "{{{
-            " EasyMotion Config {{{
-            let g:EasyMotion_do_mapping = 0
-            " let g:EasyMotion_keys = ';HKLYUIOPNM,QWERTZXCVBASDGJF'
-            let g:EasyMotion_keys = ';HKLYUIONM,WERTXCVBASDGJF'
-            " Do not shade
-            let g:EasyMotion_do_shade = 0
-            " Use upper case
-            let g:EasyMotion_use_upper = 1
-            " Smartcase
-            let g:EasyMotion_smartcase = 1
-            " Smartsign
-            let g:EasyMotion_use_smartsign_us = 1
-            " keep cursor column
-            let g:EasyMotion_startofline = 0
-            " Don't skip folded line
-            let g:EasyMotion_skipfoldedline = 0
-            " pseudo-migemo
+" ## vim-easymotion {{{
+if g:enable_easymotion && neobundle#tap('vim-easymotion')
+    call neobundle#config({
+        \   'autoload' : {
+        \     'mappings' : [['sxno', '<Plug>(easymotion-']],
+        \     'functions' : [
+        \       'EasyMotion#User',
+        \       'EasyMotion#JK',
+        \       'EasyMotion#is_active',
+        \     ],
+        \   }
+        \ })
+    " map  ; <Plug>(easymotion-prefix)
+    " omap ; <Plug>(easymotion-prefix)
+    " vmap ; <Plug>(easymotion-prefix)
+    function! neobundle#tapped.hooks.on_post_source(bundle) "{{{
+        EMCommandLineNoreMap <Space> <CR>
+        EMCommandLineNoreMap <C-j> <Space>
+        if ! g:EasyMotion_do_shade
+            highlight! link EasyMotionIncSearch IncSearch
+        endif
+        highlight! link EasyMotionMoveHL Search
+    endfunction "}}}
+    function! neobundle#tapped.hooks.on_source(bundle) "{{{
+        " EasyMotion Config {{{
+        let g:EasyMotion_do_mapping = 0
+        " let g:EasyMotion_keys = ';HKLYUIOPNM,QWERTZXCVBASDGJF'
+        let g:EasyMotion_keys = ';HKLYUIONM,WERTXCVBASDGJF'
+        " Do not shade
+        let g:EasyMotion_do_shade = 0
+        " Use upper case
+        let g:EasyMotion_use_upper = 1
+        " Smartcase
+        let g:EasyMotion_smartcase = 1
+        " Smartsign
+        let g:EasyMotion_use_smartsign_us = 1
+        " keep cursor column
+        let g:EasyMotion_startofline = 0
+        " Don't skip folded line
+        let g:EasyMotion_skipfoldedline = 0
+        " pseudo-migemo
+        let g:EasyMotion_use_migemo = 1
+        " Jump to first with enter & space
+        " let g:EasyMotion_enter_jump_first = 1
+        let g:EasyMotion_space_jump_first = 1
+        " Prompt
+        let g:EasyMotion_prompt = '{n}> '
+        " Highlight cursor
+        " let g:EasyMotion_cursor_highlight = 1
+        "}}}
+
+        " EasyMotion Regrex {{{
+        let g:EasyMotion_re_line_anywhere = '\v' .
+                    \  '(<.|^.)' . '|' .
+                    \  '(.>|.$)' . '|' .
+                    \  '(\s+\zs.)' . '|' .
+                    \  '(\l)\zs(\u)' . '|' .
+                    \  '(_\zs.)' . '|' .
+                    \  '(#\zs.)'
+        let g:EasyMotion_re_anywhere = '\v' .
+                    \  '(<.|^)' . '|' .
+                    \  '(.$)' . '|' .
+                    \  '(\s+\zs.)' . '|' .
+                    \  '(\l)\zs(\u)' . '|' .
+                    \  '(_\zs.)' . '|' .
+                    \  '(/\zs.)' . '|' .
+                    \  '(#\zs.)'
+        "}}}
+
+    endfunction "}}}
+
+    " EasyMotion Mapping {{{
+    nmap s <Plug>(easymotion-s2)
+    vmap s <Plug>(easymotion-s2)
+    omap z <Plug>(easymotion-s2)
+    nmap ;s <Plug>(easymotion-s)
+    vmap ;s <Plug>(easymotion-s)
+    omap ;z <Plug>(easymotion-s)
+
+    " Extend search
+    map  / <Plug>(easymotion-sn)
+    xmap / <Esc><Plug>(easymotion-sn)\v%V
+    omap / <Plug>(easymotion-tn)
+    noremap  ;/ /
+    nmap ;n <Plug>(easymotion-sn)<C-p>
+    map ;N <Plug>(easymotion-bd-n)
+
+    set nohlsearch " use EasyMotion highlight
+    nmap n <Plug>(easymotion-next)<Plug>(anzu-update-search-status)zv
+    nmap N <Plug>(easymotion-prev)<Plug>(anzu-update-search-status)zv
+    xmap n <Plug>(easymotion-next)zv
+    xmap N <Plug>(easymotion-prev)zv
+
+    " Replace defaut
+    " smart f & F
+    omap f <Plug>(easymotion-bd-fl)
+    xmap f <Plug>(easymotion-bd-fl)
+    omap F <Plug>(easymotion-Fl)
+    xmap F <Plug>(easymotion-Fl)
+    omap t <Plug>(easymotion-tl)
+    xmap t <Plug>(easymotion-tl)
+    omap T <Plug>(easymotion-Tl)
+    xmap T <Plug>(easymotion-Tl)
+
+    " Extend hjkl
+    map ;h <Plug>(easymotion-linebackward)
+    map ;j <Plug>(easymotion-j)
+    map ;k <Plug>(easymotion-k)
+    map ;l <Plug>(easymotion-lineforward)
+
+    " Anywhere!
+    " map <Space><Space> <Plug>(easymotion-jumptoanywhere)
+
+    " Repeat last motion
+    " map ;<Space> <Plug>(easymotion-repeat)
+
+    " move to next/previous last motion match
+    nmap <expr> <C-n> yankround#is_active() ?
+                \ '<Plug>(yankround-next)' : '<Plug>(easymotion-next)'
+    nmap <expr> <C-p> yankround#is_active() ?
+                \ '<Plug>(yankround-prev)' : '<Plug>(easymotion-prev)'
+    xmap <C-n> <Plug>(easymotion-next)
+    xmap <C-p> <Plug>(easymotion-prev)
+
+    nmap <expr><Tab> EasyMotion#is_active() ?
+                \ '<Plug>(easymotion-next)' : '<TAB>'
+    nmap <expr>' EasyMotion#is_active() ?
+                \ '<Plug>(easymotion-prev)' : "'"
+
+    " Extene word motion
+    map  ;w  <Plug>(easymotion-bd-wl)
+    map  ;e  <Plug>(easymotion-bd-el)
+    omap ;b  <Plug>(easymotion-bl)
+    " omap ;ge <Plug>(easymotion-gel)
+    map ;ge <Plug>(easymotion-gel)
+
+    function! s:wrap_M()
+        let current_line = getline('.')
+        keepjumps normal! M
+        let middle_line = getline('.')
+        if current_line == middle_line
+            call EasyMotion#JK(0,2)
+        endif
+    endfunction
+    nnoremap <silent> M :<C-u>call <SID>wrap_M()<CR>
+    "}}}
+
+    " EasyMotion User {{{
+    " EasyMotion#User(pattern, is_visual, direction, is_inclusive)
+    noremap  <silent><expr>;c
+                \ ':<C-u>call EasyMotion#User(' .
+                \ '"\\<' . expand('<cword>') . '\\>", 0, 2, 1)<CR>'
+    xnoremap  <silent><expr>;c
+                \ '<ESC>:<C-u>call EasyMotion#User(' .
+                \ '"\\<' . expand('<cword>') . '\\>", 1, 2, 1)<CR>'
+
+    let g:empattern = {}
+    let g:empattern['syntax'] = '\v'
+                \ . 'function|endfunction|return|call'
+                \ . '|if|elseif|else|endif'
+                \ . '|for|endfor'
+                \ . '|while|endwhile'
+                \ . '|break|continue'
+                \ . '|let|unlet'
+                \ . '|noremap|map|expr|silent'
+                \ . '|g:|s:|b:|w:'
+                \ . '|autoload|#|plugin'
+
+    noremap  <silent>;1
+                \ :<C-u>call EasyMotion#User(g:empattern.syntax , 0, 2, 1)<CR>
+    xnoremap <silent>;1
+                \ :<C-u>call EasyMotion#User(g:empattern.syntax , 1, 2, 1)<CR>
+    "}}}
+
+    function! EasyMotionMigemoToggle() "{{{
+        if !exists(g:EasyMotion_use_migemo) && g:EasyMotion_use_migemo == 1
+            let g:EasyMotion_use_migemo = 0
+            echo 'Turn Off migemo'
+        else
             let g:EasyMotion_use_migemo = 1
-            " Jump to first with enter & space
-            " let g:EasyMotion_enter_jump_first = 1
-            let g:EasyMotion_space_jump_first = 1
-            " Prompt
-            let g:EasyMotion_prompt = '{n}> '
-            " Highlight cursor
-            " let g:EasyMotion_cursor_highlight = 1
-            "}}}
+            echo 'Turn On migemo'
+        endif
+    endfunction
+    command! -nargs=0 EasyMotionMigemoToggle :call EasyMotionMigemoToggle() "}}}
 
-            " EasyMotion Regrex {{{
-            let g:EasyMotion_re_line_anywhere = '\v' .
-                        \  '(<.|^.)' . '|' .
-                        \  '(.>|.$)' . '|' .
-                        \  '(\s+\zs.)' . '|' .
-                        \  '(\l)\zs(\u)' . '|' .
-                        \  '(_\zs.)' . '|' .
-                        \  '(#\zs.)'
-            let g:EasyMotion_re_anywhere = '\v' .
-                        \  '(<.|^)' . '|' .
-                        \  '(.$)' . '|' .
-                        \  '(\s+\zs.)' . '|' .
-                        \  '(\l)\zs(\u)' . '|' .
-                        \  '(_\zs.)' . '|' .
-                        \  '(/\zs.)' . '|' .
-                        \  '(#\zs.)'
-            "}}}
-
-        endfunction "}}}
-
-        " EasyMotion Mapping {{{
-        nmap s <Plug>(easymotion-s2)
-        vmap s <Plug>(easymotion-s2)
-        omap z <Plug>(easymotion-s2)
-        nmap ;s <Plug>(easymotion-s)
-        vmap ;s <Plug>(easymotion-s)
-        omap ;z <Plug>(easymotion-s)
-
-        " Extend search
-        map  / <Plug>(easymotion-sn)
-        xmap / <Esc><Plug>(easymotion-sn)\v%V
-        omap / <Plug>(easymotion-tn)
-        noremap  ;/ /
-        nmap ;n <Plug>(easymotion-sn)<C-p>
-        map ;N <Plug>(easymotion-bd-n)
-
-        set nohlsearch " use EasyMotion highlight
-        nmap n <Plug>(easymotion-next)<Plug>(anzu-update-search-status)zv
-        nmap N <Plug>(easymotion-prev)<Plug>(anzu-update-search-status)zv
-        xmap n <Plug>(easymotion-next)zv
-        xmap N <Plug>(easymotion-prev)zv
-
-        " Replace defaut
-        " smart f & F
-        omap f <Plug>(easymotion-bd-fl)
-        xmap f <Plug>(easymotion-bd-fl)
-        omap F <Plug>(easymotion-Fl)
-        xmap F <Plug>(easymotion-Fl)
-        omap t <Plug>(easymotion-tl)
-        xmap t <Plug>(easymotion-tl)
-        omap T <Plug>(easymotion-Tl)
-        xmap T <Plug>(easymotion-Tl)
-
-        " Extend hjkl
-        map ;h <Plug>(easymotion-linebackward)
-        map ;j <Plug>(easymotion-j)
-        map ;k <Plug>(easymotion-k)
-        map ;l <Plug>(easymotion-lineforward)
-
-        " Anywhere!
-        " map <Space><Space> <Plug>(easymotion-jumptoanywhere)
-
-        " Repeat last motion
-        " map ;<Space> <Plug>(easymotion-repeat)
-
-        " move to next/previous last motion match
-        nmap <expr> <C-n> yankround#is_active() ?
-                    \ '<Plug>(yankround-next)' : '<Plug>(easymotion-next)'
-        nmap <expr> <C-p> yankround#is_active() ?
-                    \ '<Plug>(yankround-prev)' : '<Plug>(easymotion-prev)'
-        xmap <C-n> <Plug>(easymotion-next)
-        xmap <C-p> <Plug>(easymotion-prev)
-
-        nmap <expr><Tab> EasyMotion#is_active() ?
-                    \ '<Plug>(easymotion-next)' : '<TAB>'
-        nmap <expr>' EasyMotion#is_active() ?
-                    \ '<Plug>(easymotion-prev)' : "'"
-
-        " Extene word motion
-        map  ;w  <Plug>(easymotion-bd-wl)
-        map  ;e  <Plug>(easymotion-bd-el)
-        omap ;b  <Plug>(easymotion-bl)
-        " omap ;ge <Plug>(easymotion-gel)
-        map ;ge <Plug>(easymotion-gel)
-
-        function! s:wrap_M()
-            let current_line = getline('.')
-            keepjumps normal! M
-            let middle_line = getline('.')
-            if current_line == middle_line
-                call EasyMotion#JK(0,2)
-            endif
-        endfunction
-        nnoremap <silent> M :<C-u>call <SID>wrap_M()<CR>
-        "}}}
-
-        " EasyMotion User {{{
-        " EasyMotion#User(pattern, is_visual, direction, is_inclusive)
-        noremap  <silent><expr>;c
-                    \ ':<C-u>call EasyMotion#User(' .
-                    \ '"\\<' . expand('<cword>') . '\\>", 0, 2, 1)<CR>'
-        xnoremap  <silent><expr>;c
-                    \ '<ESC>:<C-u>call EasyMotion#User(' .
-                    \ '"\\<' . expand('<cword>') . '\\>", 1, 2, 1)<CR>'
-
-        let g:empattern = {}
-        let g:empattern['syntax'] = '\v'
-                    \ . 'function|endfunction|return|call'
-                    \ . '|if|elseif|else|endif'
-                    \ . '|for|endfor'
-                    \ . '|while|endwhile'
-                    \ . '|break|continue'
-                    \ . '|let|unlet'
-                    \ . '|noremap|map|expr|silent'
-                    \ . '|g:|s:|b:|w:'
-                    \ . '|autoload|#|plugin'
-
-        noremap  <silent>;1
-                    \ :<C-u>call EasyMotion#User(g:empattern.syntax , 0, 2, 1)<CR>
-        xnoremap <silent>;1
-                    \ :<C-u>call EasyMotion#User(g:empattern.syntax , 1, 2, 1)<CR>
-        "}}}
-
-        function! EasyMotionMigemoToggle() "{{{
-            if !exists(g:EasyMotion_use_migemo) && g:EasyMotion_use_migemo == 1
-                let g:EasyMotion_use_migemo = 0
-                echo 'Turn Off migemo'
-            else
-                let g:EasyMotion_use_migemo = 1
-                echo 'Turn On migemo'
-            endif
-        endfunction
-        command! -nargs=0 EasyMotionMigemoToggle :call EasyMotionMigemoToggle() "}}}
-
-       " call neobundle#untap()
-   " endif
+    call neobundle#untap()
 endif
-"}}}
+" easymotion }}}
 
 " ## Fugitive {{{
-if isdirectory(expand(s:vimfiles_dir."bundle/vim-fugitive/"))
-    nnoremap <silent> <leader>gs :Gstatus<CR>
-    nnoremap <silent> <leader>gd :Gdiff<CR>
-    nnoremap <silent> <leader>gc :Gcommit<CR>
-    nnoremap <silent> <leader>gb :Gblame<CR>
-    nnoremap <silent> <leader>gl :Glog<CR>
-    nnoremap <silent> <leader>gp :Git push<CR>
-    nnoremap <silent> <leader>gr :Gread<CR>
-    nnoremap <silent> <leader>gw :Gwrite<CR>
-    nnoremap <silent> <leader>ge :Gedit<CR>
-    " Mnemonic _i_nteractive
-    nnoremap <silent> <leader>gi :Git add -p %<CR>
+if neobundle#tap('vim-fugitive')
+"    call neobundle#config({
+"                \   'autoload': {
+"                \       'commands': [
+"                \           'Gstatus', 'Gcommit', 'Gwrite', 'Gdiff', 'Gblame', 'Git', 'Ggrep'
+"                \       ]
+"                \ }
+"                \ })
+"
+"    let s:bundle = neobundle#get('vim-fugitive')
+"    function! s:bundle.hooks.on_post_source(bundle)
+"        doautoall fugitive BufNewFile
+"    endfunction
+
+
+    call neobundle#untap()
 endif
+"if isdirectory(expand(s:vimfiles_dir."bundle/vim-fugitive/"))
+"    nnoremap <silent> <leader>gs :Gstatus<CR>
+"    nnoremap <silent> <leader>gd :Gdiff<CR>
+"    nnoremap <silent> <leader>gc :Gcommit<CR>
+"    nnoremap <silent> <leader>gb :Gblame<CR>
+"    nnoremap <silent> <leader>gl :Glog<CR>
+"    nnoremap <silent> <leader>gp :Git push<CR>
+"    nnoremap <silent> <leader>gr :Gread<CR>
+"    nnoremap <silent> <leader>gw :Gwrite<CR>
+"    nnoremap <silent> <leader>ge :Gedit<CR>
+"    " Mnemonic _i_nteractive
+"    nnoremap <silent> <leader>gi :Git add -p %<CR>
+"endif
 " end Fugitive }}}
 
 " ## Signify {{{
-if isdirectory(expand(s:vimfiles_dir.'bundle/vim-signify')) && g:enable_startify
-     nnoremap <silent> <leader>gg :SignifyToggle<CR>
- endif
+if g:enable_startify && neobundle#tap('vim-signify')
+    nnoremap <silent> <leader>gg :SignifyToggle<CR>
+    "nmap ]c <plug>(signify-next-hunk)
+    "nmap [c <plug>(signify-prev-hunk)
+    call neobundle#untap()
+endif
 " }}}
 
 " ## Startify {{{
@@ -1114,10 +1151,20 @@ if g:enable_startify
 endif
 " }}}
 
+" UndoTree {{{
+if neobundle#tap('undotree')
+    nnoremap <Leader>u :UndotreeToggle<CR>
+    " If undotree is opened, it is likely one wants to interact with it.
+    let g:undotree_SetFocusWhenToggle=1
+    call neobundle#untap()
+endif
+" }}}
+
 " ## VimOrganizer {{{
-if g:beta_version
+if g:enable_orgmode && neobundle#tap('VimOrganizer')
     au! BufRead,BufWrite,BufWritePost,BufNewFile *.org
     au BufEnter *.org call org#SetOrgFileType()
+    call neobundle#untap()
 endif
 " }}}
 
@@ -1198,10 +1245,10 @@ if filereadable($HOME.'/_vimrc.last')
     source $HOME/_vimrc.last
 endif
 " Installation check.
-"NeoBundleCheck
-"if !has('vim_starting')
-"    call neobundle#call_hook('on_source')
-"endif
+NeoBundleCheck
+if !has('vim_starting')
+    call neobundle#call_hook('on_source')
+endif
 set secure
 "}}}
 
@@ -1619,14 +1666,6 @@ if 0
     if !executable("ghcmod")
         autocmd BufWritePost *.hs GhcModCheckAndLintAsync
     endif
-
-    " UndoTree {
-        if isdirectory(expand("~/.vim/bundle/undotree/"))
-            nnoremap <Leader>u :UndotreeToggle<CR>
-            " If undotree is opened, it is likely one wants to interact with it.
-            let g:undotree_SetFocusWhenToggle=1
-        endif
-    " }
 
 
     " Wildfire {
