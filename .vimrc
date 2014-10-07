@@ -238,11 +238,7 @@ if g:enable_easymotion
 endif
 
 NeoBundleLazy 'mbbill/undotree'
-"if g:beta_version
-"    NeoBundle 'Yggdroot/indentLine'
-"else
-    NeoBundle 'nathanaelkane/vim-indent-guides'
-"endif
+NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'vim-scripts/Conque-Shell' "Shell integration
 NeoBundle 'vim-scripts/DirDiff.vim' " Perform recursive diff on two directories http://www.vim.org/scripts/script.php?script_id=102
 NeoBundle 'dterei/VimBookmarking' "Default keymapping: <F3> :ToggleBookmark; <F4> :PreviousBookmark; <F5> :NextBookmark
@@ -257,7 +253,6 @@ if g:enable_orgmode
     NeoBundle 'xolox/vim-shell'
     NeoBundle 'chrisbra/NrrwRgn'
 endif
-
 " }}}
     " ## UI {{{
     " NeoBundle 'flazz/vim-colorschemes'
@@ -284,14 +279,27 @@ NeoBundle 'majutsushi/tagbar'
 "endif
 " }}}
 
-" ## Web development {{{
-NeoBundleLazy 'mattn/emmet-vim' " HTML enhancements
-NeoBundle 'gregsexton/MatchTag' "Highlight matching tags | may I use matchit.zip
-NeoBundle 'hail2u/vim-css3-syntax'
-NeoBundle 'groenewege/vim-less'
-NeoBundle 'gorodinskiy/vim-coloresque'
-NeoBundle 'tpope/vim-haml'
-" }}}
+    " ## Web development {{{
+    NeoBundleLazy 'mattn/emmet-vim' " HTML enhancements
+    NeoBundle 'gregsexton/MatchTag' "Highlight matching tags | may I use matchit.zip
+    NeoBundle 'hail2u/vim-css3-syntax'
+    NeoBundle 'groenewege/vim-less'
+    NeoBundle 'gorodinskiy/vim-coloresque'
+    NeoBundle 'tpope/vim-haml'
+    " #### Javascript {{{
+    NeoBundleLazy 'osyo-manga/vim-precious', {
+                \   'autoload': {
+                \       'filetypes': ['javascript', 'html' ]
+                \   }
+                \ }
+    NeoBundleLazy 'pangloss/vim-javascript', {
+                \   'autoload': {
+                \       'filetypes': ['javascript', 'html' ]
+                \   }
+                \ }
+    " }}}
+    " }}}
+
 
 " ## MS Technologies dev {{{
 NeoBundle 'PProvost/vim-ps1'
@@ -811,6 +819,10 @@ endif
 " }}}
 " }}}
 
+" ## UI {{{
+
+" }}}
+
 " ## Vim enhancements {{{
 " #### ozyo-manga/vim-anzu {{{
 " if neobundle#tap('vim-anzu')
@@ -820,12 +832,32 @@ endif
 "     "            \}
 "     "            \ })
 "     nmap * <Plug>(anzu-star-with-echo);n
-" 
+"
 "     " Clear hit count when nokeyinput, move window, or move tab
 "     Autocmd CursorHold,CursorHoldI,WinLeave,TabLeave
 "                 \   * call anzu#clear_search_status()
 "     call neobundle#untap()
 " endif
+" }}}
+" }}}
+
+" ## Web development {{{
+" #### Javascript {{{
+" ###### 'osyo-manga/vim-precious' {{{
+let g:markdown_fenced_languages = [
+    \  'coffee',
+    \  'css',
+    \  'erb=eruby',
+    \  'javascript',
+    \  'js=javascript',
+    \  'json=javascript',
+    \  'ruby',
+    \  'sass',
+    \  'xml',
+    \  'python',
+    \  'vim',
+    \]
+" }}}
 " }}}
 " }}}
 
