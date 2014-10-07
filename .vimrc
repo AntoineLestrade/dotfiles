@@ -202,28 +202,44 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 
 " ## Unite / Library {{{
 if g:enable_unite_group
-NeoBundleLazy 'Shougo/unite.vim'
+NeoBundleLazy 'Shougo/unite.vim', {
+                \ 'depends': ['Shougo/vimproc'],
+                \ 'autoload': {
+                \   'commands':[
+                \       { 'name': 'Unite', 'complete': 'customlist,unite#complete_source' },
+                \       'UniteWithCursorWord',
+                \       'UniteWithInput'
+                \   ]
+                \ }
+                \ }
 NeoBundle 'Shougo/vimproc',  { 'build': {
-      \   'windows': 'mingw32-make -f make_mingw32.mak',
-      \   'cygwin': 'make -f make_cygwin.mak',
-      \   'mac': 'make -f make_mac.mak',
-      \   'unix': 'make -f make_unix.mak',
-      \ } }
-NeoBundleLazy 'Shougo/vimshell.vim'
+    \   'windows': 'mingw32-make -f make_mingw32.mak',
+    \   'cygwin': 'make -f make_cygwin.mak',
+    \   'mac': 'make -f make_mac.mak',
+    \   'unix': 'make -f make_unix.mak',
+    \ } }
+NeoBundleLazy 'Shougo/vimshell.vim', {
+        \   'depends': ['Shougo/vimproc'],
+        \   'autoload' : {
+        \       'commands' : [
+        \       { 'name' : 'VimShell',
+        \         'complete' : 'customlist,vimshell#complete'},
+        \       { 'name' : 'VimShellTab',
+        \         'complete' : 'customlist,vimshell#complete'},
+        \       { 'name' : 'VimShellBufferDir',
+        \         'complete' : 'customlist,vimshell#complete'},
+        \       { 'name' : 'VimShellCreate',
+        \         'complete' : 'customlist,vimshell#complete'},
+        \         'VimShellExecute', 'VimShellInteractive',
+        \         'VimShellTerminal', 'VimShellPop'],
+        \   }
+        \ }
 endif
 " }}}
 
-" ## General {{{
-NeoBundleLazy 'scrooloose/nerdtree' " Tree explorer
-NeoBundleLazy 'jistr/vim-nerdtree-tabs' " Extend NERDTree to keep it across multiple tabs
-" NeoBundle     'tpope/vim-surround'
-" NeoBundle 'tpope/vim-repeat'
-NeoBundle 'spf13/vim-autoclose'
-" NeoBundle 'vim-scripts/sessionman.vim'
-
-NeoBundle 'kien/ctrlp.vim'
-NeoBundle 'tacahiroy/ctrlp-funky'
-
+" ## UI {{{
+" NeoBundle 'flazz/vim-colorschemes'
+NeoBundle 'nanotech/jellybeans.vim'
 if g:enable_powerline && has('python')
     NeoBundle 'Lokaltog/powerline'
 elseif g:enable_lightline
@@ -233,6 +249,27 @@ elseif g:enable_lightline
 elseif g:enable_airline
     NeoBundle 'bling/vim-airline', {'gui': 1, 'terminal': 0 } " Powerline replacement
 endif
+" }}}
+
+" ## Vim enhancements {{{
+NeoBundle 'matchit.zip'
+" NeoBundle 'osyo-manga/vim-anzu'
+" }}}
+
+
+
+" ## General {{{
+NeoBundleLazy 'scrooloose/nerdtree' " Tree explorer
+NeoBundleLazy 'jistr/vim-nerdtree-tabs' " Extend NERDTree to keep it across multiple tabs
+NeoBundle     'tpope/vim-surround'
+" NeoBundle 'tpope/vim-repeat'
+NeoBundle 'spf13/vim-autoclose'
+" NeoBundle 'vim-scripts/sessionman.vim'
+
+NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'tacahiroy/ctrlp-funky'
+
+
 if g:enable_easymotion
     NeoBundleLazy 'Lokaltog/vim-easymotion'
 endif
@@ -254,15 +291,7 @@ if g:enable_orgmode
     NeoBundle 'chrisbra/NrrwRgn'
 endif
 " }}}
-    " ## UI {{{
-    " NeoBundle 'flazz/vim-colorschemes'
-    NeoBundle 'nanotech/jellybeans.vim'
-    " }}}
 
-    " ## Vim enhancements {{{
-    NeoBundle 'matchit.zip'
-    " NeoBundle 'osyo-manga/vim-anzu'
-    " }}}
 
 " ## Development - General {{{
 NeoBundle 'scrooloose/syntastic' "Enhanced syntax checker, Required external programs (see https://github.com/scrooloose/syntastic)
@@ -273,14 +302,31 @@ NeoBundle 'tpope/vim-git' " Included are syntax, indent, and filetype plugin fil
 NeoBundle 'tpope/vim-fugitive' " Git
 NeoBundleLazy 'gregsexton/gitv', { 'depends': ['tpope/vim-fugitive'], 'autoload': { 'commands': ['Gitv'] } }
 NeoBundle 'scrooloose/nerdcommenter'
-NeoBundle 'godlygeek/tabular'
+NeoBundleLazy 'godlygeek/tabular', { 'autoload': { 'commands': ['Tabularize']} }
 "if executable('ctags')
-NeoBundle 'majutsushi/tagbar'
+NeoBundle 'majutsushi/tagbar', { 'autoload': { 'commands': ['TagbarToggle'] } }
 "endif
 " }}}
 
-    " ## Web development {{{
-    NeoBundleLazy 'mattn/emmet-vim' " HTML enhancements
+" ## Web development {{{
+" mattn/emmet-vim {{{ Html enhancements
+NeoBundleLazy 'mattn/emmet-vim',{
+        \   'autoload': {
+        \       'filetypes': [
+        \           'html',
+        \           'cshtml',
+        \           'xhttml',
+        \           'css',
+        \           'sass',
+        \           'scss',
+        \           'styl',
+        \           'xml',
+        \           'xls',
+        \           'markdown',
+        \           'htmldjango',
+        \       ]
+        \   },
+        \} " }}}
     NeoBundle 'gregsexton/MatchTag' "Highlight matching tags | may I use matchit.zip
     NeoBundle 'hail2u/vim-css3-syntax'
     NeoBundle 'groenewege/vim-less'
@@ -312,11 +358,8 @@ if 0
         if count(g:spf13_bundle_groups, 'general')
             Bundle 'altercation/vim-colors-solarized'
             Bundle 'spf13/vim-colors'
-            Bundle 'kien/ctrlp.vim'
-            Bundle 'tacahiroy/ctrlp-funky'
             Bundle 'terryma/vim-multiple-cursors'
 
-            Bundle 'bling/vim-bufferline'
             if !exists('g:spf13_no_views')
                 Bundle 'vim-scripts/restore_view.vim'
             endif
@@ -383,17 +426,6 @@ if 0
             Bundle 'amirh/HTML-AutoCloseTag'
         endif
     " }
-
-
-
-
-
-
-
-
-
-
-
 
     " Edit files using sudo/su
     Plugin 'chrisbra/SudoEdit.vim'
@@ -648,18 +680,6 @@ endif
 " ## Unite / Library {{{
 " #### Shougo/unite.vim {{{
 if neobundle#tap('unite.vim')
-    " Config {{{
-    call neobundle#config({
-                \ 'depends': ['Shougo/vimproc'],
-                \ 'autoload': {
-                \   'commands':[
-                \       { 'name': 'Unite', 'complete': 'customlist,unite#complete_source' },
-                \       'UniteWithCursorWord',
-                \       'UniteWithInput'
-                \   ]
-                \ }
-                \ }) "}}}
-
     function! neobundle#tapped.hooks.on_post_source(bundle)
         NeoBundleSource unite-action-vimfiler_lcd
     endfunction
@@ -790,22 +810,6 @@ endif
 " }}}
 " #### Vimshell {{{
 if neobundle#tap('vimshell.vim')
-    call neobundle#config({
-        \   'depends': ['Shougo/vimproc'],
-        \   'autoload' : {
-        \       'commands' : [
-        \       { 'name' : 'VimShell',
-        \         'complete' : 'customlist,vimshell#complete'},
-        \       { 'name' : 'VimShellTab',
-        \         'complete' : 'customlist,vimshell#complete'},
-        \       { 'name' : 'VimShellBufferDir',
-        \         'complete' : 'customlist,vimshell#complete'},
-        \       { 'name' : 'VimShellCreate',
-        \         'complete' : 'customlist,vimshell#complete'},
-        \         'VimShellExecute', 'VimShellInteractive',
-        \         'VimShellTerminal', 'VimShellPop'],
-        \   }
-        \ })
     function! neobundle#tapped.hooks.on_source(bundle)
         " Use current directory as vimshell prompt.
         let g:vimshell_prompt_expr =
@@ -820,48 +824,16 @@ endif
 " }}}
 
 " ## UI {{{
-
+" #### Powerline {{{
+if g:enable_powerline
+    " Always show the statusline
+    set laststatus=2
+    " No need to show mode
+    set noshowmode
+    execute 'set rtp+='.s:vimfiles_dir.'bundle/powerline/powerline/bindings/vim'
+endif
 " }}}
-
-" ## Vim enhancements {{{
-" #### ozyo-manga/vim-anzu {{{
-" if neobundle#tap('vim-anzu')
-"     "call neobundle#config({
-"     "            \ 'autoload' : {
-"     "            \   'mappings': ['<Plug>(anzu-']
-"     "            \}
-"     "            \ })
-"     nmap * <Plug>(anzu-star-with-echo);n
-"
-"     " Clear hit count when nokeyinput, move window, or move tab
-"     Autocmd CursorHold,CursorHoldI,WinLeave,TabLeave
-"                 \   * call anzu#clear_search_status()
-"     call neobundle#untap()
-" endif
-" }}}
-" }}}
-
-" ## Web development {{{
-" #### Javascript {{{
-" ###### 'osyo-manga/vim-precious' {{{
-let g:markdown_fenced_languages = [
-    \  'coffee',
-    \  'css',
-    \  'erb=eruby',
-    \  'javascript',
-    \  'js=javascript',
-    \  'json=javascript',
-    \  'ruby',
-    \  'sass',
-    \  'xml',
-    \  'python',
-    \  'vim',
-    \]
-" }}}
-" }}}
-" }}}
-
-" ## Lightline {{{
+" #### Lightline {{{
 if g:enable_lightline && neobundle#tap('lightline.vim')
     set laststatus=2
     set noshowmode
@@ -1018,6 +990,142 @@ if g:enable_lightline && neobundle#tap('lightline.vim')
     call neobundle#untap()
 endif
 " LightLine }}}
+" #### Airline {{{
+if g:enable_airline
+    " Always show the statusline
+    set laststatus=2
+    " No need to show mode
+    set noshowmode
+    let g:airline_powerline_fonts = 1
+    let g:airline#extensions#tabline#enabled = 1
+endif
+""}}}
+" }}}
+
+" ## Vim enhancements {{{
+" #### ozyo-manga/vim-anzu {{{
+" if neobundle#tap('vim-anzu')
+"     "call neobundle#config({
+"     "            \ 'autoload' : {
+"     "            \   'mappings': ['<Plug>(anzu-']
+"     "            \}
+"     "            \ })
+"     nmap * <Plug>(anzu-star-with-echo);n
+"
+"     " Clear hit count when nokeyinput, move window, or move tab
+"     Autocmd CursorHold,CursorHoldI,WinLeave,TabLeave
+"                 \   * call anzu#clear_search_status()
+"     call neobundle#untap()
+" endif
+" }}}
+" }}}
+
+" ## Development - General {{{
+" #### Signify {{{
+if g:enable_startify && neobundle#tap('vim-signify')
+    nnoremap <silent> <leader>gg :SignifyToggle<CR>
+    "nmap ]c <plug>(signify-next-hunk)
+    "nmap [c <plug>(signify-prev-hunk)
+    call neobundle#untap()
+endif
+" }}}
+" #### Fugitive {{{
+if neobundle#tap('vim-fugitive')
+"    call neobundle#config({
+"                \   'autoload': {
+"                \       'commands': [
+"                \           'Gstatus', 'Gcommit', 'Gwrite', 'Gdiff', 'Gblame', 'Git', 'Ggrep'
+"                \       ]
+"                \ }
+"                \ })
+"
+"    let s:bundle = neobundle#get('vim-fugitive')
+"    function! s:bundle.hooks.on_post_source(bundle)
+"        doautoall fugitive BufNewFile
+"    endfunction
+
+
+    call neobundle#untap()
+endif
+"if isdirectory(expand(s:vimfiles_dir."bundle/vim-fugitive/"))
+"    nnoremap <silent> <leader>gs :Gstatus<CR>
+"    nnoremap <silent> <leader>gd :Gdiff<CR>
+"    nnoremap <silent> <leader>gc :Gcommit<CR>
+"    nnoremap <silent> <leader>gb :Gblame<CR>
+"    nnoremap <silent> <leader>gl :Glog<CR>
+"    nnoremap <silent> <leader>gp :Git push<CR>
+"    nnoremap <silent> <leader>gr :Gread<CR>
+"    nnoremap <silent> <leader>gw :Gwrite<CR>
+"    nnoremap <silent> <leader>ge :Gedit<CR>
+"    " Mnemonic _i_nteractive
+"    nnoremap <silent> <leader>gi :Git add -p %<CR>
+"endif
+" end Fugitive }}}
+" #### godlygeek/tabular {{{
+nmap <Leader>a& :Tabularize /&<CR>
+vmap <Leader>a& :Tabularize /&<CR>
+nmap <Leader>a= :Tabularize /=<CR>
+vmap <Leader>a= :Tabularize /=<CR>
+nmap <Leader>a: :Tabularize /:<CR>
+vmap <Leader>a: :Tabularize /:<CR>
+nmap <Leader>a:: :Tabularize /:\zs<CR>
+vmap <Leader>a:: :Tabularize /:\zs<CR>
+nmap <Leader>a, :Tabularize /,<CR>
+vmap <Leader>a, :Tabularize /,<CR>
+nmap <Leader>a,, :Tabularize /,\zs<CR>
+vmap <Leader>a,, :Tabularize /,\zs<CR>
+nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+" }}}
+" #### Tagbar {{{
+if neobundle#tap('tagbar')
+    let g:tagbar_ctags_bin="C:/NoInstall_Programs/ctags58/ctags.exe"
+    map <F7> :TagbarToggle<CR>
+    let g:tagbar_iconchars = ['▷', '◢']
+    let g:tagbar_left = 1
+
+    "let g:tagbar_type_go = {
+    "            \ 'ctagstype' : 'go',
+    "            \ 'kinds'     : [  'p:package', 'i:imports:1', 'c:constants', 'v:variables',
+    "            \ 't:types',  'n:interfaces', 'w:fields', 'e:embedded', 'm:methods',
+    "            \ 'r:constructor', 'f:functions' ],
+    "            \ 'sro' : '.',
+    "            \ 'kind2scope' : { 't' : 'ctype', 'n' : 'ntype' },
+    "            \ 'scope2kind' : { 'ctype' : 't', 'ntype' : 'n' },
+    "            \ 'ctagsbin'  : 'gotags',
+    "            \ 'ctagsargs' : '-sort -silent'
+    "            \ }
+    call neobundle#untap()
+endif
+"}}}
+" }}}
+
+" ## Web development {{{
+" #### mattn/emmet-vim {{{
+if neobundle#tap('emmet-vim')
+    let g:user_emmet_leader_key='<Leader>y'
+    call neobundle#untap()
+endif
+" }}}
+" #### Javascript {{{
+" ###### 'osyo-manga/vim-precious' {{{
+let g:markdown_fenced_languages = [
+    \  'coffee',
+    \  'css',
+    \  'erb=eruby',
+    \  'javascript',
+    \  'js=javascript',
+    \  'json=javascript',
+    \  'ruby',
+    \  'sass',
+    \  'xml',
+    \  'python',
+    \  'vim',
+    \]
+" }}}
+" }}}
+" }}}
+
 
 " ## spf13/vim-autoclose {{{
 let g:autoclose_vim_commentmode = 1 "Do not close doublequote while editing vim files
@@ -1062,26 +1170,6 @@ if neobundle#tap('vim-nerdtree-tabs')
 endif
 " }}}
 
-" ## Airline {{{
-if g:enable_airline
-    " Always show the statusline
-    set laststatus=2
-    " No need to show mode
-    set noshowmode
-    let g:airline_powerline_fonts = 1
-    let g:airline#extensions#tabline#enabled = 1
-endif
-""}}}
-
-" ## Powerline {{{
-if g:enable_powerline
-    " Always show the statusline
-    set laststatus=2
-    " No need to show mode
-    set noshowmode
-    execute 'set rtp+='.s:vimfiles_dir.'bundle/powerline/powerline/bindings/vim'
-endif
-" }}}
 
 " ## indent_guides {{{
 if isdirectory(expand(GetBundleDir('vim-indent-guides')))
@@ -1101,22 +1189,6 @@ au FileType xhtml,xml ru ftplugin/html/autoclosetag.vim
 nmap <Leader>ac <Plug>ToggleAutoCloseMappings
 " }}}
 
-" ## Tabularize {{{
-nmap <Leader>a& :Tabularize /&<CR>
-vmap <Leader>a& :Tabularize /&<CR>
-nmap <Leader>a= :Tabularize /=<CR>
-vmap <Leader>a= :Tabularize /=<CR>
-nmap <Leader>a: :Tabularize /:<CR>
-vmap <Leader>a: :Tabularize /:<CR>
-nmap <Leader>a:: :Tabularize /:\zs<CR>
-vmap <Leader>a:: :Tabularize /:\zs<CR>
-nmap <Leader>a, :Tabularize /,<CR>
-vmap <Leader>a, :Tabularize /,<CR>
-nmap <Leader>a,, :Tabularize /,\zs<CR>
-vmap <Leader>a,, :Tabularize /,\zs<CR>
-nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
-vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
-" }}}
 
 " ## Ctags {{{
 set tags=./tags;/,~/.vimtags
@@ -1128,50 +1200,6 @@ if gitroot != ''
 endif
 " }}}
 
-" ## Tagbar {{{
-if isdirectory(expand(s:vimfiles_dir.'bundle/tagbar'))
-    let g:tagbar_ctags_bin="C:/NoInstall_Programs/ctags58/ctags.exe"
-    map <F7> :TagbarToggle<CR>
-    let g:tagbar_iconchars = ['▷', '◢']
-    let g:tagbar_left = 1
-
-    "let g:tagbar_type_go = {
-    "            \ 'ctagstype' : 'go',
-    "            \ 'kinds'     : [  'p:package', 'i:imports:1', 'c:constants', 'v:variables',
-    "            \ 't:types',  'n:interfaces', 'w:fields', 'e:embedded', 'm:methods',
-    "            \ 'r:constructor', 'f:functions' ],
-    "            \ 'sro' : '.',
-    "            \ 'kind2scope' : { 't' : 'ctype', 'n' : 'ntype' },
-    "            \ 'scope2kind' : { 'ctype' : 't', 'ntype' : 'n' },
-    "            \ 'ctagsbin'  : 'gotags',
-    "            \ 'ctagsargs' : '-sort -silent'
-    "            \ }
-endif
-"}}}
-
-" Emmet {{{
-if neobundle#tap('emmet-vim')
-    let g:user_emmet_leader_key='<Leader>y'
-    call neobundle#config({
-        \   'autoload': {
-        \       'filetypes': [
-        \           'html',
-        \           'cshtml',
-        \           'xhttml',
-        \           'css',
-        \           'sass',
-        \           'scss',
-        \           'styl',
-        \           'xml',
-        \           'xls',
-        \           'markdown',
-        \           'htmldjango',
-        \       ]
-        \   },
-        \})
-    call neobundle#untap()
-endif
-" }}}
 
 " ## vim-easymotion {{{
 if g:enable_easymotion && neobundle#tap('vim-easymotion')
@@ -1364,47 +1392,7 @@ if g:enable_easymotion && neobundle#tap('vim-easymotion')
 endif
 " easymotion }}}
 
-" ## Fugitive {{{
-if neobundle#tap('vim-fugitive')
-"    call neobundle#config({
-"                \   'autoload': {
-"                \       'commands': [
-"                \           'Gstatus', 'Gcommit', 'Gwrite', 'Gdiff', 'Gblame', 'Git', 'Ggrep'
-"                \       ]
-"                \ }
-"                \ })
-"
-"    let s:bundle = neobundle#get('vim-fugitive')
-"    function! s:bundle.hooks.on_post_source(bundle)
-"        doautoall fugitive BufNewFile
-"    endfunction
 
-
-    call neobundle#untap()
-endif
-"if isdirectory(expand(s:vimfiles_dir."bundle/vim-fugitive/"))
-"    nnoremap <silent> <leader>gs :Gstatus<CR>
-"    nnoremap <silent> <leader>gd :Gdiff<CR>
-"    nnoremap <silent> <leader>gc :Gcommit<CR>
-"    nnoremap <silent> <leader>gb :Gblame<CR>
-"    nnoremap <silent> <leader>gl :Glog<CR>
-"    nnoremap <silent> <leader>gp :Git push<CR>
-"    nnoremap <silent> <leader>gr :Gread<CR>
-"    nnoremap <silent> <leader>gw :Gwrite<CR>
-"    nnoremap <silent> <leader>ge :Gedit<CR>
-"    " Mnemonic _i_nteractive
-"    nnoremap <silent> <leader>gi :Git add -p %<CR>
-"endif
-" end Fugitive }}}
-
-" ## Signify {{{
-if g:enable_startify && neobundle#tap('vim-signify')
-    nnoremap <silent> <leader>gg :SignifyToggle<CR>
-    "nmap ]c <plug>(signify-next-hunk)
-    "nmap [c <plug>(signify-prev-hunk)
-    call neobundle#untap()
-endif
-" }}}
 
 " ## Startify {{{
 if g:enable_startify
