@@ -1,5 +1,4 @@
 " Switches {{{
-let g:beta_version         = 1
 let g:enable_easymotion    = 1
 let g:enable_powerline     = 0
 let g:enable_lightline     = 1
@@ -10,6 +9,7 @@ let g:enable_startify      = 1
 let g:enable_signify       = 1
 let g:enable_orgmode       = 1
 let g:enable_unite_group   = 1
+let g:enable_beta_textobj  = 1
 "}}}
 
 " Environment {{{
@@ -256,13 +256,125 @@ NeoBundle 'matchit.zip'
 " NeoBundle 'osyo-manga/vim-anzu'
 " }}}
 
+" ## Text objects {{{
+" Create custom test object (dependency)
+NeoBundleLazy 'kana/vim-textobj-user'
+" kana/vim-textobj-entire {{{
+" text objects to select entire buffer content
+" default ae;
+" ie -> without leading and trailing empty lines
+NeoBundleLazy 'kana/vim-textobj-entire', {
+            \ 'depends': 'kana/vim-textobj-user',
+            \ 'autoload': {
+            \       'mappings': [['xo', 'ae'], ['xo', 'ie']]
+            \    }
+            \} " }}}
+" kana/vim-textobj-fold {{{
+" text objects for folding (az, iz)
+NeoBundleLazy 'kana/vim-textobj-fold', {
+            \ 'depends': 'kana/vim-textobj-user',
+            \ 'autoload': {
+            \       'mappings': [['xo', 'az'], ['xo', 'iz']]
+            \ }
+            \} " }}}
+" kana/vim-textobj-indent {{{
+" Text objects for indented block of lines (ai, ii)
+NeoBundleLazy 'kana/vim-textobj-indent', {
+            \ 'depends': 'kana/vim-textobj-user',
+            \ 'autoload': {
+            \       'mappings': [['xo', 'ai'], ['xo', 'ii']]
+            \ }
+            \} " }}}
+" kana/vim-textobj-line {{{
+" Text objects for the current line (al, il)
+NeoBundleLazy 'kana/vim-textobj-line', {
+            \ 'depends': 'kana/vim-textobj-user',
+            \ 'autoload': {
+            \       'mappings': [['xo', 'ai'], ['xo', 'ii']]
+            \ }
+            \} " }}}
+" kana/vim-textobj-syntax {{{
+" Text objects for syntax highlighted items (ay, iy)
+NeoBundleLazy 'kana/vim-textobj-syntax', {
+            \ 'depends': 'kana/vim-textobj-user',
+            \ 'autoload': {
+            \       'mappings': [['xo', 'ay'], ['xo', 'iy']]
+            \ }
+            \} " }}}
+" NeoBundleLazy 'kana/vim-textobj-django-template'  " adb, idb
+" thinca/vim-textobj-between {{{
+" Text objects for a range between a character
+"       af{char} (including {char})
+"       if{char} (excluding {char})
+NeoBundleLazy 'thinca/vim-textobj-between', {
+            \ 'depends': 'kana/vim-textobj-user',
+            \ 'autoload': {
+            \       'mappings': [['xo', 'af'], ['xo', 'if'], ['xo', '<Plug>(textobj-between-']]
+            \ }
+            \} " }}}
+" mattn/vim-textobj-url {{{
+" au, iu
+NeoBundleLazy 'mattn/vim-textobj-url', {
+            \ 'depends': 'kana/vim-textobj-user',
+            \ 'autoload': {
+            \       'mappings': [['xo', 'au'], ['xo', 'iu']]
+            \ }
+            \} " }}}
+" NeoBundleLazy 'osyo-manga/vim-textobj-multiblock' " ab, ib
+" lucapette/vim-textobj-underscore {{{
+" https://github.com/lucapette/vim-textobj-underscore
+" a_, i_
+NeoBundleLazy 'lucapette/vim-textobj-underscore', {
+            \ 'depends': 'kana/vim-textobj-user',
+            \ 'autoload': {
+            \       'mappings': [['xo', 'a_'], ['xo', 'i_']]
+            \ }
+            \} " }}}
+" haya14busa/vim-textobj-number {{{
+ " an, in
+NeoBundleLazy 'haya14busa/vim-textobj-number', {
+            \ 'depends' : 'kana/vim-textobj-user',
+            \ 'autoload' : {
+            \       'mappings' : [['xo', 'an'], ['xo', 'in']]
+            \   }
+            \ } " }}}
+" NeoBundleLazy 'h1mesuke/textobj-wiw'              " a,w a,e
+
+NeoBundle 'wellle/targets.vim'
+" NeoBundle 'gcmt/wildfire.vim'
+
+" NeoBundle 'tpope/vim-repeat'
+" NeoBundle     'tpope/vim-surround'
+
+" Operator
+NeoBundleLazy 'kana/vim-operator-user' " dependency
+" kana/vim-operator-replace {{{
+NeoBundleLazy 'kana/vim-operator-replace', {
+            \ 'depends': 'kana/vim-operator-user',
+            \ 'autoload': {
+            \       'mappings': '<Plug>(operator-replace)'
+            \   }
+            \}
+" }}}
+" rhysd/vim-operator-surround {{{
+NeoBundleLazy 'rhysd/vim-operator-surround', {
+            \ 'depends': 'kana/vim-operator-user',
+            \ 'autoload': {
+            \       'mappings': [
+            \           '<Plug>(operator-surround-append)',
+            \           '<Plug>(operator-surround-delete)',
+            \           '<Plug>(operator-surround-replace)'
+            \       ]
+            \   }
+            \}
+" }}}
+" }}}
+
 
 
 " ## General {{{
 NeoBundleLazy 'scrooloose/nerdtree' " Tree explorer
 NeoBundleLazy 'jistr/vim-nerdtree-tabs' " Extend NERDTree to keep it across multiple tabs
-NeoBundle     'tpope/vim-surround'
-" NeoBundle 'tpope/vim-repeat'
 NeoBundle 'spf13/vim-autoclose'
 " NeoBundle 'vim-scripts/sessionman.vim'
 
@@ -1017,6 +1129,35 @@ endif
 "                 \   * call anzu#clear_search_status()
 "     call neobundle#untap()
 " endif
+" }}}
+" }}}
+
+" ## Text objects {{{
+" #### wellle/targets.vim {{{
+if neobundle#tap('targets.vim')
+    " Disable `n` , `l` , `A`
+    let g:targets_aiAI = 'ai I'
+    let g:targets_nlNL = '  NL'
+    call neobundle#untap()
+endif
+" }}}
+" #### kana/vim-operator-replace {{{
+if neobundle#tap('vim-operator-replace')
+    map ;R <Plug>(operator-replace)
+    call neobundle#untap()
+endif
+" }}}
+" #### rhysd/vim-operator-surround {{{
+if neobundle#tap('vim-operator-surround')
+    "test it...
+    map <silent>ys <Plug>(operator-surround-append)
+    map <silent>ds <Plug>(operator-surround-delete)
+    map <silent>cs <Plug>(operator-surround-replace)
+    nmap <silent>yss V<Plug>(operator-surround-append)
+    nmap <silent>dss V<Plug>(operator-surround-delete)
+    nmap <silent>css V<Plug>(operator-surround-replace)
+    call neobundle#untap()
+endif
 " }}}
 " }}}
 
