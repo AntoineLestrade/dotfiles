@@ -254,6 +254,22 @@ elseif g:enable_lightline
 elseif g:enable_airline
     NeoBundle 'bling/vim-airline', {'gui': 1, 'terminal': 0 } " Powerline replacement
 endif
+" scrooloose/nerdtree {{{
+NeoBundleLazy 'scrooloose/nerdtree', {
+            \ 'autoload': {
+            \       'commands': 'NERDTreeToggle',
+            \ }
+            \}
+" }}}
+" jistr/vim-nerdtree-tabs {{{
+"NeoBundleLazy 'jistr/vim-nerdtree-tabs', {
+"            \ 'depends': 'scrooloose/nerdtree',
+"            \ 'autoload': {
+"            \       'commands': ['NERDTreeToggle', 'NERDTreeFind', 'NERDTreeTabsToggle' ],
+"            \       'mappings': '<Plug>NERDTreeTabsToggle'
+"            \   }
+"            \ }
+" }}}
 " }}}
 
 " ## Vim enhancements {{{
@@ -295,7 +311,7 @@ NeoBundleLazy 'kana/vim-textobj-indent', {
 NeoBundleLazy 'kana/vim-textobj-line', {
             \ 'depends': 'kana/vim-textobj-user',
             \ 'autoload': {
-            \       'mappings': [['xo', 'ai'], ['xo', 'ii']]
+            \       'mappings': [['xo', 'al'], ['xo', 'il']]
             \ }
             \} " }}}
 " kana/vim-textobj-syntax {{{
@@ -377,8 +393,8 @@ NeoBundleLazy 'rhysd/vim-operator-surround', {
 
 
 
+
 " ## General {{{
-NeoBundleLazy 'scrooloose/nerdtree' " Tree explorer
 NeoBundleLazy 'jistr/vim-nerdtree-tabs' " Extend NERDTree to keep it across multiple tabs
 NeoBundle 'spf13/vim-autoclose'
 " NeoBundle 'vim-scripts/sessionman.vim'
@@ -1118,6 +1134,23 @@ if g:enable_airline
     let g:airline#extensions#tabline#enabled = 1
 endif
 ""}}}
+" #### scrooloose/nerdtree {{{
+" close vim if nerdtree is the unique opened buffer
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == 'primary') | q | endif
+let g:NERDTreeWinPos             = 'right'
+let g:NERDTreeShowBookmarks      = 1
+let g:NERDTreeShowHidden         = 1
+" let g:NERDTreeShowFiles        = 0
+" let g:NERDTreeIgnore             = ['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
+" let g:NERDTreeChDirMode          = 0
+" let g:NERDTreeQuitOnOpen         = 1
+" let g:NERDTreeMouseMode          = 2
+" let g:NERDTreeKeepTreeInNewTab   = 1
+" }}}
+nmap <F9> :NERDTreeToggle<CR>
+" #### jistr/vim-nerdtree-tabs {{{
+let g:nerdtree_tabs_open_on_gui_startup = 0
+" }}}
 " }}}
 
 " ## Vim enhancements {{{
@@ -1276,45 +1309,6 @@ let g:markdown_fenced_languages = [
 
 " ## spf13/vim-autoclose {{{
 let g:autoclose_vim_commentmode = 1 "Do not close doublequote while editing vim files
-" }}}
-
-" ## NERDTree {{{
-if neobundle#tap('nerdtree')
-    call neobundle#config({
-                \ 'autoload': {
-                \   'commands': ['NERDTreeToggle', 'NERDTreeFind', 'NERDTreeTabsToggle']
-                \ },
-                \ })
-
-    "close vim if nerdtree is the unique opened buffer
-    autocmd bufenter * if (winnr("$") == 1 && exists ("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-
-    let g:NERDTreeWinPos      = "right"
-    let NERDTreeShowBookmarks = 1
-    let NERDTreeShowHidden    = 1
-    "let NERDTreeShowFiles     = 0
-
-    " let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
-    " let NERDTreeChDirMode=0
-    " let NERDTreeQuitOnOpen=1
-    " let NERDTreeMouseMode=2
-    " let NERDTreeKeepTreeInNewTab=1
-
-    let g:nerdtree_tabs_open_on_gui_startup = 0
-    call neobundle#untap()
-endif
-" }}}
-
-" ## vim-nerdtree-tabs {{{
-if neobundle#tap('vim-nerdtree-tabs')
-    call neobundle#config({
-                \ 'autoload': {
-                \   'commands': ['NERDTreeToggle', 'NERDTreeFind', 'NERDTreeTabsToggle']
-                \ },
-                \ })
-    map <F9> <plug>NERDTreeTabsToggle<CR>
-    call neobundle#untap()
-endif
 " }}}
 
 
