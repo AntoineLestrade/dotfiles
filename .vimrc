@@ -8,7 +8,6 @@ let g:use_mswin_vim        = 1
 let g:enable_startify      = 1
 let g:enable_signify       = 1
 let g:enable_orgmode       = 1
-let g:enable_unite_group   = 1
 let g:enable_beta_textobj  = 1
 "}}}
 
@@ -201,7 +200,6 @@ function! s:load_bundles() " {{{
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 " ## Unite / Library {{{
-if g:enable_unite_group
 NeoBundleLazy 'Shougo/unite.vim', {
                 \ 'depends': ['Shougo/vimproc'],
                 \ 'autoload': {
@@ -234,7 +232,14 @@ NeoBundleLazy 'Shougo/vimshell.vim', {
         \         'VimShellTerminal', 'VimShellPop'],
         \   }
         \ }
-endif
+" vim-quickrun/quickrun {{{
+"   vim-precious dependency
+NeoBundleLazy 'thinca/vim-quickrun'
+" }}}
+" Shougo/context_filetype.vim {{{
+"   -> vim-precious dependency
+NeoBundleLazy 'Shougo/context_filetype.vim'
+" }}}
 " }}}
 
 " ## UI {{{
@@ -446,6 +451,7 @@ NeoBundleLazy 'mattn/emmet-vim',{
     NeoBundle 'tpope/vim-haml'
     " #### Javascript {{{
     NeoBundleLazy 'osyo-manga/vim-precious', {
+                \   'depends': ['thinca/vim-quickrun', 'kana/vim-textobj-user', 'Shougo/context_filetype.vim'],
                 \   'autoload': {
                 \       'filetypes': ['javascript', 'html' ]
                 \   }
