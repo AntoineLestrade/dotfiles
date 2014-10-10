@@ -210,6 +210,13 @@ NeoBundleLazy 'Shougo/unite.vim', {
                 \   ]
                 \ }
                 \ }
+" #### Shougo/unite-outline {{{
+NeoBundleLazy 'Shougo/unite-outline', {
+            \   'autoload': {
+            \       'unite_sources': [ 'outline' ]
+            \   }
+            \ }
+" }}}
 NeoBundle 'Shougo/vimproc',  { 'build': {
     \   'windows': 'mingw32-make -f make_mingw32.mak',
     \   'cygwin': 'make -f make_cygwin.mak',
@@ -975,6 +982,12 @@ if neobundle#tap('unite.vim')
     "}}}
     "}}}
 
+    call neobundle#untap()
+endif
+" }}}
+" #### Shougo/unite-outline {{{
+if neobundle#tap('unite-outline')
+    let g:unite_source_outline_ctags_program = 'c:/NoInstall_Programs/ctags58/ctags.exe'
     call neobundle#untap()
 endif
 " }}}
