@@ -1,5 +1,4 @@
 " Switches {{{
-let g:enable_easymotion    = 1
 let g:enable_powerline     = 0
 let g:enable_lightline     = 1
 let g:enable_airline       = 0
@@ -206,7 +205,8 @@ NeoBundleLazy 'Shougo/unite.vim', {
                 \   'commands':[
                 \       { 'name': 'Unite', 'complete': 'customlist,unite#complete_source' },
                 \       'UniteWithCursorWord',
-                \       'UniteWithInput'
+                \       'UniteWithInput',
+                \       'UniteWithBufferDir'
                 \   ]
                 \ }
                 \ }
@@ -245,6 +245,7 @@ NeoBundleLazy 'Shougo/context_filetype.vim'
 " ## UI {{{
 " NeoBundle 'flazz/vim-colorschemes'
 NeoBundle 'nanotech/jellybeans.vim'
+" #### bling/vim-airline {{{
 if g:enable_powerline && has('python')
     NeoBundle 'Lokaltog/powerline'
 elseif g:enable_lightline
@@ -254,14 +255,20 @@ elseif g:enable_lightline
 elseif g:enable_airline
     NeoBundle 'bling/vim-airline', {'gui': 1, 'terminal': 0 } " Powerline replacement
 endif
-" scrooloose/nerdtree {{{
+" }}}
+" NeoBundle 'nathanaelkane/vim-indent-guides'
+NeoBundle 'Yggdroot/indentLine'
+" }}}
+
+" ## File management {{{{
+" #### scrooloose/nerdtree {{{
 NeoBundleLazy 'scrooloose/nerdtree', {
             \ 'autoload': {
             \       'commands': 'NERDTreeToggle',
             \ }
             \}
 " }}}
-" jistr/vim-nerdtree-tabs {{{
+" #### jistr/vim-nerdtree-tabs {{{
 "NeoBundleLazy 'jistr/vim-nerdtree-tabs', {
 "            \ 'depends': 'scrooloose/nerdtree',
 "            \ 'autoload': {
@@ -270,12 +277,56 @@ NeoBundleLazy 'scrooloose/nerdtree', {
 "            \   }
 "            \ }
 " }}}
+" #### kien/ctrlp.vim {{{
+NeoBundleLazy 'kien/ctrlp.vim', {
+            \ 'autoload': {
+            \       'commands': ['CtrlP']
+            \   }
+            \ }
+" }}}
+" #### tacahiroy/ctrlp-funky {{{
+NeoBundleLazy 'tacahiroy/ctrlp-funky', {
+            \ 'depends': 'kien/ctrlp.vim',
+            \ 'autoload': {
+            \       'commands': 'CtrlPFunky'
+            \   }
+            \ }
+" }}}
 " }}}
 
 " ## Vim enhancements {{{
 NeoBundle 'matchit.zip'
 " NeoBundle 'osyo-manga/vim-anzu'
 " }}}
+
+    " ## Motion {{{
+    " #### Lokaltog/vim-easymotion {{{
+    NeoBundleLazy 'Lokaltog/vim-easymotion', {
+                \ 'autoload' : {
+                \       'mappings' : [['sxno', '<Plug>(easymotion-']],
+                \       'functions' : [
+                \              'EasyMotion#User',
+                \               'EasyMotion#JK',
+                \               'EasyMotion#is_active',
+                \       ],
+                \   }
+                \ }
+    " }}}
+    " #### rhysd/clever-f.vim {{{
+    NeoBundleLazy 'rhysd/clever-f.vim', {
+                \   'autoload': {
+                \           'mappings': [['sxno', '<Plug>(clever-f-']]
+                \   }
+                \ }
+    " }}}
+    " #### rhysd/accelerated-jk {{{
+    NeoBundleLazy 'rhysd/accelerated-jk', {
+                \ 'autoload': {
+                \       'mappings': [['sxno', '<Plug>(accelerated_jk_']]
+                \       }
+                \ }
+    " }}}
+    " }}}
 
 " ## Text objects {{{
 " Create custom test object (dependency)
@@ -391,24 +442,14 @@ NeoBundleLazy 'rhysd/vim-operator-surround', {
 " }}}
 " }}}
 
-
-
+" ## General / Text edition {{{
+NeoBundle 'Townk/vim-autoclose' " replace by 'spf13/vim-autoclose' ?
+" }}}
 
 " ## General {{{
-NeoBundleLazy 'jistr/vim-nerdtree-tabs' " Extend NERDTree to keep it across multiple tabs
-NeoBundle 'spf13/vim-autoclose'
 " NeoBundle 'vim-scripts/sessionman.vim'
 
-NeoBundle 'kien/ctrlp.vim'
-NeoBundle 'tacahiroy/ctrlp-funky'
-
-
-if g:enable_easymotion
-    NeoBundleLazy 'Lokaltog/vim-easymotion'
-endif
-
 NeoBundleLazy 'mbbill/undotree'
-NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'vim-scripts/Conque-Shell' "Shell integration
 NeoBundle 'vim-scripts/DirDiff.vim' " Perform recursive diff on two directories http://www.vim.org/scripts/script.php?script_id=102
 NeoBundle 'dterei/VimBookmarking' "Default keymapping: <F3> :ToggleBookmark; <F4> :PreviousBookmark; <F5> :NextBookmark
@@ -790,8 +831,6 @@ endif
 "}}}
 
 " Colorscheme {{{======================
-" Check color
-" :so $VIMRUNTIME/syntax/colortest.vim
 if has('vim_starting')
     "syntax enable
     syntax on
@@ -809,7 +848,7 @@ if has('vim_starting')
 endif
 "}}}
 
-" Plugins configuration {{{=============
+" Plugins configuration {{{============
 
 " ## Unite / Library {{{
 " #### Shougo/unite.vim {{{
@@ -891,8 +930,8 @@ if neobundle#tap('unite.vim')
     " Unite {{{
     nnoremap [unite] <Nop>
     xnoremap [unite] <Nop>
-    nmap ; [unite]
-    xmap ; [unite]
+    nmap \ [unite]
+    xmap \ [unite]
 
     " Source
     nnoremap <silent> [unite]u :<C-u>Unite source -vertical -silent -start-insert<CR>
@@ -1134,22 +1173,95 @@ if g:enable_airline
     let g:airline#extensions#tabline#enabled = 1
 endif
 ""}}}
-" #### scrooloose/nerdtree {{{
-" close vim if nerdtree is the unique opened buffer
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == 'primary') | q | endif
-let g:NERDTreeWinPos             = 'right'
-let g:NERDTreeShowBookmarks      = 1
-let g:NERDTreeShowHidden         = 1
-" let g:NERDTreeShowFiles        = 0
-" let g:NERDTreeIgnore             = ['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
-" let g:NERDTreeChDirMode          = 0
-" let g:NERDTreeQuitOnOpen         = 1
-" let g:NERDTreeMouseMode          = 2
-" let g:NERDTreeKeepTreeInNewTab   = 1
+" #### nathanaelkane/vim-indent-guides {{{
+if neobundle#tap('vim-indent-guides')
+    let g:indent_guides_start_level           = 2
+    let g:indent_guides_guide_size            = 1
+    let g:indent_guides_enable_on_vim_startup = 1
+    call neobundle#untap()
+endif
 " }}}
-nmap <F9> :NERDTreeToggle<CR>
+" #### Yggdroot/indentLine {{{
+if neobundle#tap('indentLine')
+    let g:indentLine_color_term = 239
+    function! neobundle#tapped.hooks.on_source(bundle)
+        autocmd InsertEnter * IndentLinesDisable
+        autocmd InsertLeave * IndentLinesEnable
+    endfunction
+    call neobundle#untap()
+endif
+" }}}
+" }}}
+
+" ## File Management {{{
+" #### scrooloose/nerdtree {{{
+if neobundle#tap('nerdtree')
+    function! neobundle#tapped.hooks.on_source(bundle) " {{{
+        " close vim if nerdtree is the unique opened buffer
+        autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == 'primary') | q | endif
+        let g:NERDTreeWinPos             = 'right'
+        let g:NERDTreeShowBookmarks      = 1
+        let g:NERDTreeShowHidden         = 1
+        " let g:NERDTreeShowFiles        = 0
+        " let g:NERDTreeIgnore             = ['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
+        " let g:NERDTreeChDirMode          = 0
+        " let g:NERDTreeQuitOnOpen         = 1
+        " let g:NERDTreeMouseMode          = 2
+        " let g:NERDTreeKeepTreeInNewTab   = 1
+    endfunction " }}}
+    nmap <F9> :NERDTreeToggle<CR>
+    call neobundle#untap()
+endif
+" }}}
 " #### jistr/vim-nerdtree-tabs {{{
 let g:nerdtree_tabs_open_on_gui_startup = 0
+" }}}
+" #### kien/ctrlp.vim {{{
+if neobundle#tap('ctrlp.vim')
+    function! neobundle#tapped.hooks.on_source(bundle) " {{{
+        let g:ctrlp_working_path_mode = 'ra'
+        let g:ctrlp_custom_ignore = {
+                    \ 'dir':  '\.git$\|\.hg$\|\.svn$',
+                    \ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$' }
+
+        " On Windows use "dir" as fallback command.
+        if WINDOWS()
+            let s:ctrlp_fallback = 'dir %s /-n /b /s /a-d'
+        elseif executable('ag')
+            let s:ctrlp_fallback = 'ag %s --nocolor -l -g ""'
+        elseif executable('ack-grep')
+            let s:ctrlp_fallback = 'ack-grep %s --nocolor -f'
+        elseif executable('ack')
+            let s:ctrlp_fallback = 'ack %s --nocolor -f'
+        else
+            let s:ctrlp_fallback = 'find %s -type f'
+        endif
+        let g:ctrlp_user_command = {
+                    \ 'types': {
+                    \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
+                    \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+                    \ },
+                    \ 'fallback': s:ctrlp_fallback
+                    \ }
+        " CtrlP - don't recalculate files on start (slow)
+        " let g:ctrlp_clear_cache_on_exit = 0
+    endfunction " }}}
+
+    nnoremap <silent> <D-t> :CtrlP<CR>
+    nnoremap <silent> <D-r> :CtrlPMRU<CR>
+
+    call neobundle#untap()
+endif
+" }}}
+" #### tacahiroy/ctrlp-funky {{{
+if neobundle#tap('ctrlp-funky')
+    " CtrlP extensions
+    let g:ctrlp_extensions = ['funky']
+
+    "funky
+    nnoremap <Leader>fu :CtrlPFunky<Cr>
+    call neobundle#untap()
+endif
 " }}}
 " }}}
 
@@ -1171,189 +1283,9 @@ let g:nerdtree_tabs_open_on_gui_startup = 0
 " }}}
 " }}}
 
-" ## Text objects {{{
-" #### wellle/targets.vim {{{
-if neobundle#tap('targets.vim')
-    " Disable `n` , `l` , `A`
-    let g:targets_aiAI = 'ai I'
-    let g:targets_nlNL = '  NL'
-    call neobundle#untap()
-endif
-" }}}
-" #### kana/vim-operator-replace {{{
-if neobundle#tap('vim-operator-replace')
-    map ;R <Plug>(operator-replace)
-    call neobundle#untap()
-endif
-" }}}
-" #### rhysd/vim-operator-surround {{{
-if neobundle#tap('vim-operator-surround')
-    "test it...
-    map <silent>ys <Plug>(operator-surround-append)
-    map <silent>ds <Plug>(operator-surround-delete)
-    map <silent>cs <Plug>(operator-surround-replace)
-    nmap <silent>yss V<Plug>(operator-surround-append)
-    nmap <silent>dss V<Plug>(operator-surround-delete)
-    nmap <silent>css V<Plug>(operator-surround-replace)
-    call neobundle#untap()
-endif
-" }}}
-" }}}
-
-" ## Development - General {{{
-" #### Signify {{{
-if g:enable_startify && neobundle#tap('vim-signify')
-    nnoremap <silent> <leader>gg :SignifyToggle<CR>
-    "nmap ]c <plug>(signify-next-hunk)
-    "nmap [c <plug>(signify-prev-hunk)
-    call neobundle#untap()
-endif
-" }}}
-" #### Fugitive {{{
-if neobundle#tap('vim-fugitive')
-"    call neobundle#config({
-"                \   'autoload': {
-"                \       'commands': [
-"                \           'Gstatus', 'Gcommit', 'Gwrite', 'Gdiff', 'Gblame', 'Git', 'Ggrep'
-"                \       ]
-"                \ }
-"                \ })
-"
-"    let s:bundle = neobundle#get('vim-fugitive')
-"    function! s:bundle.hooks.on_post_source(bundle)
-"        doautoall fugitive BufNewFile
-"    endfunction
-
-
-    call neobundle#untap()
-endif
-"if isdirectory(expand(s:vimfiles_dir."bundle/vim-fugitive/"))
-"    nnoremap <silent> <leader>gs :Gstatus<CR>
-"    nnoremap <silent> <leader>gd :Gdiff<CR>
-"    nnoremap <silent> <leader>gc :Gcommit<CR>
-"    nnoremap <silent> <leader>gb :Gblame<CR>
-"    nnoremap <silent> <leader>gl :Glog<CR>
-"    nnoremap <silent> <leader>gp :Git push<CR>
-"    nnoremap <silent> <leader>gr :Gread<CR>
-"    nnoremap <silent> <leader>gw :Gwrite<CR>
-"    nnoremap <silent> <leader>ge :Gedit<CR>
-"    " Mnemonic _i_nteractive
-"    nnoremap <silent> <leader>gi :Git add -p %<CR>
-"endif
-" end Fugitive }}}
-" #### godlygeek/tabular {{{
-nmap <Leader>a& :Tabularize /&<CR>
-vmap <Leader>a& :Tabularize /&<CR>
-nmap <Leader>a= :Tabularize /=<CR>
-vmap <Leader>a= :Tabularize /=<CR>
-nmap <Leader>a: :Tabularize /:<CR>
-vmap <Leader>a: :Tabularize /:<CR>
-nmap <Leader>a:: :Tabularize /:\zs<CR>
-vmap <Leader>a:: :Tabularize /:\zs<CR>
-nmap <Leader>a, :Tabularize /,<CR>
-vmap <Leader>a, :Tabularize /,<CR>
-nmap <Leader>a,, :Tabularize /,\zs<CR>
-vmap <Leader>a,, :Tabularize /,\zs<CR>
-nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
-vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
-" }}}
-" #### Tagbar {{{
-if neobundle#tap('tagbar')
-    let g:tagbar_ctags_bin="C:/NoInstall_Programs/ctags58/ctags.exe"
-    map <F7> :TagbarToggle<CR>
-    let g:tagbar_iconchars = ['▷', '◢']
-    let g:tagbar_left = 1
-
-    "let g:tagbar_type_go = {
-    "            \ 'ctagstype' : 'go',
-    "            \ 'kinds'     : [  'p:package', 'i:imports:1', 'c:constants', 'v:variables',
-    "            \ 't:types',  'n:interfaces', 'w:fields', 'e:embedded', 'm:methods',
-    "            \ 'r:constructor', 'f:functions' ],
-    "            \ 'sro' : '.',
-    "            \ 'kind2scope' : { 't' : 'ctype', 'n' : 'ntype' },
-    "            \ 'scope2kind' : { 'ctype' : 't', 'ntype' : 'n' },
-    "            \ 'ctagsbin'  : 'gotags',
-    "            \ 'ctagsargs' : '-sort -silent'
-    "            \ }
-    call neobundle#untap()
-endif
-"}}}
-" }}}
-
-" ## Web development {{{
-" #### mattn/emmet-vim {{{
-if neobundle#tap('emmet-vim')
-    let g:user_emmet_leader_key='<Leader>y'
-    call neobundle#untap()
-endif
-" }}}
-" #### Javascript {{{
-" ###### 'osyo-manga/vim-precious' {{{
-let g:markdown_fenced_languages = [
-    \  'coffee',
-    \  'css',
-    \  'erb=eruby',
-    \  'javascript',
-    \  'js=javascript',
-    \  'json=javascript',
-    \  'ruby',
-    \  'sass',
-    \  'xml',
-    \  'python',
-    \  'vim',
-    \]
-" }}}
-" }}}
-" }}}
-
-
-" ## spf13/vim-autoclose {{{
-let g:autoclose_vim_commentmode = 1 "Do not close doublequote while editing vim files
-" }}}
-
-
-" ## indent_guides {{{
-if isdirectory(expand(GetBundleDir('vim-indent-guides')))
-    let g:indent_guides_start_level = 2
-    let g:indent_guides_guide_size = 1
-    let g:indent_guides_enable_on_vim_startup = 1
-endif
-" }}}
-
-" ## Conque-Shell {{{
-map ² :ConqueTermSplit powershell.exe<CR>
-" }}}
-
-" ## AutoCloseTag {{{
-" Make it so AutoCloseTag works for xml and xhtml files as well
-au FileType xhtml,xml ru ftplugin/html/autoclosetag.vim
-nmap <Leader>ac <Plug>ToggleAutoCloseMappings
-" }}}
-
-
-" ## Ctags {{{
-set tags=./tags;/,~/.vimtags
-
-" Make tags placed in .git/tags file available in all levels of a repository
-let gitroot = substitute(system('git rev-parse --show-toplevel'), '[\n\r]', '', 'g')
-if gitroot != ''
-    let &tags = &tags . ',' . gitroot . '/.git/tags'
-endif
-" }}}
-
-
-" ## vim-easymotion {{{
-if g:enable_easymotion && neobundle#tap('vim-easymotion')
-    call neobundle#config({
-        \   'autoload' : {
-        \     'mappings' : [['sxno', '<Plug>(easymotion-']],
-        \     'functions' : [
-        \       'EasyMotion#User',
-        \       'EasyMotion#JK',
-        \       'EasyMotion#is_active',
-        \     ],
-        \   }
-        \ })
+" ## Motion {{{
+" #### Lokaltog/vim-easymotion {{{
+if neobundle#tap('vim-easymotion')
     " map  ; <Plug>(easymotion-prefix)
     " omap ; <Plug>(easymotion-prefix)
     " vmap ; <Plug>(easymotion-prefix)
@@ -1532,6 +1464,192 @@ if g:enable_easymotion && neobundle#tap('vim-easymotion')
     call neobundle#untap()
 endif
 " easymotion }}}
+" #### rhysd/clever-f.vim {{{
+if neobundle#tap('clever-f.vim')
+    function! neobundle#tapped.hooks.on_source(bundle) " {{{
+        let g:clever_f_not_overwrites_standard_mappings = 1
+        let g:clever_f_smart_case                       = 1
+        let g:clever_f_accrossno_line                   = 1
+    endfunction " }}}
+    nmap f <Plug>(clever-f-f)
+    nmap F <Plug>(clever-f-F)
+    call neobundle#untap()
+endif
+" }}}
+" #### rhysd/accelerated-jk {{{
+if neobundle#tap('accelerated-jk')
+    function! neobundle#tapped.hooks.on_source(bunle) "{{{
+        let g:accelerated_jk_acceleration_table=[7,52,57]
+    endfunction " }}}
+    nmap j <Plug>(accelerated_jk_gj)
+    nmap k <Plug>(accelerated_jk_gk)
+    call neobundle#untap()
+endif
+" }}}
+" }}}
+
+" ## Text objects {{{
+" #### wellle/targets.vim {{{
+if neobundle#tap('targets.vim')
+    " Disable `n` , `l` , `A`
+    let g:targets_aiAI = 'ai I'
+    let g:targets_nlNL = '  NL'
+    call neobundle#untap()
+endif
+" }}}
+" #### kana/vim-operator-replace {{{
+if neobundle#tap('vim-operator-replace')
+    map ;R <Plug>(operator-replace)
+    call neobundle#untap()
+endif
+" }}}
+" #### rhysd/vim-operator-surround {{{
+if neobundle#tap('vim-operator-surround')
+    "test it...
+    map <silent>ys <Plug>(operator-surround-append)
+    map <silent>ds <Plug>(operator-surround-delete)
+    map <silent>cs <Plug>(operator-surround-replace)
+    nmap <silent>yss V<Plug>(operator-surround-append)
+    nmap <silent>dss V<Plug>(operator-surround-delete)
+    nmap <silent>css V<Plug>(operator-surround-replace)
+    call neobundle#untap()
+endif
+" }}}
+" }}}
+
+" ## Development - General {{{
+" #### Signify {{{
+if g:enable_startify && neobundle#tap('vim-signify')
+    nnoremap <silent> <leader>gg :SignifyToggle<CR>
+    "nmap ]c <plug>(signify-next-hunk)
+    "nmap [c <plug>(signify-prev-hunk)
+    call neobundle#untap()
+endif
+" }}}
+" #### Fugitive {{{
+if neobundle#tap('vim-fugitive')
+"    call neobundle#config({
+"                \   'autoload': {
+"                \       'commands': [
+"                \           'Gstatus', 'Gcommit', 'Gwrite', 'Gdiff', 'Gblame', 'Git', 'Ggrep'
+"                \       ]
+"                \ }
+"                \ })
+"
+"    let s:bundle = neobundle#get('vim-fugitive')
+"    function! s:bundle.hooks.on_post_source(bundle)
+"        doautoall fugitive BufNewFile
+"    endfunction
+
+
+    call neobundle#untap()
+endif
+"if isdirectory(expand(s:vimfiles_dir."bundle/vim-fugitive/"))
+"    nnoremap <silent> <leader>gs :Gstatus<CR>
+"    nnoremap <silent> <leader>gd :Gdiff<CR>
+"    nnoremap <silent> <leader>gc :Gcommit<CR>
+"    nnoremap <silent> <leader>gb :Gblame<CR>
+"    nnoremap <silent> <leader>gl :Glog<CR>
+"    nnoremap <silent> <leader>gp :Git push<CR>
+"    nnoremap <silent> <leader>gr :Gread<CR>
+"    nnoremap <silent> <leader>gw :Gwrite<CR>
+"    nnoremap <silent> <leader>ge :Gedit<CR>
+"    " Mnemonic _i_nteractive
+"    nnoremap <silent> <leader>gi :Git add -p %<CR>
+"endif
+" end Fugitive }}}
+" #### godlygeek/tabular {{{
+nmap <Leader>a& :Tabularize /&<CR>
+vmap <Leader>a& :Tabularize /&<CR>
+nmap <Leader>a= :Tabularize /=<CR>
+vmap <Leader>a= :Tabularize /=<CR>
+nmap <Leader>a: :Tabularize /:<CR>
+vmap <Leader>a: :Tabularize /:<CR>
+nmap <Leader>a:: :Tabularize /:\zs<CR>
+vmap <Leader>a:: :Tabularize /:\zs<CR>
+nmap <Leader>a, :Tabularize /,<CR>
+vmap <Leader>a, :Tabularize /,<CR>
+nmap <Leader>a,, :Tabularize /,\zs<CR>
+vmap <Leader>a,, :Tabularize /,\zs<CR>
+nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+" }}}
+" #### Tagbar {{{
+if neobundle#tap('tagbar')
+    let g:tagbar_ctags_bin="C:/NoInstall_Programs/ctags58/ctags.exe"
+    map <F7> :TagbarToggle<CR>
+    let g:tagbar_iconchars = ['▷', '◢']
+    let g:tagbar_left = 1
+
+    "let g:tagbar_type_go = {
+    "            \ 'ctagstype' : 'go',
+    "            \ 'kinds'     : [  'p:package', 'i:imports:1', 'c:constants', 'v:variables',
+    "            \ 't:types',  'n:interfaces', 'w:fields', 'e:embedded', 'm:methods',
+    "            \ 'r:constructor', 'f:functions' ],
+    "            \ 'sro' : '.',
+    "            \ 'kind2scope' : { 't' : 'ctype', 'n' : 'ntype' },
+    "            \ 'scope2kind' : { 'ctype' : 't', 'ntype' : 'n' },
+    "            \ 'ctagsbin'  : 'gotags',
+    "            \ 'ctagsargs' : '-sort -silent'
+    "            \ }
+    call neobundle#untap()
+endif
+"}}}
+" }}}
+
+" ## Web development {{{
+" #### mattn/emmet-vim {{{
+if neobundle#tap('emmet-vim')
+    let g:user_emmet_leader_key='<Leader>y'
+    call neobundle#untap()
+endif
+" }}}
+" #### Javascript {{{
+" ###### 'osyo-manga/vim-precious' {{{
+let g:markdown_fenced_languages = [
+    \  'coffee',
+    \  'css',
+    \  'erb=eruby',
+    \  'javascript',
+    \  'js=javascript',
+    \  'json=javascript',
+    \  'ruby',
+    \  'sass',
+    \  'xml',
+    \  'python',
+    \  'vim',
+    \]
+" }}}
+" }}}
+" }}}
+
+
+" ## spf13/vim-autoclose {{{
+let g:autoclose_vim_commentmode = 1 "Do not close doublequote while editing vim files
+" }}}
+
+
+" ## Conque-Shell {{{
+map ² :ConqueTermSplit powershell.exe<CR>
+" }}}
+
+" ## AutoCloseTag {{{
+" Make it so AutoCloseTag works for xml and xhtml files as well
+au FileType xhtml,xml ru ftplugin/html/autoclosetag.vim
+nmap <Leader>ac <Plug>ToggleAutoCloseMappings
+" }}}
+
+
+" ## Ctags {{{
+set tags=./tags;/,~/.vimtags
+
+" Make tags placed in .git/tags file available in all levels of a repository
+let gitroot = substitute(system('git rev-parse --show-toplevel'), '[\n\r]', '', 'g')
+if gitroot != ''
+    let &tags = &tags . ',' . gitroot . '/.git/tags'
+endif
+" }}}
+
 
 
 
@@ -1573,54 +1691,6 @@ if g:enable_orgmode && neobundle#tap('VimOrganizer')
     call neobundle#untap()
 endif
 " }}}
-
-" ## ctrlp {{{
-" if isdirectory(expand("~/.vim/bundle/ctrlp.vim/"))
-if neobundle#tap('ctrlp.vim')
-    let g:ctrlp_working_path_mode = 'ra'
-    nnoremap <silent> <D-t> :CtrlP<CR>
-    nnoremap <silent> <D-r> :CtrlPMRU<CR>
-    let g:ctrlp_custom_ignore = {
-                \ 'dir':  '\.git$\|\.hg$\|\.svn$',
-                \ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$' }
-
-    " On Windows use "dir" as fallback command.
-    if WINDOWS()
-        let s:ctrlp_fallback = 'dir %s /-n /b /s /a-d'
-    elseif executable('ag')
-        let s:ctrlp_fallback = 'ag %s --nocolor -l -g ""'
-    elseif executable('ack-grep')
-        let s:ctrlp_fallback = 'ack-grep %s --nocolor -f'
-    elseif executable('ack')
-        let s:ctrlp_fallback = 'ack %s --nocolor -f'
-    else
-        let s:ctrlp_fallback = 'find %s -type f'
-    endif
-    let g:ctrlp_user_command = {
-                \ 'types': {
-                \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
-                \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-                \ },
-                \ 'fallback': s:ctrlp_fallback
-                \ }
-
-
-    " CtrlP - don't recalculate files on start (slow)
-    let g:ctrlp_clear_cache_on_exit = 0
-    let g:ctrlp_working_path_mode = 'ra'
-
-    call neobundle#untap()
-endif
-
-if neobundle#tap('ctrlp-funky')
-    " CtrlP extensions
-    let g:ctrlp_extensions = ['funky']
-
-    "funky
-    nnoremap <Leader>fu :CtrlPFunky<Cr>
-    call neobundle#untap()
-endif
-" end ctrlp }}}
 " end Plugins }}}
 
 " Initialize directories {{{===========
@@ -1653,8 +1723,7 @@ endfunction
 call InitializeDirectories()
 " }}}
 
-
-" Finally {{{ =========================
+" Finally {{{==========================
 
 if filereadable($HOME.'/_vimrc.last')
     source $HOME/_vimrc.last
