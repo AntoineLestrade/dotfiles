@@ -693,7 +693,8 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 
     " ## MS Technologies dev {{{
     NeoBundle 'PProvost/vim-ps1'
-    NeoBundle 'OrangeT/vim-csharp' " CSharp enhancements (including razor syntax, compilation)
+    " Disabled: Some problems opening several files (no filetype applied.
+    "NeoBundle 'OrangeT/vim-csharp' " CSharp enhancements (including razor syntax, compilation)
     " }}}
 
     " ## Misc {{{
@@ -2361,6 +2362,7 @@ if g:enable_orgmode && neobundle#tap('VimOrganizer')
     call neobundle#untap()
 endif
 " }}}
+
 " end Plugins }}}
 
 " Initialize directories {{{===========
