@@ -514,7 +514,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
                 \ } " }}}
     " NeoBundleLazy 'h1mesuke/textobj-wiw'              " a,w a,e
 
-    NeoBundle 'wellle/targets.vim'
+    " NeoBundle 'wellle/targets.vim'
     " NeoBundle 'gcmt/wildfire.vim'
 
     " NeoBundle 'tpope/vim-repeat'
@@ -568,6 +568,11 @@ NeoBundleFetch 'Shougo/neobundle.vim'
                 \       }
                 \ }
     " }}}
+    " #### thinca/vim-ft-help_fold {{{
+    NeoBundleLazy 'thinca/vim-ft-help_fold', {
+                \   'filetypes': 'help'
+                \ }
+    " }}}
     " }}}
 
     " ## Development - General {{{
@@ -607,25 +612,27 @@ NeoBundleFetch 'Shougo/neobundle.vim'
     "       [count]<Leader>cb       NERDComAlignedComment
     "       [count]<Leader>cu       NERDComUncommentLine
     "       }}}
-    NeoBundleLazy 'scrooloose/nerdcommenter' , {
-                \   'autoload': {
-                \       'commands': [
-                \           'NERDComComment',
-                \           'NERDComNestedComment',
-                \           'NERDComToggleComment',
-                \           'NERDComMinimalComment',
-                \           'NERDComInvertComment',
-                \           'NERDComSexyComment',
-                \           'NERDComYankComment',
-                \           'NERDComEOLComment',
-                \           'NERDComAppendComment',
-                \           'NERDComInsertComment',
-                \           'NERDComAltDelim',
-                \           'NERDComAlignedComment',
-                \           'NERDComUncommentLine'
-                \       ]
-                \   }
-                \ }
+    " ERROR: Lazy loading doesn't work :(
+    NeoBundle 'scrooloose/nerdcommenter'
+    "NeoBundleLazy 'scrooloose/nerdcommenter' , {
+    "            \   'autoload': {
+    "            \       'commands': [
+    "            \           'NERDComComment',
+    "            \           'NERDComNestedComment',
+    "            \           'NERDComToggleComment',
+    "            \           'NERDComMinimalComment',
+    "            \           'NERDComInvertComment',
+    "            \           'NERDComSexyComment',
+    "            \           'NERDComYankComment',
+    "            \           'NERDComEOLComment',
+    "            \           'NERDComAppendComment',
+    "            \           'NERDComInsertComment',
+    "            \           'NERDComAltDelim',
+    "            \           'NERDComAlignedComment',
+    "            \           'NERDComUncommentLine'
+    "            \       ]
+    "            \   }
+    "            \ }
     " }}}
     " #### godlygeek/tabular {{{
     NeoBundleLazy 'godlygeek/tabular', {
@@ -645,7 +652,6 @@ NeoBundleFetch 'Shougo/neobundle.vim'
             \   'autoload': {
             \       'filetypes': [
             \           'html',
-            \           'cshtml',
             \           'xhttml',
             \           'css',
             \           'sass',
@@ -661,13 +667,15 @@ NeoBundleFetch 'Shougo/neobundle.vim'
     " }}}
     " #### gregsexton/MatchTag {{{
     " Highlight matching tags | may I use matchit.zip
-    NeoBundleLazy 'gregsexton/MatchTag', {
-                \   'autoload': {
-                \       'filetypes': [
-                \           'html', 'cshtml', 'xml'
-                \       ]
-                \   }
-                \ }
+    " Disabled: Some problems opening several files (no filetype applied.
+    "NeoBundleLazy 'gregsexton/MatchTag', {
+    "            \   'autoload': {
+    "            \       'filetypes': [
+    "            \           'html', 'xml'
+    "            \       ]
+    "            \   }
+    "            \ }
+    NeoBundle 'gregsexton/MatchTag'
     " }}}
     " #### CSS {{{
     " TODO: 3 syntax plugins: lazy load?
@@ -677,24 +685,25 @@ NeoBundleFetch 'Shougo/neobundle.vim'
     " }}}
     "NeoBundle 'tpope/vim-haml' HAML syntax
     " #### Javascript {{{
-    NeoBundleLazy 'osyo-manga/vim-precious', {
-                \   'depends': ['thinca/vim-quickrun', 'kana/vim-textobj-user', 'Shougo/context_filetype.vim'],
-                \   'autoload': {
-                \       'filetypes': ['javascript', 'html' ]
-                \   }
-                \ }
+    " Disabled: really useful?
+    "NeoBundleLazy 'osyo-manga/vim-precious', {
+                "\   'depends': ['thinca/vim-quickrun', 'kana/vim-textobj-user', 'Shougo/context_filetype.vim'],
+                "\   'autoload': {
+                "\       'filetypes': ['javascript', 'html' ]
+                "\   }
+                "\ }
     NeoBundleLazy 'pangloss/vim-javascript', {
                 \   'autoload': {
-                \       'filetypes': ['javascript', 'html' ]
+                \       'filetypes': ['javascript', 'html', 'cshtml', 'cshtml.html' ]
                 \   }
                 \ }
     " }}}
+    NeoBundle 'pangloss/vim-javascript'
     " }}}
 
     " ## MS Technologies dev {{{
     NeoBundle 'PProvost/vim-ps1'
-    " Disabled: Some problems opening several files (no filetype applied.
-    "NeoBundle 'OrangeT/vim-csharp' " CSharp enhancements (including razor syntax, compilation)
+    NeoBundle 'OrangeT/vim-csharp' " CSharp enhancements (including razor syntax, compilation)
     " }}}
 
     " ## Misc {{{
@@ -703,15 +712,17 @@ NeoBundleFetch 'Shougo/neobundle.vim'
     " }}}
     " #### dterei/VimBookmarking {{{
     " Default keymapping: <F3> :ToggleBookmark; <F4> :PreviousBookmark; <F5> :NextBookmark
-    NeoBundleLazy 'dterei/VimBookmarking', {
-                \   'autoload': {
-                \       'commands': [
-                \           'ToggleBookmark',
-                \           'NextBookmark',
-                \           'PreviousBookmark',
-                \       ]
-                \   }
-                \ }
+    " Error: Lazy loading doesn't work :(
+    NeoBundle 'dterei/VimBookmarking'
+    "NeoBundleLazy 'dterei/VimBookmarking', {
+    "            \   'autoload': {
+    "            \       'commands': [
+    "            \           'ToggleBookmark',
+    "            \           'NextBookmark',
+    "            \           'PreviousBookmark',
+    "            \       ]
+    "            \   }
+    "            \ }
     " }}}
     if g:enable_startify
         NeoBundle 'mhinz/vim-startify'
@@ -785,8 +796,6 @@ if 0
     NeoBundle 'matchit.zip'
     " Yank
     NeoBundleLazy 'LeafCage/yankround.vim'
-    " Undo
-    NeoBundleLazy 'sjl/gundo.vim'
     " Visual mode
     NeoBundleLazy 'kana/vim-niceblock'
     " Search
@@ -963,14 +972,10 @@ if 0
     " Vim script {{{
     NeoBundle 'mattn/learn-vimscript'
     NeoBundleLazy 'thinca/vim-prettyprint'
-    NeoBundleLazy 'tyru/capture.vim' " Show Ex command output in buffer
     NeoBundleLazy 'kana/vim-vspec' " Vim plugin: Testing framework for Vim script
     NeoBundleLazy 'thinca/vim-themis'
     NeoBundleLazy 'thinca/vim-editvar' " Edits vim variable in buffer.
     NeoBundleLazy 'tyru/restart.vim' " Restart your gVim
-    NeoBundleLazy 'thinca/vim-ft-help_fold', {
-        \ 'filetypes' : 'help'
-        \ }
     NeoBundleLazy 'syngan/vim-vimlint', {
         \ 'depends' : 'ynkdir/vim-vimlparser'}
     "}}}
@@ -1078,15 +1083,6 @@ if 0
     " <Tab> everything!
     Plugin 'ervandew/supertab'
 
-    " Super easy commenting, toggle comments etc
-    Plugin 'scrooloose/nerdcommenter'
-
-    " Autoclose (, " etc
-    Plugin 'Townk/vim-autoclose'
-
-    " Handle surround chars like ''
-    Plugin 'tpope/vim-surround'
-
     " Align your = etc.
     Plugin 'vim-scripts/Align'
 
@@ -1095,18 +1091,6 @@ if 0
     Plugin 'tomtom/tlib_vim'
     Plugin 'honza/vim-snippets'
     Plugin 'garbas/vim-snipmate'
-
-    " A fancy start screen, shows MRU etc.
-    Plugin 'mhinz/vim-startify'
-
-    " Awesome syntax checker.
-    " REQUIREMENTS: See :h syntastic-intro
-    Plugin 'scrooloose/syntastic'
-
-    " Functions, class data etc.
-    " REQUIREMENTS: (exuberant)-ctags
-    Plugin 'majutsushi/tagbar'
-
 endif
 "}}}
 
@@ -1457,11 +1441,9 @@ endif
 AutocmdFT vim set foldmethod=marker
 AutocmdFT less set foldmethod=marker foldmarker={,}
 
-Autocmd BufNewFile,BufRead *.cshtml set filetype=cshtml
 AutocmdFT cs set foldmethod=marker
 AutocmdFT cs set foldmarker={,}
 AutocmdFT cs set foldtext=substitute(getline(v:foldstart),'{.*','{...}',)
-AutocmdFT cs set foldlevelstart=2
 " }}}
 
 " GVim Settings {{{====================
@@ -1685,9 +1667,16 @@ if neobundle#tap('context_filetype.vim')
                 \       { 'start': '<script\%( [^>]*\)\? type="text/javascript"\%( [^>]*\)\?>', 'end': '</script>', 'filetype': 'javascript' },
                 \       { 'start': '<script\%( [^>]*\)\? type="text/coffeescript"\%( [^>]*\)\?>', 'end':   '</script>', 'filetype': 'coffee' },
                 \       { 'start': '<style\%( [^>]*\)\? type="text/css"\%( [^>]*\)\?>', 'end':   '</style>', 'filetype': 'css' }
+                \   ],
+                \   'cshtml.html': [
+                \       { 'start': '<script>', 'end': '</script>', 'filetype': 'javascript' },
+                \       { 'start': '<script\%( [^>]*\)charset="[^\"]*"\%( [^>]*\)\?>', 'end': '</script>', 'filetype': 'javascript' },
+                \       { 'start': '<script\%( [^>]*\)\? type="text/javascript"\%( [^>]*\)\?>', 'end': '</script>', 'filetype': 'javascript' },
+                \       { 'start': '<script\%( [^>]*\)\? type="text/coffeescript"\%( [^>]*\)\?>', 'end':   '</script>', 'filetype': 'coffee' },
+                \       { 'start': '<style\%( [^>]*\)\? type="text/css"\%( [^>]*\)\?>', 'end':   '</style>', 'filetype': 'css' }
                 \   ]
                 \ }
-    let g:context_filetype#seatrch_offset = 100
+    let g:context_filetype#search_offset = 100
     call neobundle#untap()
 endif
 " }}}
@@ -2334,6 +2323,12 @@ map ² :ConqueTermSplit cmd.exe<CR>
 "map ² :ConqueTermSplit powershell.exe<CR>
 " }}}
 " #### dterei/VimBookmarking {{{
+if neobundle#tap('VimBookmarking')
+    function! neobundle#tapped.hooks.on_source(bundle) " {{{
+        echo 'sourced'
+    endfunction " }}}
+    call neobundle#untap()
+endif
 map <silent> <F3> :ToggleBookmark<CR>
 map <silent> <F5> :NextBookmark<CR>
 map <silent> <F4> :PreviousBookmark<CR>
