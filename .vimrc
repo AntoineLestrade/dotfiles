@@ -1454,8 +1454,14 @@ endif
 "}}}
 
 " Filetypes {{{========================
-AutocmdFT vim setlocal foldmethod=marker
-AutocmdFT less setlocal foldmethod=marker foldmarker={,}
+AutocmdFT vim set foldmethod=marker
+AutocmdFT less set foldmethod=marker foldmarker={,}
+
+Autocmd BufNewFile,BufRead *.cshtml set filetype=cshtml
+AutocmdFT cs set foldmethod=marker
+AutocmdFT cs set foldmarker={,}
+AutocmdFT cs set foldtext=substitute(getline(v:foldstart),'{.*','{...}',)
+AutocmdFT cs set foldlevelstart=2
 " }}}
 
 " GVim Settings {{{====================
@@ -1667,6 +1673,21 @@ if neobundle#tap('vimshell.vim')
        " let g:vimshell_right_prompt = 'vcs#info("(%s)-[%b]%p", "(%s)-[%b|%a]%p")'
     endfunction
 
+    call neobundle#untap()
+endif
+" }}}
+" #### Shougo/context_filetype.vim {{{
+if neobundle#tap('context_filetype.vim')
+    let g:context_filetype#filetypes = {
+                \   'html': [
+                \       { 'start': '<script>', 'end': '</script>', 'filetype': 'javascript' },
+                \       { 'start': '<script\%( [^>]*\)charset="[^\"]*"\%( [^>]*\)\?>', 'end': '</script>', 'filetype': 'javascript' },
+                \       { 'start': '<script\%( [^>]*\)\? type="text/javascript"\%( [^>]*\)\?>', 'end': '</script>', 'filetype': 'javascript' },
+                \       { 'start': '<script\%( [^>]*\)\? type="text/coffeescript"\%( [^>]*\)\?>', 'end':   '</script>', 'filetype': 'coffee' },
+                \       { 'start': '<style\%( [^>]*\)\? type="text/css"\%( [^>]*\)\?>', 'end':   '</style>', 'filetype': 'css' }
+                \   ]
+                \ }
+    let g:context_filetype#seatrch_offset = 100
     call neobundle#untap()
 endif
 " }}}
@@ -2285,6 +2306,7 @@ endif
 " }}}
 " #### Javascript {{{
 " ###### 'osyo-manga/vim-precious' {{{
+if neobundle#tap('vim-precious')
 let g:markdown_fenced_languages = [
     \  'coffee',
     \  'css',
@@ -2298,6 +2320,10 @@ let g:markdown_fenced_languages = [
     \  'python',
     \  'vim',
     \]
+    "let g:precious_enable_switch_CursorMoved = { '*': 0 }
+    "let g:precious_enable_switch_CursorMoved_i = { '*': 0 }
+    call neobundle#untap()
+endif
 " }}}
 " }}}
 " }}}
