@@ -2,7 +2,7 @@
 	name = Antoine Lestrade
 	email = alestrade@alten.be
 [diff]
-	tool = vimdiff
+	tool = gvimdiff
 [alias]
 	d = difftool
 	prettylog = log --pretty=oneline --graph --all --decorate --abbrev-commit

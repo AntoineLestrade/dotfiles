@@ -333,11 +333,11 @@ NeoBundleFetch 'Shougo/neobundle.vim'
     " }}}
     " vim-quickrun/quickrun {{{
     "   vim-precious dependency
-    NeoBundleLazy 'thinca/vim-quickrun'
+    "NeoBundleLazy 'thinca/vim-quickrun'
     " }}}
     " Shougo/context_filetype.vim {{{
     "   -> vim-precious dependency
-    NeoBundleLazy 'Shougo/context_filetype.vim'
+    "NeoBundleLazy 'Shougo/context_filetype.vim'
     " }}}
     " }}}
 
@@ -545,7 +545,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
     " }}}
 
     " ## General / Text edition {{{
-    NeoBundle 'Townk/vim-autoclose' " replace by 'spf13/vim-autoclose' ?
+    "NeoBundle 'Townk/vim-autoclose' " replace by 'spf13/vim-autoclose' ?
     " }}}
 
     " ## Vim scripts {{{
@@ -579,7 +579,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
     " #### scrooloose/syntastic {{{
     " Enhanced syntax checker, Required external programs (see https://github.com/scrooloose/syntastic)
     " TODO: Lazy loading?
-    NeoBundle 'scrooloose/syntastic'
+    "NeoBundle 'scrooloose/syntastic'
     " }}}
     " #### mhinz/vim-signify {{{
     " TODO: lazy loading?
