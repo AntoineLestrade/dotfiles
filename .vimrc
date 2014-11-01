@@ -8,6 +8,7 @@ let g:enable_orgmode       = 1
 let g:enable_beta_textobj  = 1
 let g:echo_startup_time    = 1
 let g:autoreload_vimrc     = 0
+let g:enable_git           = 1
 "}}}
 " Startup {{{=========================
 " Release autogroup in MyVimrc {{{
@@ -584,19 +585,23 @@ NeoBundleFetch 'Shougo/neobundle.vim'
     " #### mhinz/vim-signify {{{
     " TODO: lazy loading?
     if g:enable_signify
-        NeoBundle 'mhinz/vim-signify'
+        NeoBundle 'mhinz/vim-signify', { 'disabled' : (!g:enable_signify || !g:enable_git) }
     endif
     " }}}
-    NeoBundle 'tpope/vim-git' " Included are syntax, indent, and filetype plugin files for git, gitcommit, gitconfig, gitrebase, and gitsendemail
+    " #### tpope/vim-git {{{
+    " Included are syntax, indent, and filetype plugin files for git, gitcommit, gitconfig, gitrebase, and gitsendemail
+    NeoBundle 'tpope/vim-git', { 'disabled': (!g:enable_git) }
+    " }}}
     " #### tpope/vim-fugitive {{{
-    NeoBundle 'tpope/vim-fugitive'
+    NeoBundle 'tpope/vim-fugitive', { 'disabled': (!g:enable_git) }
     " }}}
     " #### gregsexton/gitv {{{
     NeoBundleLazy 'gregsexton/gitv', {
                 \   'depends': ['tpope/vim-fugitive'],
                 \   'autoload': {
                 \       'commands': ['Gitv']
-                \   }
+                \   },
+                \   'disabled': (!g:enable_git)
                 \ }
     " }}}
     " #### scrooloose/nerdcommenter {{{
@@ -643,6 +648,9 @@ NeoBundleFetch 'Shougo/neobundle.vim'
     " }}}
     " #### majutsushi/tagbar {{{
     NeoBundleLazy 'majutsushi/tagbar', { 'autoload': { 'commands': ['TagbarToggle'] } }
+    " }}}
+    " #### rust-lang/rust {{{
+    NeoBundle 'rust-lang/rust', { 'rtp': 'src/etc/vim' }
     " }}}
     " }}}
 
@@ -739,7 +747,6 @@ if g:enable_orgmode
     NeoBundle 'chrisbra/NrrwRgn'
 endif
 " }}}
-
 
 endfunction " }}}
 """" TOTEST  {{{
@@ -2284,6 +2291,12 @@ if neobundle#tap('tagbar')
     call neobundle#untap()
 endif
 "}}}
+" #### rust-lang/rust {{{
+if neobundle#tap('rust')
+    let g:rust_fold = 1
+    call neobundle#untap()
+endif
+" }}}
 " }}}
 
 " ## Web development {{{
@@ -2347,12 +2360,14 @@ nmap <Leader>ac <Plug>ToggleAutoCloseMappings
 
 
 " ## Ctags {{{
+if 0
 set tags=./tags;/,~/.vimtags
 
 " Make tags placed in .git/tags file available in all levels of a repository
 let gitroot = substitute(system('git rev-parse --show-toplevel'), '[\n\r]', '', 'g')
 if gitroot != ''
     let &tags = &tags . ',' . gitroot . '/.git/tags'
+endif
 endif
 " }}}
 
@@ -2436,6 +2451,7 @@ unlet g:enable_orgmode
 unlet g:enable_beta_textobj
 unlet g:echo_startup_time
 unlet g:autoreload_vimrc
+unlet g:enable_git
 "}}}
 
 set secure
