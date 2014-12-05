@@ -347,8 +347,8 @@ NeoBundleFetch 'Shougo/neobundle.vim'
     NeoBundle 'nanotech/jellybeans.vim'
     NeoBundle 'itchyny/lightline.vim'
     NeoBundle 'bling/vim-bufferline'
-    " NeoBundle 'nathanaelkane/vim-indent-guides'
-    NeoBundle 'Yggdroot/indentLine'
+    NeoBundle 'nathanaelkane/vim-indent-guides'
+    "NeoBundle 'Yggdroot/indentLine'
     " }}}
 
     " ## File management {{{
