@@ -2,8 +2,8 @@ redmine_url_begin = https://code.alten.be/redmine/projects/
 redmine_url_end = /issues
 
 ;opera_path = "C:\Program Files (x86)\Opera\launcher.exe"
-;browser_path = "C:\Program Files (x86)\Mozilla Firefox\firefox.exe"
-browser_path = "C:\Program Files (x86)\Opera Developer\launcher.exe"
+browser_path = "C:\Program Files (x86)\Mozilla Firefox\firefox.exe"
+;browser_path = "C:\Program Files (x86)\Opera Developer\launcher.exe"
 code_home = C:\code\
 conemu_exe = "C:\Program Files\Far Manager\ConEmu64.exe"
 
@@ -28,7 +28,7 @@ conemu_exe = "C:\Program Files\Far Manager\ConEmu64.exe"
 return
 
 #+p::
-	Gui, Add, DropDownList, vProject, Mercedes_Wips|Oda|Mercedes_BER|Mercedes_LOS
+	Gui, Add, DropDownList, vProject, Mercedes_Wips|Oda|Mercedes_BER|Mercedes_LOS|CNOA
 	Gui, Add, Button, default, OK
 	Gui, Add, Button,,Cancel
 	Gui, Show,, Choose project
@@ -66,27 +66,36 @@ ButtonOK:
 			sol_name     := project_name . ".sln"
 			local_url    := "http://mercedes-los.local"
 			break
+		Case-CNOA:
+			project_name := "cnoa-liste-unique"
+			code_path    := code_home . "Ordre des Architectes\" . project_name
+			redmine_name := "liste-unique"
+			sol_name     := project_name . ".sln"
+			local_url    := "http://cnoa-liste-unique.local"
 		}
 		;MsgBox, %code_path%\%sol_name%
-		Run, %code_path%\%sol_name%
+		Gui, Destroy
+        Run, %code_path%\%sol_name%
 		Run, %browser_path% %redmine_url_begin%%redmine_name%%redmine_url_end%
 		Run, %browser_path% %local_url%
 		Run, %conemu_exe% /Dir "%code_path%" /NoUpdate /cmd {cmd (Admin)}, Max, conemu_id
-		Run, gvim.exe, code_path, Max, gvim_id
+		Run, gvim.exe, %code_path%, Max, gvim_id
 		WinWait, ahk_pid %gvim_id%
 		SendInput `;vf
 		WinActivate, ahk_pid conemu_id
 		WinWaitActive, ahk_pid %conemu_id%
 		SendInput, git fetch && git prettylog{Enter}
 	}
-	else
-		MsgBox Project not found %Project%
+	else {
+        Gui, Destroy
+		MsgBox, 8208, Project not found, The project %Project% has not been configured yet
+		; MsgBox Project not found %Project%
+    }
 	; Clean all
-	Gui, Destroy
 	; ExitApp
 GuiEscape:
 GuiClose:
 ButtonCancel:
 	Gui, Destroy
-	
+
 return

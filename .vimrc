@@ -584,9 +584,12 @@ NeoBundleFetch 'Shougo/neobundle.vim'
     " }}}
     " #### mhinz/vim-signify {{{
     " TODO: lazy loading?
-    if g:enable_signify
-        NeoBundle 'mhinz/vim-signify', { 'disabled' : (!g:enable_signify || !g:enable_git) }
-    endif
+    "if g:enable_signify
+        "NeoBundle 'mhinz/vim-signify', { 'disabled' : (!g:enable_signify || !g:enable_git) }
+    "endif
+    " }}}
+    " #### airblade/vim-gitgutter {{{
+    NeoBundle 'airblade/vim-gitgutter'
     " }}}
     " #### tpope/vim-git {{{
     " Included are syntax, indent, and filetype plugin files for git, gitcommit, gitconfig, gitrebase, and gitsendemail
@@ -1131,6 +1134,9 @@ set scrolloff=3                " Lines above/below cursor
 set splitright                 " Puts new vsplit windows to the right of the current
 set splitbelow                 " Puts new split windows to the bottom of the current
 set virtualedit=block          " Allow virtual editing in Visual block mode
+"}}}
+" ## Global options {{{
+setglobal bomb
 "}}}
 
 " ## cursorline {{{
