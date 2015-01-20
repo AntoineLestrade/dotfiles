@@ -13,3 +13,4 @@
 	prompt = false
 [core]
 	autocrlf = false
+	editor = 'vim.exe'
