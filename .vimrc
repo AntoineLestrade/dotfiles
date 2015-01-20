@@ -1820,7 +1820,11 @@ if neobundle#tap('lightline.vim')
     endfunction " }}}
 
     function! MyFileencoding() " {{{
-        return winwidth('.') > 80 ? (strlen(&fenc) ? &fenc : &enc) : ''
+        let baseenc = strlen(&fenc) ? &fenc : &enc
+        if(&bomb)
+            let baseenc = baseenc . ' BOM'
+        endif
+        return winwidth('.') >= 80 ? baseenc : ''
     endfunction " }}}
 
     function! MyFiletype() " {{{
