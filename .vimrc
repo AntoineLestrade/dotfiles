@@ -7,7 +7,7 @@ let g:enable_signify       = 1
 let g:enable_orgmode       = 1
 let g:enable_beta_textobj  = 1
 let g:echo_startup_time    = 1
-let g:autoreload_vimrc     = 0
+let g:autoreload_vimrc     = 1
 let g:enable_git           = 1
 "}}}
 " Startup {{{=========================
@@ -346,6 +346,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
     " NeoBundle 'flazz/vim-colorschemes'
     NeoBundle 'nanotech/jellybeans.vim'
     NeoBundle 'itchyny/lightline.vim'
+    "NeoBundle 'bling/vim-airline'
     NeoBundle 'bling/vim-bufferline'
     NeoBundle 'nathanaelkane/vim-indent-guides'
     "NeoBundle 'Yggdroot/indentLine'
@@ -751,6 +752,13 @@ if g:enable_orgmode
 endif
 " }}}
 
+    " ## Beta {{{
+    if g:enable_beta
+        NeoBundle 'itchyny/calendar.vim'
+        NeoBundle 'Wombat'
+    endif
+    " }}}
+
 endfunction " }}}
 """" TOTEST  {{{
 if 0
@@ -859,9 +867,7 @@ if 0
     "}}}
 
     " Git {{{
-    NeoBundle 'tpope/vim-fugitive'
     NeoBundleLazy 'cohama/agit.vim'
-    NeoBundle 'mhinz/vim-signify'
 
     NeoBundleLazy 'thinca/vim-openbuf'
     NeoBundleLazy 'Shougo/vim-vcs', {
@@ -873,15 +879,8 @@ if 0
     "}}}
 
     " UI {{{
-    NeoBundle 'itchyny/lightline.vim'
-    NeoBundle 'Yggdroot/indentLine'
     NeoBundleLazy 'osyo-manga/vim-brightest'
     NeoBundleLazy 't9md/vim-quickhl' " quickly highlight <cword> or visually selected word
-    NeoBundleLazy 'mattn/disableitalic-vim'
-    "TODO
-    NeoBundleLazy 'osyo-manga/vim-automatic', {
-        \ 'depends' : [ 'osyo-manga/vim-gift', 'osyo-manga/vim-reunions' ] }
-    " }}}
 
     " Utility {{{
     " NeoBundle 'kana/vim-submode' " Vim plugin: Create your own submodes
@@ -897,37 +896,18 @@ if 0
 
     " Application {{{
     NeoBundleLazy 'itchyny/calendar.vim' " A calendar application for Vim
-    NeoBundleLazy 'itchyny/screensaver.vim'
     "}}}
 
     " Memo {{{
-    NeoBundleLazy 'mattn/gist-vim'
     NeoBundleLazy 'Shougo/junkfile.vim' " Create temporary file for memo, testing, ...
     "}}}
 
     " Filetype {{{
-    NeoBundleLazy 'osyo-manga/vim-precious'
-    let g:markdown_fenced_languages = [
-    \  'coffee',
-    \  'css',
-    \  'erb=eruby',
-    \  'javascript',
-    \  'js=javascript',
-    \  'json=javascript',
-    \  'ruby',
-    \  'sass',
-    \  'xml',
-    \  'python',
-    \  'vim',
-    \]
-    NeoBundle 'pangloss/vim-javascript'
     NeoBundle 'wavded/vim-stylus'
-    NeoBundle 'hail2u/vim-css3-syntax'
     NeoBundle 'kchmck/vim-coffee-script'
     NeoBundle 'othree/html5.vim'
     NeoBundle 'plasticboy/vim-markdown'
     NeoBundleLazy 'kannokanno/previm'
-    NeoBundle 'groenewege/vim-less'
 
     " Python {{{
     NeoBundleLazy 'davidhalter/jedi-vim'
@@ -957,26 +937,15 @@ if 0
     "}}}
 
     " Fold {{{
-    NeoBundle 'LeafCage/foldCC'
     NeoBundleLazy 'tmhedberg/SimpylFold' "for Python
     NeoBundleLazy 'vim-scripts/CSS-one-line--multi-line-folding'
     "}}}
 
     " ColorScheme {{{
-    NeoBundle 'tomasr/molokai'
-    NeoBundle 'sickill/vim-monokai'
-    NeoBundle 'vim-scripts/Wombat'
     NeoBundle 'altercation/vim-colors-solarized'
-    NeoBundle 'nanotech/jellybeans.vim'
-    NeoBundle 'w0ng/vim-hybrid'
     NeoBundle 'vim-scripts/twilight'
     NeoBundle 'jonathanfilip/vim-lucius'
-    NeoBundle 'jpo/vim-railscasts-theme'
-    NeoBundle 'vim-scripts/rdark'
-    NeoBundle 'djjcast/mirodark'
-    NeoBundle 'sjl/badwolf'
     NeoBundle 'cocopon/iceberg.vim' " A dark color scheme for Vim, came from Antarctica
-    NeoBundle 'reedes/vim-colors-pencil'
     "}}}
 
     " Vim script {{{
@@ -1696,15 +1665,6 @@ endif
 " }}}
 
 " ## UI {{{
-" #### Powerline {{{
-"if g:enable_powerline
-    "" Always show the statusline
-    "set laststatus=2
-    "" No need to show mode
-    "set noshowmode
-    "execute 'set rtp+='.s:vimfiles_dir.'bundle/powerline/powerline/bindings/vim'
-"endif
-" }}}
 " #### Lightline {{{ TO CHECK
 if neobundle#tap('lightline.vim')
     set laststatus=2
@@ -1716,7 +1676,7 @@ if neobundle#tap('lightline.vim')
                 \ 'active': {
                 \     'left': [
                 \         ['mode', 'paste'],
-                \         ['readonly', 'fugitive'],
+                \         ['git_changes', 'readonly', 'fugitive'],
                 \         ['ctrlpmark', 'bufferline']
                 \     ],
                 \     'right': [
@@ -1730,6 +1690,7 @@ if neobundle#tap('lightline.vim')
                 \ },
                 \ 'component_function': {
                 \     'mode'         : 'MyMode',
+                \     'git_changes'  : 'GitGutterStatus',
                 \     'fugitive'     : 'MyFugitive',
                 \     'readonly'     : 'MyReadonly',
                 \     'ctrlpmark'    : 'CtrlPMark',
@@ -1770,12 +1731,27 @@ if neobundle#tap('lightline.vim')
                     \ winwidth('.') > 60 ? lightline#mode() : ''
     endfunction " }}}
 
+    function! GitGutterStatus() " {{{
+        let hunks = GitGutterGetHunkSummary()
+        let symbols = ['+', ' ~', ' -']
+        if empty(hunks) || !exists('*fugitive#head') || !strlen(fugitive#head())
+            return ''
+        else
+            let res = ''
+            for i in [0, 1, 2]
+                let res .= symbols[i] . hunks[i]
+            endfor
+            return res
+        endif
+    endfunction " }}}
+
     function! MyFugitive() " {{{
         try
             if expand('%:t') !~? 'Tagbar' && exists('*fugitive#head')
-                let mark = '± '
+                "let mark = '± '
                 let _ = fugitive#head()
-                return strlen(_) ? mark._ : ''
+                "return strlen(_) ? mark._ : ''
+                return _
             endif
         catch
         endtry
@@ -1866,16 +1842,6 @@ if neobundle#tap('lightline.vim')
     call neobundle#untap()
 endif
 " LightLine }}}
-" #### Airline {{{
-"if g:enable_airline
-    "" Always show the statusline
-    "set laststatus=2
-    "" No need to show mode
-    "set noshowmode
-    "let g:airline_powerline_fonts = 1
-    "let g:airline#extensions#tabline#enabled = 1
-"endif
-""}}}
 " #### nathanaelkane/vim-indent-guides {{{ removed
 if neobundle#tap('vim-indent-guides')
     let g:indent_guides_start_level           = 2
@@ -2889,31 +2855,6 @@ if 0
                 \ "html,xml" : ["at"],
                 \ }
     " }
-
-    " vim-airline {
-        " Set configuration options for the statusline plugin vim-airline.
-        " Use the powerline theme and optionally enable powerline symbols.
-        " To use the symbols , , , , , , and .in the statusline
-        " segments add the following to your .vimrc.before.local file:
-        "   let g:airline_powerline_fonts=1
-        " If the previous symbols do not render for you then install a
-        " powerline enabled font.
-
-        " See `:echo g:airline_theme_map` for some more choices
-        " Default in terminal vim is 'dark'
-        if isdirectory(expand("~/.vim/bundle/vim-airline/"))
-            if !exists('g:airline_theme')
-                let g:airline_theme = 'solarized'
-            endif
-            if !exists('g:airline_powerline_fonts')
-                " Use the default set of separators with a few customizations
-                let g:airline_left_sep='›'  " Slightly fancier than '>'
-                let g:airline_right_sep='‹' " Slightly fancier than '<'
-            endif
-        endif
-    " }
-
-
 
 
 " Initialize NERDTree as needed {{{====
