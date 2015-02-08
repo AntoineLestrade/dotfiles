@@ -7,7 +7,7 @@ let g:enable_signify       = 1
 let g:enable_orgmode       = 1
 let g:enable_beta_textobj  = 1
 let g:echo_startup_time    = 1
-let g:autoreload_vimrc     = 1
+let g:autoreload_vimrc     = 0
 let g:enable_git           = 1
 "}}}
 " Startup {{{=========================
@@ -62,10 +62,6 @@ let s:vimfiles_dir = $HOME . '/.vim/'
 "          let s:vimfiles_dir = $HOME . '/vimfiles/'
 "endif
 " }}}
-
-function! GetBundleDir(dir) "{{{
-    return (s:vimfiles_dir . 'bundle/' . a:dir)
-endfunction " }}}
 
 if g:use_mswin_vim " {{{
 " Set options and add mapping such that Vim behaves a lot like MS-Windows
@@ -178,6 +174,7 @@ endif
 " }}}
 
 " ## ConEmu specifics {{{
+" ERR: Buggy config (no colors...) correct or remove
 if g:use_conemu_specifics && !empty($CONEMUBUILD)
     echom "Running in conemu"
     set termencoding=utf8
@@ -194,7 +191,6 @@ if g:use_conemu_specifics && !empty($CONEMUBUILD)
     "let &t_te="\e[0 q"
 endif
 " }}}
-
 " }}}
 
 if filereadable(expand("~/_vimrc.local_before"))
@@ -202,6 +198,7 @@ if filereadable(expand("~/_vimrc.local_before"))
 endif
 
 " NeoBundle {{{=======================
+" Maybe interessant other Plugin manager: https://github.com/junegunn/vim-plug
 " ## AutoInstall {{{
 if !filereadable(s:vimfiles_dir.'bundle/neobundle.vim/README.md')
     echon 'Installing NeoBundle...'
@@ -371,6 +368,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
     "            \ }
     " }}}
     " #### kien/ctrlp.vim {{{
+    " TODO: Maybe replace by Unite?
     NeoBundleLazy 'kien/ctrlp.vim', {
                 \ 'autoload': {
                 \       'commands': ['CtrlP']
@@ -417,6 +415,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
                 \ }
     " }}}
     " #### rhysd/clever-f.vim {{{
+    " f{char} and F{char} to jump forward/backward next occurence of {char}
     NeoBundleLazy 'rhysd/clever-f.vim', {
                 \   'autoload': {
                 \           'mappings': [['sxno', '<Plug>(clever-f-']]
@@ -577,7 +576,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
     " }}}
     " }}}
 
-    " ## Development - General {{{
+    " ## Development - VCS {{{
     " #### scrooloose/syntastic {{{
     " Enhanced syntax checker, Required external programs (see https://github.com/scrooloose/syntastic)
     " TODO: Lazy loading?
@@ -608,6 +607,12 @@ NeoBundleFetch 'Shougo/neobundle.vim'
                 \   'disabled': (!g:enable_git)
                 \ }
     " }}}
+    " #### rhysd/committia.vim {{{
+    NeoBundle 'rhysd/committia.vim'
+    " }}}
+    " }}}
+
+    " ## Development - General {{{
     " #### scrooloose/nerdcommenter {{{
     " Some mappins: {{{
     "       [count]<Leader>cc       NERDComComment
@@ -644,6 +649,9 @@ NeoBundleFetch 'Shougo/neobundle.vim'
     "            \ }
     " }}}
     " #### godlygeek/tabular {{{
+    " TODO: Check https://github.com/junegunn/vim-easy-align -> it should
+    " replace it
+    " Maybe try also https://github.com/vim-scripts/Align
     NeoBundleLazy 'godlygeek/tabular', {
                 \   'autoload': {
                 \       'commands': ['Tabularize']
@@ -739,6 +747,10 @@ NeoBundleFetch 'Shougo/neobundle.vim'
     if g:enable_startify
         NeoBundle 'mhinz/vim-startify'
     endif
+    " #### rking/ag.vim {{{
+    " TODO: Lazy load ?
+    NeoBundle 'rking/ag.vim'
+    " }}}
     " }}}
 
 " ## General {{{
@@ -826,30 +838,14 @@ if 0
     "}}}
 
     " Motion {{{
-    MyNeoBundleLazy 'vim-easymotion'
     " MyNeoBundleLazy 'vim-easyoperator-line'
     " MyNeoBundleLazy 'vim-easyoperator-phrase'
     " MyNeoBundleLazy 'vim-lazy-lines'
-    NeoBundleLazy 'rhysd/clever-f.vim' " Extended f, F, t and T key mappings for Vim.
-    NeoBundleLazy 'rhysd/accelerated-jk'
     NeoBundleLazy 'saihoooooooo/glowshi-ft.vim'
     NeoBundleLazy 'haya14busa/incsearch.vim'
     "}}}
 
     " Text Object {{{
-    NeoBundleLazy 'kana/vim-textobj-user'
-    NeoBundleLazy 'kana/vim-textobj-entire'           " ae, ie
-    NeoBundleLazy 'kana/vim-textobj-fold'             " az, iz
-    NeoBundleLazy 'kana/vim-textobj-indent'           " ai, ii
-    NeoBundleLazy 'kana/vim-textobj-line'             " al, il
-    NeoBundleLazy 'kana/vim-textobj-syntax'           " ay, iy
-    NeoBundleLazy 'kana/vim-textobj-django-template'  " adb, idb
-    NeoBundleLazy 'thinca/vim-textobj-between'        " af{char}, if{char}
-    NeoBundleLazy 'mattn/vim-textobj-url'             " au, iu
-    NeoBundleLazy 'osyo-manga/vim-textobj-multiblock' " ab, ib
-    NeoBundleLazy 'lucapette/vim-textobj-underscore'  " a_, i_
-    NeoBundleLazy 'haya14busa/vim-textobj-number'     " an, in
-    " NeoBundleLazy 'h1mesuke/textobj-wiw'              " a,w a,e
 
     NeoBundle 'wellle/targets.vim'
     " NeoBundle 'gcmt/wildfire.vim'
@@ -858,12 +854,6 @@ if 0
     " TODO: Make it lazy or use vim-operator-surround
     NeoBundle 'tpope/vim-surround'
     NeoBundle 'tpope/vim-repeat'
-
-    " Operator
-    NeoBundleLazy 'kana/vim-operator-user'
-    NeoBundleLazy 'kana/vim-operator-replace'
-    "NeoBundle 'rhysd/vim-operator-surround'
-
     "}}}
 
     " Git {{{
@@ -881,6 +871,7 @@ if 0
     " UI {{{
     NeoBundleLazy 'osyo-manga/vim-brightest'
     NeoBundleLazy 't9md/vim-quickhl' " quickly highlight <cword> or visually selected word
+    " }}}
 
     " Utility {{{
     " NeoBundle 'kana/vim-submode' " Vim plugin: Create your own submodes
@@ -994,7 +985,6 @@ if 0
             endif
             Bundle 'tpope/vim-abolish.git'
             Bundle 'osyo-manga/vim-over'
-            Bundle 'kana/vim-textobj-user'
             Bundle 'kana/vim-textobj-indent'
             Bundle 'gcmt/wildfire.vim'
         endif
@@ -1061,9 +1051,6 @@ if 0
 
     " <Tab> everything!
     Plugin 'ervandew/supertab'
-
-    " Align your = etc.
-    Plugin 'vim-scripts/Align'
 
     " Snippets like textmate
     Plugin 'MarcWeber/vim-addon-mw-utils'
@@ -1483,6 +1470,8 @@ if neobundle#tap('unite.vim')
                     \   'prompt': '? ',
                     \ })
 
+        let g:unite_source_rec_async_command = 'ag --follow --nocolor --nogroup --hidden -g ""'
+
         "let g:unite_kind_jump_list_after_jump_scroll=0
         "let g:unite_source_rec_min_cache_files = 1000
         "let g:unite_source_rec_max_cache_files = 5000
@@ -1893,15 +1882,15 @@ if neobundle#tap('ctrlp.vim')
                     \ 'dir':  '\.git$\|\.hg$\|\.svn$',
                     \ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$' }
 
-        " On Windows use "dir" as fallback command.
-        if WINDOWS()
-            let s:ctrlp_fallback = 'dir %s /-n /b /s /a-d'
-        elseif executable('ag')
+        if executable('ag')
             let s:ctrlp_fallback = 'ag %s --nocolor -l -g ""'
         elseif executable('ack-grep')
             let s:ctrlp_fallback = 'ack-grep %s --nocolor -f'
         elseif executable('ack')
             let s:ctrlp_fallback = 'ack %s --nocolor -f'
+        " On Windows use "dir" as fallback command.
+        elseif WINDOWS()
+            let s:ctrlp_fallback = 'dir %s /-n /b /s /a-d'
         else
             let s:ctrlp_fallback = 'find %s -type f'
         endif
