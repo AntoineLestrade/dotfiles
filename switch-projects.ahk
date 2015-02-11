@@ -28,7 +28,7 @@ conemu_exe = "C:\Program Files\Far Manager\ConEmu64.exe"
 return
 
 #+p::
-	Gui, Add, DropDownList, vProject, Mercedes_Wips|Oda|Mercedes_BER|Mercedes_LOS|CNOA
+	Gui, Add, DropDownList, vProject, Mercedes_Wips|Oda|Mercedes_BER|Mercedes_LOS|CNOA|Athlon_CarSwitch
 	Gui, Add, Button, default, OK
 	Gui, Add, Button,,Cancel
 	Gui, Show,, Choose project
@@ -59,6 +59,7 @@ ButtonOK:
 			redmine_name := project_name
 			sol_name     := project_name.sln
 			local_url    := "http://mercedes-ber.local"
+			break
 		Case-Mercedes_LOS:
 			project_name := "mercedes-los"
 			code_path    := code_home . "Mercedes\" . project_name
@@ -72,6 +73,14 @@ ButtonOK:
 			redmine_name := "liste-unique"
 			sol_name     := project_name . ".sln"
 			local_url    := "http://cnoa-liste-unique.local"
+			break
+		Case-Athlon_CarSwitch:
+			project_name := "Athlon_CarSwitch"
+			code_path := code_home . "Athlon\" . project_name
+			redmine_name := "athlon-carswitch"
+			sol_name := project_name . ".sln"
+			local_url := "http://athlon-carswitch.local"
+			break
 		}
 		;MsgBox, %code_path%\%sol_name%
 		Gui, Destroy
@@ -79,9 +88,9 @@ ButtonOK:
 		Run, %browser_path% %redmine_url_begin%%redmine_name%%redmine_url_end%
 		Run, %browser_path% %local_url%
 		Run, %conemu_exe% /Dir "%code_path%" /NoUpdate /cmd {cmd (Admin)}, Max, conemu_id
-		Run, gvim.exe, %code_path%, Max, gvim_id
-		WinWait, ahk_pid %gvim_id%
-		SendInput `;vf
+;		Run, gvim.exe, %code_path%, Max, gvim_id
+;		WinWait, ahk_pid %gvim_id%
+;		SendInput `;vf
 		WinActivate, ahk_pid conemu_id
 		WinWaitActive, ahk_pid %conemu_id%
 		SendInput, git fetch && git prettylog{Enter}
