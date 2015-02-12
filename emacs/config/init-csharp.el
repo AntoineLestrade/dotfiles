@@ -1,3 +1,5 @@
+(use-package csharp-mode
+  :mode "\\.cs\\'"
+  :ensure t)
 
-
-(provide 'csharp-config)
+(provide 'init-csharp)

@@ -34,3 +34,4 @@
 (require 'init-git)
 (require 'init-web)
 (require 'init-ahk)
+(require 'init-csharp)
