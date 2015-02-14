@@ -1,9 +1,19 @@
+;;; init.el --- Configuration entry point
+;; Copyrigth (c) 2015 Antoine Lestrade
+;; Author Antoine Lestrade <antoine.lestrade@gmail.com>
+;; Version 0.0.1
+
+
+;;; Commentary:
+;; 
+
+;;; Code:
 (defgroup loc nil
   "Group for init files"
   :group 'local)
 
 (defcustom loc-cache-dir (concat user-emacs-directory ".cache/")
-  "Cache directory"
+  "Cache directory."
   :group 'loc)
 
 (add-to-list 'load-path (expand-file-name "config" (file-name-directory load-file-name)))
@@ -25,13 +35,18 @@
 (require 'use-package)
 
 ;; remap windows key
-(setq w32-pass-lwindow-key-to-system nil
-      w32-lwindow-modifier 'super)
+;; TODO: Correct (not working)
+;(setq w32-pass-lwindow-key-to-system nil
+;      w32-lwindow-modifier 'super)
 
 (require 'init-core)
+(require 'init-programming)
 (require 'init-ui)
 (require 'init-helm)
 (require 'init-git)
 (require 'init-web)
 (require 'init-ahk)
 (require 'init-csharp)
+(require 'init-rust)
+
+;;; init.el ends here

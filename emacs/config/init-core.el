@@ -1,3 +1,6 @@
+;;; init-core.el --- My Emacs config: Customize core options
+;;; Commentary:
+;;; Code:
 ;; Correctly manage tabs
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 8)
@@ -21,4 +24,14 @@
 (setq ediff-split-window-function 'split-window-horizontally)
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 
+
+(use-package ag
+  :commands (ag-dired ag-dired-regexp ag-project-dired ag-project-dired-regexp)
+  :ensure t)
+
+;; Libraries
+(use-package flycheck
+  :ensure t)
+
 (provide 'init-core)
+;;; init-core.el ends here
