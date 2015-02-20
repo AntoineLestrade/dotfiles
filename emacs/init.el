@@ -5,16 +5,23 @@
 
 
 ;;; Commentary:
-;; 
+;;
 
 ;;; Code:
-(defgroup loc nil
+(defgroup al-config nil
   "Group for init files"
   :group 'local)
 
-(defcustom loc-cache-dir (concat user-emacs-directory ".cache/")
-  "Cache directory."
-  :group 'loc)
+(defcustom enable-omnisharp nil
+  "Enable or diable Omnisharp package."
+  :type 'boolean
+  :group 'al-config)
+
+(defvar loc-cache-dir (concat user-emacs-directory "cache/"))
+(defvar loc-data-dir (concat user-emacs-directory "data/"))
+;(defcustom loc-cache-dir (concat user-emacs-directory ".cache/")
+;  "Cache directory."
+;  :group 'al-config)
 
 (add-to-list 'load-path (expand-file-name "config" (file-name-directory load-file-name)))
 
@@ -40,13 +47,17 @@
 ;      w32-lwindow-modifier 'super)
 
 (require 'init-core)
+;(require 'init-autocompletion)
+(require 'init-smartparens)
+(require 'init-helm)
+(require 'init-projectile)
 (require 'init-programming)
 (require 'init-ui)
-(require 'init-helm)
 (require 'init-git)
 (require 'init-web)
 (require 'init-ahk)
 (require 'init-csharp)
+(require 'init-powershell)
 (require 'init-rust)
 
-;;; init.el ends here
+;;; init.el ends here.

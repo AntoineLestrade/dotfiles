@@ -1,3 +1,7 @@
 emacs/elpa/*
-emacs/.cache
+emacs/cache
 emacs/eshell/*
+emacs/data
+emacs/recentf
+emacs/projectile.cache
+emacs/projectile-bookmarks.eld
