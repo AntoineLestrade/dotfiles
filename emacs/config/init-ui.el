@@ -1,14 +1,24 @@
 ;;; init-ui.el --- My Emacs configuration: initializr UI settings
 ;;; Commentary:
 ;;; Code:
-(use-package zenburn-theme
-  :ensure t)
-;;(use-package monokai-theme :ensure t)
 
+(use-package color-theme
+  :ensure t
+  :config
+  (progn
+    (use-package color-theme-solarized
+      :config (load-theme 'solarized t)
+      ;;(add-hook 'after-make-frame-functions
+  ;;          (lambda (frame)
+  ;;            (set-frame-parameter frame
+  ;;                                 'background-mode
+  ;;                                 (if (display-graphic-p frame) 'light 'dark))
+  ;;            (enable-theme 'solarized)))
+      :ensure t)))
 
 ;; Disable toolbar
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (menu-bar-mode -1)
 (blink-cursor-mode -1)
 
