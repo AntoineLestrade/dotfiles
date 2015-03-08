@@ -5,3 +5,8 @@ emacs/data
 emacs/recentf
 emacs/projectile.cache
 emacs/projectile-bookmarks.eld
+
+vim/backup
+vim/plugged
+vim/swap
+vim/undo

@@ -1,0 +1,436 @@
+" vim: set foldmethod=marker et sts=4 sw=4:
+" Switches {{{
+let g:enable_cursorline = 0
+let g:echo_startup_time = 1
+
+let g:has_persistent_undo = has('persistent_undo')
+" }}}
+" Startup {{{
+if g:echo_startup_time && has('vim_starting') && has('reltime')
+    let s:startuptime = reltime()
+    autocmd VimEnter * let s:startuptime = reltime(s:startuptime) | redraw | echomsg 'startuptime: ' . reltimestr(s:startuptime)
+endif
+" }}}
+" Initialization {{{
+let g:is_windows = has('win32') || has('win64')
+" if empty($MYVIMRC)
+"     let $MYVIMRC = substitute($VIMINIT, "^source ", "", "g")
+"     let g:rc_dir = strpart($MYVIMRC, 0, strridx($MYVIMRC, (g:is_windows ? '\' : '/')))
+" elseif has('win32') || has('win64')
+"     let  g:rc_dir = strpart($MYVIMRC, 0, strridx($MYVIMRC, (g:is_windows ? '\' : '/'))) . '/vimfiles'
+" else
+"     let g:rc_dir = strpart($MYVIMRC, 0, strridx($MYVIMRC, (g:is_windows ? '\' : '/'))) . '/.vim'
+" endif
+if g:is_windows
+    let g:rc_dir = $HOME.'/vimfiles'
+else
+    let g:rc_dir = $HOME.'/.vim'
+endif
+let g:plugins_dir = g:rc_dir.'/plugged'
+"let g:plugins_dir = $HOME.'/system-settings/vim/plugged'
+let g:vim_plug_dir = g:plugins_dir.'/vim-plug'
+let &runtimepath = g:rc_dir.','.g:vim_plug_dir.','.&runtimepath
+" }}} Initialization
+" Vim settings {{{
+filetype plugin indent on
+
+" ## Basic options {{{
+set autoread                   " Automatically read file again which has been changed outside of Vim
+set backspace=indent,eol,start " Working of <BS>,<Del>,CTRL-W,CTRL-U
+set hidden                     " Display another buffer when current buffer isn't saved.
+set history=1000               " Store a ton of history (default is 20)
+set linebreak                  " Vim will wrap long lines at a character in 'breakat'
+set mouse=a                    " Automatically enable mouse usage
+set mousehide                  " Hide the mouse cursor while typing
+set ruler                      " Show the linz and column number of the cursor position. Useless with lightline or something like that
+set scrolloff=3                " Lines above/below cursor
+set splitright                 " Puts new vsplit windows to the right of the current
+set splitbelow                 " Puts new split windows to the bottom of the current
+" ## }}}
+" ## Tab basic settings {{{
+set autoindent        " Copy indent from current line when starting a new line
+set expandtab         " Use the appropriate number of spaces to insert a <Tab>
+set shiftround        " Round indent to multiple of 'shiftwidth'
+set shiftwidth=4      " Number of spaces to use for each step of (auto)indent
+set softtabstop=4     " Number of spaces that a <Tab> counts for while editing operations
+set tabstop=8         " Number of spaces that a <Tab> in the file counts for
+
+set pastetoggle=<F12> " Toggle 'paste' mode (can be used in terminal when pasting from other program)
+" }}}
+" ## Encoding {{{
+set encoding=utf-8
+set termencoding=utf-8
+" ## }}}
+" ## Search basic settings {{{
+set incsearch  " Incremental searching
+set ignorecase " Ignore case in search patterns
+set smartcase  " Override the ignorecase option if the pattern contains upper case
+" set hlsearch   " Highlight search patterns, support reloading
+" ## }}}
+" ## Backup {{{
+set backup
+" ## }}}
+" ## Undo Basic {{{
+if g:has_persistent_undo
+    set undofile        " auotmatically saves undo history
+    set undolevels=1000
+    set undoreload=1000 " Save the whole buffer for undo when reloading it
+endif
+" ## }}}
+" ## Wildmenu {{{
+set wildmenu
+set wildmode=longest:full,full
+" ## }}}
+" ## Cursorline {{{
+if g:enable_cursorline
+    augroup cursorLine
+        autocmd!
+        autocmd CursorMoved,CursorMovedI,WinLeave * setlocal nocursorline
+        autocmd CursorHold,CursorHoldI,WinEnter   * setlocal cursorline
+    augroup END
+endif
+" ## }}}
+" ## Close help {{{
+autocmd filetype help nnoremap <buffer> q <C-w>c
+" }}}
+" ## Cusrsor posision when opening a file {{{
+function! ResetCursorPosition()
+    if line("'\"") <= line("$")
+        normal! g`"
+        return 1
+    endif
+endfunction
+
+augroup resetCursorPosition
+    autocmd!
+    autocmd BufWinEnter * call ResetCursorPosition()
+augroup END
+autocmd FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
+" ## }}}
+" ## Trailing whitespaces {{{
+function! s:hl_trailing_spaces() " {{{
+    highlight! link TrailingSpaces Error
+    syntax match TrailingSpaces containedin=ALL /\s\+$/
+endfunction " }}}
+autocmd BufWinEnter,ColorScheme * call s:hl_trailing_spaces()
+" ## }}}
+" }}}
+" Key bindings {{{
+nnoremap ^ :
+let mapleader=","
+
+" ## Folding {{{
+nmap <leader>f0 :set foldlevel=0<CR>
+nmap <leader>f1 :set foldlevel=1<CR>
+nmap <leader>f2 :set foldlevel=2<CR>
+nmap <leader>f3 :set foldlevel=3<CR>
+nmap <leader>f4 :set foldlevel=4<CR>
+nmap <leader>f5 :set foldlevel=5<CR>
+nmap <leader>f6 :set foldlevel=6<CR>
+nmap <leader>f7 :set foldlevel=7<CR>
+nmap <leader>f8 :set foldlevel=8<CR>
+nmap <leader>f9 :set foldlevel=9<CR>
+" ## }}}
+" }}}   
+" Plugins {{{
+" ## Initialize {{{
+if !isdirectory(g:vim_plug_dir)
+    if g:is_windows
+        call mkdir(g:vim_plug_dir)
+    else
+        call mkdir(g:vim_plug_dir, 'p')
+    endif
+endif
+if !isdirectory(g:vim_plug_dir.'/autoload')
+    execute '!git clone git://github.com/junegunn/vim-plug '.g:vim_plug_dir.'/autoload'
+endif
+" ## }}}
+call plug#begin(g:plugins_dir)
+
+Plug 'kshenoy/vim-signature'
+
+" ## Development {{{
+" #### SQL {{{
+" ###### sqlserver.vim {{{
+Plug 'sqlserver.vim'
+let g:sql_type_default = "sqlserver"
+" ###### }}}
+Plug 'PProvost/vim-ps1'
+" }}}
+" }}}
+
+" ## Lokaltog/vim-easymotion {{{
+let g:EasyMotion_do_mapping = 0
+" #### options  {{{
+" TODO: Maybe redefine keys with g:EasyMotion_keys
+" TODO: Maybe set g:EasyMotion_do_shade to disable color changes
+set nohlsearch " easymotion has it's own highlighting.
+let g:EasyMotion_space_jump_first = 1 " maybe also EasyMotion_enter_jump_first
+let g:EasyMotion_prompt = '{n}> '
+let g:EasyMotion_use_upper = 1
+let g:EasyMotion_smartcase = 1
+" #### }}}
+" #### Mappings {{{
+" Search
+map  / <Plug>(easymotion-sn)
+xmap / <Esc><Plug>(easymotion-sn)\v%V
+" omap is 'Operator-Pending' (d, y, ...)
+omap / <Plug>(easymotion-tn)
+
+nmap n <Plug>(easymotion-next)zv
+xmap n <Plug>(easymotion-next)zv
+nmap N <Plug>(easymotion-prev)zv
+xmap N <Plug>(easymotion-prev)zv
+
+" extend hjkl
+map ;h <Plug>(easymotion-linebackward)
+map ;j <Plug>(easymotion-j)
+map ;k <Plug>(easymotion-k)
+map ;l <Plug>(easymotion-lineforward)
+
+" extend word motion
+map  ;w <Plug>(easymotion-bd-wl)
+map  ;e <Plug>(easymotion-bd-el)
+omap ;b <Plug>(easymotion-bl)
+map  ;ge <Plug>(easymotion-gel)
+
+"extend f/t
+map ;f <Plug>(easymotion-bd-fl)
+map ;t <Plug>(easymotion-bd-tl)
+
+" #### }}}
+Plug 'Lokaltog/vim-easymotion'
+" ## }}}
+" ## UI {{{
+if 1
+Plug 'itchyny/lightline.vim' " {{{
+set laststatus=2
+set noshowmode
+" let g:lightline = {... {{{
+let g:lightline = {
+\   'colorscheme': 'jellybeans',
+\   'active': {
+\       'left': [
+\           ['mode', 'paste'],
+\           ['git_changes', 'readonly', 'fugitive'],
+\           ['ctrlpmark', 'filename']
+\       ],
+\       'right': [
+\           ['lineinfo'],
+\           ['percent'],
+\           ['fileformat', 'fileencoding', 'filetype', 'syntastic']
+\       ]
+\   },
+\   'component': {
+\       'paste': '%{&paste?"!":""}'
+\   },
+\   'component_function': {
+\     'mode'         : 'MyMode',
+\     'git_changes'  : 'MyGitGutterStatus',
+\     'fugitive'     : 'MyFugitive',
+\     'filename'     : 'MyFilename',
+\     'readonly'     : 'MyReadonly',
+\     'ctrlpmark'    : 'CtrlPMark',
+\     'bufferline'   : 'MyBufferline',
+\     'fileformat'   : 'MyFileformat',
+\     'fileencoding' : 'MyFileencoding',
+\     'filetype'     : 'MyFiletype'
+\   },
+\   'component_expand': {
+\       'syntastic': 'SyntasticStatuslineFlag',
+\   },
+\   'component_type': {
+\       'syntastic': 'middle',
+\   },
+\   'subseparator': {
+\       'left': '|', 'right': '|'
+\   }
+\ }
+" }}}
+" let g:lighline.mode_map = {... {{{
+let g:lightline.mode_map = {
+    \ 'n'      : ' N ',
+    \ 'i'      : ' I ',
+    \ 'R'      : ' R ',
+    \ 'v'      : ' V ',
+    \ 'V'      : 'V-L',
+    \ 'c'      : ' C ',
+    \ "\<C-v>" : 'V-B',
+    \ 's'      : ' S ',
+    \ 'S'      : 'S-L',
+    \ "\<C-s>" : 'S-B',
+    \ '?'      : '      ' } " }}}
+function! MyModified() " {{{
+    return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+endfunction " }}}
+function! MyFilename() " {{{
+    let fname = expand('%:t')
+    let mod = MyModified()
+    return fname == 'ControlP' ? g:lightline.ctrlp_item :
+                \ fname == '__Tagbar__' ? g:lightline.fname :
+                \ fname =~ '__Gundo\|NERD_tree' ? '' :
+                \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
+                \ &ft == 'unite' ? unite#get_status_string() :
+                \ &ft == 'vimshell' ? vimshell#get_status_string() :
+                \ ('') .
+                \ ('' != fname ? fname : '[No Name]') .
+                \ ('' != mod ? ' ' . mod : '')
+endfunction " }}}
+function! MyMode() " {{{
+    let fname = expand('%:t')
+    return fname == '__Tagbar__' ? 'Tagbar' :
+                \ fname == 'ControlP' ? 'CtrlP' :
+                \ winwidth('.') > 60 ? lightline#mode() : ''
+endfunction " }}}
+
+function! MyGitGutterStatus() " {{{
+    if !exists('GitGutterGetHunxSummary')
+        return ''
+    endif
+    let hunks = GitGutterGetHunkSummary()
+    let symbols = ['+', ' ~', ' -']
+    if empty(hunks) || !exists('*fugitive#head') || !strlen(fugitive#head())
+        return ''
+    else
+        let res = ''
+        for i in [0, 1, 2]
+            let res .= symbols[i] . hunks[i]
+        endfor
+        return res
+    endif
+endfunction " }}}
+
+function! MyFugitive() " {{{
+    try
+        if expand('%:t') !~? 'Tagbar' && exists('*fugitive#head')
+            "let mark = '± '
+            let _ = fugitive#head()
+            "return strlen(_) ? mark._ : ''
+            return _
+        endif
+    catch
+    endtry
+    return ''
+endfunction " }}}
+
+function! MyReadonly() " {{{
+    return &ft !~? 'help' && &readonly ? '≠' : '' " or ⭤
+endfunction " }}}
+
+function! CtrlPMark() " {{{
+    if expand('%:t') =~ 'ControlP'
+        call lightline#link('iR'[g:lightline.ctrlp_regex])
+        return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
+                    \ , g:lightline.ctrlp_next], 0)
+    else
+        return ''
+    endif
+endfunction " }}}
+
+function! MyFileformat() " {{{
+    return winwidth(0) > 90 ? &fileformat : ''
+endfunction " }}}
+
+function! MyFiletype() " {{{
+    return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+endfunction " }}}
+
+function! MyFileencoding() " {{{
+    if winwidth(0) < 80
+        return ''
+    endif
+    let baseenc = strlen(&fenc) ? &fenc : &enc
+    if (&bomb)
+        let baseenc = baseenc . ' BOM'
+    endif
+    return baseenc
+endfunction " }}}
+" }}}
+endif
+if 0
+" #### bling/vim-airline {{{
+set laststatus=2
+set noshowmode
+let g:airline_powerline_fonts = 1
+" let g:airline_mode_map = {... {{{
+let g:airline_mode_map = {
+            \   '__' : '-',
+            \   'n'  : 'N',
+            \   'i'  : 'I',
+            \   'R'  : 'R',
+            \   'c'  : 'C',
+            \   'v'  : 'V',
+            \   'V'  : 'V-L',
+            \   '' : 'V-B',
+            \   's'  : 'S',
+            \   'S'  : 'S-L',
+            \   '' : 'S-B'
+            \ } " }}}
+Plug 'bling/vim-airline'
+" }}}
+endif
+Plug 'nanotech/jellybeans.vim'
+Plug 'chriskempson/base16-vim'
+" ## }}}
+
+call plug#end()
+" }}} Plugins
+" Create needed directories {{{
+function! s:initialize_directories() " {{{
+    let dir_list = { 'backup': 'backupdir', 'views': 'viewdir', 'swap': 'directory' }
+    if g:has_persistent_undo
+        let dir_list['undo'] = 'undodir'
+    endif
+
+    for [dirname, settingname] in items(dir_list)
+        let directory = g:rc_dir . '/' . dirname . '/'
+        if exists("*mkdir")
+            if !isdirectory(directory)
+                call mkdir(directory)
+            endif
+        endif
+        if !isdirectory(directory)
+            echo "Warning: Unable to create backup directory: " . directory
+            echo "Try: mkdir -p " . directory
+        else
+            let directory = substitute(directory, " ", "\\\\ ", "g")
+            exec "set " . settingname . "=" . directory
+        endif
+    endfor
+endfunction " }}}
+call s:initialize_directories()
+" }}}
+
+" Colorscheme {{{
+if has('vim_starting')
+    "syntax enable
+    syntax on
+    set background=dark
+    set t_Co=256
+    if &t_Co < 256 || !has('gui')
+        " colorscheme base16-default
+        colorscheme default
+    else
+        try
+            " colorscheme base16-default
+            colorscheme jellybeans
+        catch
+            colorscheme darkblue
+        endtry
+    endif
+endif
+" }}} Colorscheme
+
+" Finally {{{
+if filereadable($HOME.'/_vimrc.last')
+    source $HOME/_vimrc.last
+endif
+
+" ## Unlet useless variables {{{
+"
+unlet g:echo_startup_time
+unlet g:has_persistent_undo
+" ## }}}
+
+set secure
+" }}}
