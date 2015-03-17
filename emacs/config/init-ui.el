@@ -8,17 +8,38 @@
   (progn
     (use-package color-theme-solarized
       :config (load-theme 'solarized t)
-      ;;(add-hook 'after-make-frame-functions
+      :ensure t)))
+;;(use-package base16-theme :ensure t)
+;;(load-theme 'base16-eighties t)
+
+;;(use-package color-theme-solarized
+;;(use-package color-theme-sanityinc-solarized
+;;  :init
+  ;;(add-hook 'after-make-frame-functions
   ;;          (lambda (frame)
   ;;            (set-frame-parameter frame
   ;;                                 'background-mode
   ;;                                 (if (display-graphic-p frame) 'light 'dark))
   ;;            (enable-theme 'solarized)))
-      :ensure t)))
+  ;;(load-theme 'solarized t)
+;;  :ensure t)
+;;(require 'color-theme-solarized)
+;;(load-theme 'solarized t)
+;;(require 'color-theme)
+;;(add-to-list 'load-path "~/.emacs.d/config/solarized-theme")
+;;(require 'solarized)
+
+
+;;(use-package color-theme-sanityinc-tomorrow :ensure t)
+;;(use-package zenburn-theme
+;;  :ensure t)
+;;(use-package ujelly-theme :ensure t)
+;;(use-package monokai-theme :ensure t)
+
 
 ;; Disable toolbar
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+
 (menu-bar-mode -1)
 (blink-cursor-mode -1)
 

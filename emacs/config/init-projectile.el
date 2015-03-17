@@ -13,7 +13,7 @@
 ;;         ("C-x p b" . projectile-switch-to-buffer)
 ;;         ("C-x p a" . projectile-ag))
   :diminish ""
-  :init
+  :config
   (progn
     (use-package helm-projectile
       :ensure t
@@ -26,7 +26,5 @@
       (let ((projectile-git-command "git ls-files -zco"))
         (call-interactively 'projectile-find-file)))
 
-    )
-  :idle (projectile-global-mode)
-  :idle-priority 1)
+    (projectile-global-mode 1)))
 (provide 'init-projectile)

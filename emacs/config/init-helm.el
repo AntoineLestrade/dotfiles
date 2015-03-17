@@ -2,33 +2,29 @@
 ;;; Commentary:
 ;;; Code:
 (use-package helm
-  :commands (helm-M-x helm-mode)
+  ;;:commands (helm-M-x helm-mode)
   :bind (("M-x" . helm-M-x))
-  :init
+  :config
   (progn
+    (helm-autoresize-mode t)
+    ;;(use-package helm-config :ensure t)
+    ;;(use-package helm-files :ensure t)
+    ;;(use-package helm-help :ensure t)
+    ;;(use-package helm-projectile :ensure t)
+    ;;(use-package helm-adaptative
+    ;;  :commands (helm-adaptative-mode)
+    ;;  :ensure t)
     (setq
      ;; Prevent escaping from minibuffer during helm session (default t)
      helm-prevent-escaping-from-minibuffer nil
      ;; Max length of buffer names before truncate
-     helm-buffer-max-length 50
-     )
-    (use-package helm-imenu
-      :bind (("M-o M-i" . helm-imenu))
-      :config
-      ))
-  :config
-  (progn
-    (helm-autoresize-mode t)
-    (use-package helm-config)
-    (use-package helm-files)
-    (use-package helm-help)
-    (use-package helm-projectile)
-    (use-package helm-adaptative
-      :commands (helm-adaptative-mode))
+     helm-buffer-max-length 50)
+;;    (use-package helm-imenu
+;;      :bind ("M-o M-i" . helm-imenu)
+;;      :ensure t)
     )
-  :idle (helm-mode 1)
   :ensure t)
-
+(helm-mode 1)
 ;; Maybe duplicated with AG
 (use-package helm-ag
   :commands
