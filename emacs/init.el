@@ -1,63 +1,45 @@
-;;; init.el --- Configuration entry point
-;; Copyrigth (c) 2015 Antoine Lestrade
-;; Author Antoine Lestrade <antoine.lestrade@gmail.com>
+;;; init.el --- Configuration entry point.
+;; Copyright (c) 2015 Antoine Lestrade
+;;
+;; Author: Antoine Lestrade <antoine.lestrade@gmail.com>
 ;; Version 0.0.1
 
-
-;;; Commentary:
+;;; Commentary
 ;;
 
 ;;; Code:
-(defgroup al-config nil
-  "Group for init files"
-  :group 'local)
 
-(defcustom enable-omnisharp nil
-  "Enable or diable Omnisharp package."
-  :type 'boolean
-  :group 'al-config)
+;; Define variables for some directories
+(defvar current-config-dir (file-name-directory load-file-name))
+(defvar loc-saves-dir (expand-file-name "savefiles" current-config-dir))
+(defvar my-modules-dir (expand-file-name "config" current-config-dir))
+(defvar loc-cache-dir (expand-file-name "cache" current-config-dir))
 
-(defvar loc-cache-dir (concat user-emacs-directory "cache/"))
-(defvar loc-data-dir (concat user-emacs-directory "data/"))
-;(defcustom loc-cache-dir (concat user-emacs-directory ".cache/")
-;  "Cache directory."
-;  :group 'al-config)
+(add-to-list 'load-path my-modules-dir)
 
-(add-to-list 'load-path (expand-file-name "config" (file-name-directory load-file-name)))
+;; Reduce the frequency of garbage collection by making it happen on
+;; each 50MB of allocated data (the default is on every 0.76MB)
+(setq gc-cons-threshold 50000000)
 
-(require 'package)
-(add-to-list 'package-archives
-	     '("melpa" . "http://melpa.org/packages/") t)
-(when (< emacs-major-version 24)
-  ;; For important compatibility libraries, like cl-lib
-  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
-(package-initialize)
 
-;; use-package + Manage packages
-(if (not (package-installed-p 'use-package))
-    (progn
-      (package-refresh-contents)
-      (package-install 'use-package)))
-;; https://github.com/jwiegley/use-package
-(require 'use-package)
 
-;; remap windows key
-;; TODO: Correct (not working)
-;(setq w32-pass-lwindow-key-to-system nil
-;      w32-lwindow-modifier 'super)
+;; Move config changes in another file
+(setq custom-file (expand-file-name "custom.el" current-config-dir))
+(if (file-exists-p (expand-file-name "custom.el" current-config-dir))
+    (load (expand-file-name "custom.el" current-config-dir)))
 
-(require 'init-core)
-;(require 'init-autocompletion)
-(require 'init-smartparens)
-(require 'init-helm)
-(require 'init-projectile)
-(require 'init-programming)
+(require 'init-packages)
+(require 'init-custom)
 (require 'init-ui)
-(require 'init-git)
-(require 'init-web)
-(require 'init-ahk)
-(require 'init-csharp)
-(require 'init-powershell)
-(require 'init-rust)
+(require 'init-core)
 
-;;; init.el ends here.
+(require 'init-editor)
+
+;; packages
+(require 'init-ido)
+(require 'init-company)
+
+(require 'init-csharp)
+
+(provide 'init)
+;;; init.el ends here
