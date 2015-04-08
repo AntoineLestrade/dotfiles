@@ -17,11 +17,15 @@
     diminish ;; Diminished modes are minor modes with no modeline display
     easy-kill
     expand-region ;; Emacs extension to increase selected region by semantic units.
+;;    magit
     operate-on-number
     projectile
     smartparens ;; Minor mode for Emacs that deals with parens pairs and tries to be smart about it.
     smartrep
-    zenburn-theme ;; Theme
+    ;; zenburn-theme ;; Theme
+    solarized-theme
+    color-theme-sanityinc-tomorrow
+    moe-theme
     ))
 
 (defun my-check-packages-installed-p ()
@@ -63,6 +67,9 @@ PACKAGE is installed only if not already present. The file is opened in MODE."
   '(("\\.hs\\'" haskell-mode haskell-mode)
     ("\\.rs\\'" rust-mode rust-mode)
     ))
+
+(add-to-list 'load-path (expand-file-name "site-lisp/magit" current-config-dir))
+(require 'magit)
 
 ;; build auto-install mappings
 (mapc

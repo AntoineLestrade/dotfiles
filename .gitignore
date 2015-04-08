@@ -1,12 +1,14 @@
-emacs/elpa/*
+emacs/auto-save-list
 emacs/cache
-emacs/eshell/*
 emacs/data
+emacs/elpa
+emacs/eshell
+emacs/places
 emacs/recentf
 emacs/projectile.cache
 emacs/projectile-bookmarks.eld
 emacs/custom.el
-emacs/savefiles/*
+emacs/savefiles
 emacs/tramp
 emacs/bookmarks
 

@@ -21,9 +21,23 @@
 ;; Change frame title
 (setq frame-title-format
       '("" invocation-name " Emacs - " (:eval (if (buffer-file-name)
-                                                  (abbreviate-file-name (bffer-file-name))
+                                                  (abbreviate-file-name (buffer-file-name))
                                                 "%b"))))
-(load-theme 'zenburn)
+;;(load-theme 'zenburn)
+;;(load-theme 'solarized-dark)
+;;(load-theme 'sanityinc-tomorrow-eighties)
+(defun switch-theme (theme)
+  "Disable all themes and then load a single theme interactively."
+  (interactive
+   (list
+    (intern (completing-read "Load custom theme: "
+                             (mapcar 'symbol-name
+                                     (custom-available-themes))))))
+  (mapcar #'disable-theme custom-enabled-themes)
+  (load-theme theme t))
+
+(require 'moe-theme)
+(load-theme 'moe-dark)
 
 (provide 'init-ui)
 ;;; init-ui.el ends here
