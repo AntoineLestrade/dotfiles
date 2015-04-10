@@ -24,14 +24,6 @@ endfunction
 Autocmd BufWinEnter,ColorScheme *vimrc call s:hl_my_autocmd()
 " }}}
 
-" Echo startup time
-if g:echo_startup_time && has('vim_starting') && has('reltime')
-    "echo 'We will print startup time'
-    let s:startuptime = reltime()
-    Autocmd VimEnter * let s:startuptime = reltime(s:startuptime) | redraw | echomsg 'startuptime: ' . reltimestr(s:startuptime)
-endif
-" }}}
-
 " Environment {{{=====================
 " ## Identify platform {{{
 silent function! OSX()
@@ -341,9 +333,6 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 
     " ## UI {{{
     " NeoBundle 'flazz/vim-colorschemes'
-    NeoBundle 'nanotech/jellybeans.vim'
-    NeoBundle 'itchyny/lightline.vim'
-    "NeoBundle 'bling/vim-airline'
     NeoBundle 'bling/vim-bufferline'
     NeoBundle 'nathanaelkane/vim-indent-guides'
     "NeoBundle 'Yggdroot/indentLine'
@@ -575,40 +564,16 @@ NeoBundleFetch 'Shougo/neobundle.vim'
                 \ }
     " }}}
     " }}}
-
-    " ## Development - VCS {{{
-    " #### scrooloose/syntastic {{{
-    " Enhanced syntax checker, Required external programs (see https://github.com/scrooloose/syntastic)
-    " TODO: Lazy loading?
-    "NeoBundle 'scrooloose/syntastic'
-    " }}}
+" ## GIT {{{
     " #### mhinz/vim-signify {{{
     " TODO: lazy loading?
     "if g:enable_signify
         "NeoBundle 'mhinz/vim-signify', { 'disabled' : (!g:enable_signify || !g:enable_git) }
     "endif
     " }}}
-    " #### airblade/vim-gitgutter {{{
-    NeoBundle 'airblade/vim-gitgutter'
-    " }}}
     " #### tpope/vim-git {{{
     " Included are syntax, indent, and filetype plugin files for git, gitcommit, gitconfig, gitrebase, and gitsendemail
     NeoBundle 'tpope/vim-git', { 'disabled': (!g:enable_git) }
-    " }}}
-    " #### tpope/vim-fugitive {{{
-    NeoBundle 'tpope/vim-fugitive', { 'disabled': (!g:enable_git) }
-    " }}}
-    " #### gregsexton/gitv {{{
-    NeoBundleLazy 'gregsexton/gitv', {
-                \   'depends': ['tpope/vim-fugitive'],
-                \   'autoload': {
-                \       'commands': ['Gitv']
-                \   },
-                \   'disabled': (!g:enable_git)
-                \ }
-    " }}}
-    " #### rhysd/committia.vim {{{
-    NeoBundle 'rhysd/committia.vim'
     " }}}
     " }}}
 
@@ -719,11 +684,6 @@ NeoBundleFetch 'Shougo/neobundle.vim'
                 \ }
     " }}}
     NeoBundle 'pangloss/vim-javascript'
-    " }}}
-
-    " ## MS Technologies dev {{{
-    NeoBundle 'PProvost/vim-ps1'
-    NeoBundle 'OrangeT/vim-csharp' " CSharp enhancements (including razor syntax, compilation)
     " }}}
 
     " ## Misc {{{
@@ -1074,33 +1034,14 @@ call neobundle#end()
 filetype plugin indent on
 
 " ## Basic Options {{{
-set autoread                   " Automatically read file again which has been changed outside of Vim
-set background=dark            " Assume a dark backround
-set backspace=indent,eol,start " Working of <BS>,<Del>,CTRL-W,CTRL-U
 set display=lastline           " display as mutch as possible of the last line
-set hidden                     " Display another buffer when current buffer isn't saved.
-set history=1000               " Store a ton of history (default is 20)
-set linebreak                  " Vim will wrap long lines at a character in 'breakat'
 "set list
 "set listchars=tab:›\ ,trail:•,extends:#,nbsp:.                      " Highlight problematic whitespace
-set mouse=a                    " Automatically enable mouse usage
-set mousehide                  " Hide the mouse cursor while typing
-set ruler                      " Show the line and column number of the cursor position
-set scrolloff=3                " Lines above/below cursor
-set splitright                 " Puts new vsplit windows to the right of the current
-set splitbelow                 " Puts new split windows to the bottom of the current
 set virtualedit=block          " Allow virtual editing in Visual block mode
 "}}}
 " ## Global options {{{
 setglobal bomb
 "}}}
-
-" ## cursorline {{{
-if 0
-Autocmd CursorMoved,CursorMovedI,WinLeave * setlocal nocursorline
-Autocmd CursorHold,CursorHoldI,WinEnter * setlocal cursorline
-endif
-" }}}
 
 " ## Clipboard {{{
 if has('clipboard')
@@ -1117,17 +1058,6 @@ set encoding=utf-8
 set termencoding=utf-8
 "}}}
 
-" ## Tab Basic Settings {{{
-set autoindent        " Copy indent from current line when starting a new line
-set expandtab         " Use the appropriate number of spaces to insert a <Tab>
-set shiftround        " Round indent to multiple of 'shiftwidth'
-set shiftwidth=4      " Number of spaces to use for each step of (auto)indent
-set softtabstop=4     " Number of spaces that a <Tab> counts for while editing operations
-set tabstop=4         " Number of spaces that a <Tab> in the file counts for
-
-set pastetoggle=<F12> " pastetoggle (sane indentation on pastes)
-"}}}
-
 " ## Folding {{{
 "set foldcolumn=0
 set foldlevelstart=99
@@ -1137,48 +1067,6 @@ set foldlevelstart=99
 set matchtime=2
 set matchpairs+=<:>
 set showmatch
-" }}}
-
-" ## Search Basic Settings {{{
-set incsearch  " Incremental searching
-set ignorecase " Ignore case in search patterns
-set smartcase  " Override the ignorecase option if the pattern contains upper case
-set hlsearch   " Highlight search patterns, support reloading
-"}}}
-
-" ## Backup Settings {{{
-set backup
-"}}}
-
-" ## Undo Basic {{{
-if has('persistent_undo')
-    set undofile "Automatically saves undo history
-    set undolevels=1000
-    set undoreload=1000 "Save the whole buffer for undo when reloading it
-endif
-"}}}
-
-" ## Wildmenu {{{
-set wildmenu
-set wildmode=longest:full,full
-"}}}
-
-" ## Cursor position when opening a file {{{
-" Instead of reverting the cursor to the last position in the buffer, we
-" set it to the first line when editing a git commit message
-au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
-
-function! ResCur()
-    if line("'\"") <= line("$")
-        normal! g`"
-        return 1
-    endif
-endfunction
-
-augroup resCur
-    autocmd!
-    autocmd BufWinEnter * call ResCur()
-augroup END
 " }}}
 
 " ## Line numbers {{{
@@ -1241,8 +1129,6 @@ endfunction "}}}
 " END Vim Setup }}}
 
 " Key mapping {{{======================
-" Remap <leader>
-let mapleader=","
 
 map Q gq
 
@@ -1256,19 +1142,6 @@ nnoremap gd :bdelete<CR>
 nnoremap gf <C-^>
 " }}}
 
-" ## Code folding options {{{
-nmap <leader>f0 :set foldlevel=0<CR>
-nmap <leader>f1 :set foldlevel=1<CR>
-nmap <leader>f2 :set foldlevel=2<CR>
-nmap <leader>f3 :set foldlevel=3<CR>
-nmap <leader>f4 :set foldlevel=4<CR>
-nmap <leader>f5 :set foldlevel=5<CR>
-nmap <leader>f6 :set foldlevel=6<CR>
-nmap <leader>f7 :set foldlevel=7<CR>
-nmap <leader>f8 :set foldlevel=8<CR>
-nmap <leader>f9 :set foldlevel=9<CR>
-" }}}
-
 " Use <C-L> to clear the highlighting of :set hlsearch.
 "if maparg('<C-L>', 'n') ==# ''
   "nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
@@ -1279,11 +1152,6 @@ nmap <silent> <leader>/ :nohlsearch<CR><C-L>
 " Delete without saving in register {{{
 nmap <Del> "_dl
 " }}}
-
-" Visual shifting (does not exit Visual mode) {{{
-vnoremap < <gv
-vnoremap > >gv
-"}}}
 
 " Highlight End-of-Line {{{
 function! s:hl_trailing_spaces() "{{{
@@ -1415,32 +1283,6 @@ AutocmdFT cs set foldmarker={,}
 AutocmdFT cs set foldtext=substitute(getline(v:foldstart),'{.*','{...}',)
 " }}}
 
-" GVim Settings {{{====================
-if has('gui_running')
-    set guifont=DejaVu_Sans_Mono_for_Powerline
-    set guioptions-=m
-    set guioptions-=T
-endif
-"}}}
-
-" Colorscheme {{{======================
-if has('vim_starting')
-    "syntax enable
-    syntax on
-    set background=dark
-    set t_Co=256
-    if &t_Co < 256 || !has('gui')
-        colorscheme default
-    else
-        try
-            colorscheme jellybeans
-        catch
-            colorscheme darkblue
-        endtry
-    endif
-endif
-"}}}
-
 " AutoReaload vimrc {{{================
 if g:autoreload_vimrc
     command!EVimrc e $MYVIMRC
@@ -1536,10 +1378,6 @@ if neobundle#tap('unite.vim')
     " }}}
 
     " Unite {{{
-    nnoremap [unite] <Nop>
-    xnoremap [unite] <Nop>
-    nmap \ [unite]
-    xmap \ [unite]
 
     " Source
     nnoremap <silent> [unite]u :<C-u>Unite source -vertical -silent -start-insert<CR>
@@ -1654,51 +1492,26 @@ endif
 " }}}
 
 " ## UI {{{
+" #### nathanaelkane/vim-indent-guides {{{ removed
+if neobundle#tap('vim-indent-guides')
+    let g:indent_guides_start_level           = 2
+    let g:indent_guides_guide_size            = 1
+    let g:indent_guides_enable_on_vim_startup = 1
+    call neobundle#untap()
+endif
+" }}}
+" #### Yggdroot/indentLine {{{
+if neobundle#tap('indentLine')
+    let g:indentLine_color_term = 239
+    function! neobundle#tapped.hooks.on_source(bundle)
+        Autocmd InsertEnter * IndentLinesDisable
+        Autocmd InsertLeave * IndentLinesEnable
+    endfunction
+    call neobundle#untap()
+endif
+" }}}
 " #### Lightline {{{ TO CHECK
 if neobundle#tap('lightline.vim')
-    set laststatus=2
-    set noshowmode
-
-    " {{{
-    let g:lightline = {
-                \ 'colorscheme': 'jellybeans',
-                \ 'active': {
-                \     'left': [
-                \         ['mode', 'paste'],
-                \         ['git_changes', 'readonly', 'fugitive'],
-                \         ['ctrlpmark', 'bufferline']
-                \     ],
-                \     'right': [
-                \         ['lineinfo'],
-                \         ['percent'],
-                \         ['fileformat', 'fileencoding', 'filetype', 'syntastic']
-                \     ]
-                \ },
-                \ 'component': {
-                \     'paste': '%{&paste?"!":""}'
-                \ },
-                \ 'component_function': {
-                \     'mode'         : 'MyMode',
-                \     'git_changes'  : 'GitGutterStatus',
-                \     'fugitive'     : 'MyFugitive',
-                \     'readonly'     : 'MyReadonly',
-                \     'ctrlpmark'    : 'CtrlPMark',
-                \     'bufferline'   : 'MyBufferline',
-                \     'fileformat'   : 'MyFileformat',
-                \     'fileencoding' : 'MyFileencoding',
-                \     'filetype'     : 'MyFiletype'
-                \ },
-                \ 'component_expand': {
-                \     'syntastic': 'SyntasticStatuslineFlag',
-                \ },
-                \ 'component_type': {
-                \     'syntastic': 'middle',
-                \ },
-                \ 'subseparator': {
-                \     'left': '|', 'right': '|'
-                \ }
-                \ }
-    " }}}
     " {{{
     let g:lightline.mode_map = {
                 \ 'n'      : ' N ',
@@ -1831,24 +1644,6 @@ if neobundle#tap('lightline.vim')
     call neobundle#untap()
 endif
 " LightLine }}}
-" #### nathanaelkane/vim-indent-guides {{{ removed
-if neobundle#tap('vim-indent-guides')
-    let g:indent_guides_start_level           = 2
-    let g:indent_guides_guide_size            = 1
-    let g:indent_guides_enable_on_vim_startup = 1
-    call neobundle#untap()
-endif
-" }}}
-" #### Yggdroot/indentLine {{{
-if neobundle#tap('indentLine')
-    let g:indentLine_color_term = 239
-    function! neobundle#tapped.hooks.on_source(bundle)
-        Autocmd InsertEnter * IndentLinesDisable
-        Autocmd InsertLeave * IndentLinesEnable
-    endfunction
-    call neobundle#untap()
-endif
-" }}}
 " }}}
 
 " ## File Management {{{
@@ -1966,10 +1761,6 @@ if neobundle#tap('vim-easymotion')
         let g:EasyMotion_keys = ';HKLYUIONM,WERTXCVBASDGJF'
         " Do not shade
         let g:EasyMotion_do_shade = 0
-        " Use upper case
-        let g:EasyMotion_use_upper = 1
-        " Smartcase
-        let g:EasyMotion_smartcase = 1
         " Smartsign
         let g:EasyMotion_use_smartsign_us = 1
         " keep cursor column
@@ -1978,9 +1769,6 @@ if neobundle#tap('vim-easymotion')
         let g:EasyMotion_skipfoldedline = 0
         " pseudo-migemo
         let g:EasyMotion_use_migemo = 0
-        " Jump to first with enter & space
-        " let g:EasyMotion_enter_jump_first = 1
-        let g:EasyMotion_space_jump_first = 1
         " Prompt
         let g:EasyMotion_prompt = '{n}> '
         " Highlight cursor
@@ -2016,39 +1804,12 @@ if neobundle#tap('vim-easymotion')
     omap ;z <Plug>(easymotion-s)
 
     " Extend search
-    map  / <Plug>(easymotion-sn)
-    xmap / <Esc><Plug>(easymotion-sn)\v%V
-    omap / <Plug>(easymotion-tn)
     noremap  ;/ /
     nmap ;n <Plug>(easymotion-sn)<C-p>
     map ;N <Plug>(easymotion-bd-n)
 
-    set nohlsearch " use EasyMotion highlight
-    "nmap n <Plug>(easymotion-next)<Plug>(anzu-update-search-status)zv
-    "nmap N <Plug>(easymotion-prev)<Plug>(anzu-update-search-status)zv
-    nmap n <Plug>(easymotion-next)zv
-    nmap N <Plug>(easymotion-prev)zv
-    xmap n <Plug>(easymotion-next)zv
-    xmap N <Plug>(easymotion-prev)zv
 
-    " Replace defaut
-    " smart f & F
-    omap f <Plug>(easymotion-bd-fl)
-    xmap f <Plug>(easymotion-bd-fl)
-    omap F <Plug>(easymotion-Fl)
-    xmap F <Plug>(easymotion-Fl)
-    omap t <Plug>(easymotion-tl)
-    xmap t <Plug>(easymotion-tl)
-    omap T <Plug>(easymotion-Tl)
-    xmap T <Plug>(easymotion-Tl)
-
-    " Extend hjkl
-    map ;h <Plug>(easymotion-linebackward)
-    map ;j <Plug>(easymotion-j)
-    map ;k <Plug>(easymotion-k)
-    map ;l <Plug>(easymotion-lineforward)
-
-    " Anywhere!
+        " Anywhere!
     " map <Space><Space> <Plug>(easymotion-jumptoanywhere)
 
     " Repeat last motion
@@ -2066,13 +1827,6 @@ if neobundle#tap('vim-easymotion')
                 \ '<Plug>(easymotion-next)' : '<TAB>'
     nmap <expr>' EasyMotion#is_active() ?
                 \ '<Plug>(easymotion-prev)' : "'"
-
-    " Extene word motion
-    map  ;w  <Plug>(easymotion-bd-wl)
-    map  ;e  <Plug>(easymotion-bd-el)
-    omap ;b  <Plug>(easymotion-bl)
-    " omap ;ge <Plug>(easymotion-gel)
-    map ;ge <Plug>(easymotion-gel)
 
     function! s:wrap_M()
         let current_line = getline('.')
@@ -2111,17 +1865,6 @@ if neobundle#tap('vim-easymotion')
     xnoremap <silent>;1
                 \ :<C-u>call EasyMotion#User(g:empattern.syntax , 1, 2, 1)<CR>
     "}}}
-
-    function! EasyMotionMigemoToggle() "{{{
-        if !exists(g:EasyMotion_use_migemo) && g:EasyMotion_use_migemo == 1
-            let g:EasyMotion_use_migemo = 0
-            echo 'Turn Off migemo'
-        else
-            let g:EasyMotion_use_migemo = 1
-            echo 'Turn On migemo'
-        endif
-    endfunction
-    command! -nargs=0 EasyMotionMigemoToggle :call EasyMotionMigemoToggle() "}}}
 
     call neobundle#untap()
 endif
@@ -2366,40 +2109,9 @@ endif
 
 " end Plugins }}}
 
-" Initialize directories {{{===========
-function! InitializeDirectories()
-    let dir_list = {
-                \ 'backup': 'backupdir',
-                \ 'views': 'viewdir',
-                \ 'swap': 'directory' }
-
-    if has('persistent_undo')
-        let dir_list['undo'] = 'undodir'
-    endif
-
-    for [dirname, settingname] in items(dir_list)
-        let directory = s:vimfiles_dir . dirname . '/'
-        if exists("*mkdir")
-            if !isdirectory(directory)
-                call mkdir(directory)
-            endif
-        endif
-        if !isdirectory(directory)
-            echo "Warning: Unable to create backup directory: " . directory
-            echo "Try: mkdir -p " . directory
-        else
-            let directory = substitute(directory, " ", "\\\\ ", "g")
-            exec "set " . settingname . "=" . directory
-        endif
-    endfor
-endfunction
-call InitializeDirectories()
-" }}}
-
 " Finally {{{==========================
-
-if filereadable($HOME.'/_vimrc.last')
-    source $HOME/_vimrc.last
+if filereadable($HOME.'/vimfiles/vimrc')
+    source $HOME/vimfiles/vimrc
 endif
 " Installation check.
 NeoBundleCheck

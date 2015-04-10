@@ -1,0 +1,73 @@
+
+[[plugins]]
+repository = 'kshenoy/vim-signature'
+
+# Unite {{{
+[[plugins]]
+repository = 'Shougo/neomru.vim'
+filetypes  = 'all'
+
+[[plugins]]
+repository = 'Shougo/unite.vim'
+depends    = 'Shougo/neomru.vim'
+    [plugins.commands]
+    name     = 'Unite'
+    complete = 'customlist,unite#complete_source'
+
+[[plugins]]
+repository = 'Shougo/unite-help'
+# }}}
+
+# Snippets / Completion {{{
+[[plugins]]
+repository = 'Shougo/neocomplete'
+depends    = 'Shougo/context_filetype.vim'
+insert     = 1 # Autoload when enter in insert mode
+# }}}
+# UI {{{
+[[plugins]]
+repository = 'itchyny/lightline.vim'
+
+
+[[plugins]]
+repository = 'w0ng/vim-hybrid'
+# }}}
+
+# Development {{{
+# ## SQL{{{
+[[plugins]]
+repository = 'sqlserver.vim'
+filetypes  = 'sql'
+# ## }}}
+# ## Powershell {{{
+[[plugins]]
+repository = 'PProvost/vim-ps1'
+# ## }}}
+# ## Git {{{
+[[plugins]]
+repository = 'tpope/vim-fugitive'
+
+[[plugins]]
+repository = 'airblade/vim-gitgutter'
+
+[[plugins]]
+repository = 'gregsexton/gitv'
+depends    = 'tpope/vim-fugitive'
+commands   = 'Gtiv'
+
+[[plugins]]
+repository = 'rhysd/committia.vim'
+# ## }}}
+# ## Rust {{{
+[[plugins]]
+repository = 'rust-lang/rust.vim'
+#filetype   = 'rs'
+# ## }}}
+# }}}
+
+# Filetypes {{{
+[[plugins]]
+repository = 'cespare/vim-toml'
+filetypes = 'toml'
+# }}}
+# vim: set foldmethod=marker:
