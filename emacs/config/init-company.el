@@ -1,4 +1,4 @@
-(my-require-packages '(company))
+(require-package 'company)
 (require 'company)
 
 (setq company-tootltip-flip-when-above t)

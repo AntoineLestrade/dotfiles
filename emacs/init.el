@@ -4,7 +4,7 @@
 ;; Author: Antoine Lestrade <antoine.lestrade@gmail.com>
 ;; Version 0.0.1
 
-;;; Commentary
+;;; Commentary:
 ;;
 
 ;;; Code:
@@ -17,6 +17,54 @@
 
 (add-to-list 'load-path my-modules-dir)
 
+(require 'init-benchmarking)
+
+;; Bootstrap config
+(require 'init-site-lisp)
+(require 'init-packages)
+
+(require-package 'wgrep) ;; Modify files directry in grep buffer
+(require-package 'wgrep-ag)
+;; TODO test it
+(require-package 'project-local-variables)
+(require-package 'diminish)
+
+
+(require 'init-themes)
+(require 'init-ui)
+(require 'init-dired)
+(require 'init-isearch)
+(require 'init-grep)
+(require 'init-uniquify)
+(require 'init-ibuffer)
+(require 'init-flycheck)
+
+(require 'init-recentf)
+(require 'init-ido)
+(require 'init-hippie-expand)
+(require 'init-company)
+(require 'init-windows)
+
+(require 'init-editor)
+
+(require 'init-vc)
+(require 'init-git)
+
+(require 'init-web)
+(require 'init-javascript)
+(require 'init-org)
+;;(require 'init-xml)
+
+;;(require 'init-ahk)
+(require 'init-csharp)
+(require 'init-powershell)
+
+
+;; Allow access from emacsclient
+(require 'server)
+(unless (server-running-p)
+  (server-start))
+
 ;; Reduce the frequency of garbage collection by making it happen on
 ;; each 50MB of allocated data (the default is on every 0.76MB)
 (setq gc-cons-threshold 50000000)
@@ -28,18 +76,10 @@
 (if (file-exists-p (expand-file-name "custom.el" current-config-dir))
     (load (expand-file-name "custom.el" current-config-dir)))
 
-(require 'init-packages)
-(require 'init-custom)
-(require 'init-ui)
-(require 'init-core)
-
-(require 'init-editor)
-
-;; packages
-(require 'init-ido)
-(require 'init-company)
-
-(require 'init-csharp)
+(add-hook 'after-init-hook
+          (lambda ()
+            (message "init completed in %.2fms"
+                     (myconfig/time-substract-millis after-init-time before-init-time))))
 
 (provide 'init)
 ;;; init.el ends here

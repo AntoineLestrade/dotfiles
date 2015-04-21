@@ -1,16 +1,16 @@
+emacs/.emacs.desktop
+emacs/.session
+emacs/.smex-items
 emacs/auto-save-list
-emacs/cache
-emacs/data
 emacs/elpa
 emacs/eshell
+emacs/history
+emacs/ido.last
 emacs/places
-emacs/recentf
-emacs/projectile.cache
 emacs/projectile-bookmarks.eld
-emacs/custom.el
+emacs/recentf
 emacs/savefiles
-emacs/tramp
-emacs/bookmarks
+emacs/server
 
 vim/backup
 vim/plugged
