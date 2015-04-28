@@ -58,6 +58,7 @@
 ;;(require 'init-ahk)
 (require 'init-csharp)
 (require 'init-powershell)
+(require 'init-rust)
 
 
 ;; Allow access from emacsclient

@@ -5,3 +5,6 @@
     path = emacs/site-lisp/magit
     url = git://github.com/magit/magit.git
     branch = next
+[submodule "emacs/racer"]
+	path = emacs/racer
+	url = https://github.com/phildawes/racer.git

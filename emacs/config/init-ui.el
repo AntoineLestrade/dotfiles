@@ -9,7 +9,7 @@
 ;; TODO: to check
 (setq inhibit-startup-echo-area-message t)
 
-(setq indicate-empty-lines t)
+(setq-default indicate-empty-lines t)
 
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))

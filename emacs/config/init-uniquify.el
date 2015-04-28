@@ -1,3 +1,8 @@
+;;; init-uniquify.el --- My emacs config: Uniquify
+;;; Commentary:
+;;;     This file contains unniquify settings
+;;; Code:
+
 (require 'uniquify)
 
 ;;(setq uniquify-buffer-name-style 'forward)
@@ -12,4 +17,4 @@
 
 
 (provide 'init-uniquify)
-
+;;; init-uniquify.el ends here

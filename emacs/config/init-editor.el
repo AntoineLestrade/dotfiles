@@ -20,6 +20,8 @@
 (column-number-mode t)
 (size-indication-mode t)
 
+;; smart tab behaviour: first time indent, next time complete:
+(setq tab-always-indent 'complete)
 
 ;;; ediff
 (setq-default ediff-split-window-function 'split-window-horizontally)
