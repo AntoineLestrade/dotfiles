@@ -74,7 +74,8 @@
 ;; (setq browse-kill-ring-separator "\f")
 ;; (after-load 'page-break-lines
 ;;   (push 'browse-kill-ring-mode page-break-lines-modes))
-
+(browse-kill-ring-default-keybindings)
+(global-set-key (kbd "M-y") 'browse-kill-ring)
 
 ;; smart pairing
 (require-package 'smartparens)

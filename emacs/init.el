@@ -55,7 +55,7 @@
 (require 'init-org)
 ;;(require 'init-xml)
 
-;;(require 'init-ahk)
+(require 'init-ahk)
 (require 'init-csharp)
 (require 'init-powershell)
 (require 'init-rust)
