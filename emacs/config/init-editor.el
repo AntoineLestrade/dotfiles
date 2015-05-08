@@ -9,7 +9,7 @@
 	      tab-width 8)
 (setq-default require-final-newline t)
 
-(add-hook 'prod-mode-hook
+(add-hook 'prog-mode-hook
           '(lambda ()
              (setq show-trailing-whitespace t)))
 
