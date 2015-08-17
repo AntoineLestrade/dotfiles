@@ -1,10 +1,14 @@
 (require-package 'magit)
-(require-package 'git-commit-mode)
-(require-package 'git-rebase-mode)
+;(require-package 'git-commit-mode) TODO: Check (removed?)
+;(require-package 'git-rebase-mode)
 (require-package 'gitignore-mode)
 (require-package 'gitconfig-mode)
 (require-package 'git-messenger)
 (require-package 'git-timemachine)
+
+(when (string= system-type "windows-nt")
+  (setenv "GIT_ASKPASS" "git-gui--askpass"))
+
 
 (setq-default
  magit-diff-refine-hunk t
