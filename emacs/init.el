@@ -10,9 +10,19 @@
 ;;; Code:
 
 ;; Define variables for some directories
-(defvar current-config-dir (file-name-directory load-file-name))
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
+(defvar current-config-dir (file-name-directory load-file-name)
+  "Directory containing the currently loaded init.el file."
+  )
 (defvar loc-saves-dir (expand-file-name "savefiles" current-config-dir))
-(defvar my-modules-dir (expand-file-name "config" current-config-dir))
+(defvar my-modules-dir (expand-file-name "config" current-config-dir)
+  "Directory containing extra initialization scripts.")
 (defvar loc-cache-dir (expand-file-name "cache" current-config-dir))
 
 (add-to-list 'load-path my-modules-dir)
@@ -20,7 +30,6 @@
 (require 'init-benchmarking)
 
 ;; Bootstrap config
-(require 'init-site-lisp)
 (require 'init-packages)
 
 (require-package 'wgrep) ;; Modify files directry in grep buffer

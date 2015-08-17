@@ -11,6 +11,7 @@ emacs/projectile-bookmarks.eld
 emacs/recentf
 emacs/savefiles
 emacs/server
+emacs/custom.el
 
 vim/backup
 vim/plugged
