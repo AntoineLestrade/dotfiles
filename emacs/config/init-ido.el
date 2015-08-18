@@ -7,7 +7,11 @@
       ido-use-virtual-buffers t)
 
 (require-package 'ido-ubiquitous)
+(require 'ido-ubiquitous)
 (ido-ubiquitous-mode 1)
+
+(require-package 'flx-ido)
+(flx-ido-mode +1)
 
 (require-package 'smex)
 (setq smex-save-file (expand-file-name ".smex-items" user-emacs-directory))

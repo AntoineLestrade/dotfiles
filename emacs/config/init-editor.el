@@ -2,6 +2,10 @@
 ;;; Commentary:
 ;;; Code:
 
+(require-package 'page-break-lines)
+(global-page-break-lines-mode)
+(diminish 'page-break-lines-mode)
+
 (when (fboundp 'electric-pair-mode)
   (electric-pair-mode))
 
