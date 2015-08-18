@@ -8,6 +8,7 @@ emacs/history
 emacs/ido.last
 emacs/places
 emacs/projectile-bookmarks.eld
+emacs/projectile.cache
 emacs/recentf
 emacs/savefiles
 emacs/server
