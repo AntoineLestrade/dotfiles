@@ -6,7 +6,7 @@
 (require-package 'git-messenger)
 (require-package 'git-timemachine)
 
-(when (string= system-type "windows-nt")
+(when (eq system-type 'windows-nt)
   (setenv "GIT_ASKPASS" "git-gui--askpass"))
 
 

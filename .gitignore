@@ -1,15 +1,8 @@
-emacs/.emacs.desktop
-emacs/.session
-emacs/.smex-items
 emacs/auto-save-list
+emacs/cache
 emacs/elpa
 emacs/eshell
-emacs/history
-emacs/ido.last
 emacs/places
-emacs/projectile-bookmarks.eld
-emacs/projectile.cache
-emacs/recentf
 emacs/savefiles
 emacs/server
 emacs/custom.el

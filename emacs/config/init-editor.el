@@ -112,7 +112,27 @@
 ;;(setq guide-key/guide-key-sequence '("C-x" "C-c" "C-x 4" "C-x 5" "C-c ;" "C-c ; f" "C-c ' f" "C-x n" "C-x C-r" "C-x r"))
 ;;(guide-key-mode 1)
 ;;(diminish 'guide-key-mode)
+
 
+(require 'recentf)
 
+(setq recentf-save-file (expand-file-name "recentf" loc-cache-dir)
+      recentf-max-saved-items 500
+      recentf-max-menu-items 15
+      ;; disable recentf-cleanup on Emacs start, because it can cause problems with remote files
+      recentf-auto-cleanup 'never)
+
+(recentf-mode +1)
+
+
+
+(require-package 'projectile)
+(setq projectile-cache-file (expand-file-name "projectile.cache" loc-cache-dir)
+      projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" loc-cache-dir))
+(when (eq system-type 'windows-nt)
+  (setq projectile-indexing-method 'alien))
+(projectile-global-mode t)
+
+
 (provide 'init-editor)
 ;;; init-editor.el ends here

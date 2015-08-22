@@ -48,7 +48,6 @@
 (require 'init-ibuffer)
 (require 'init-flycheck)
 
-(require 'init-recentf)
 (require 'init-ido)
 (require 'init-hippie-expand)
 (require 'init-company)
@@ -69,6 +68,7 @@
 (require 'init-powershell)
 (require 'init-rust)
 
+(require 'init-programming-misc)
 
 ;; Allow access from emacsclient
 (require 'server)
