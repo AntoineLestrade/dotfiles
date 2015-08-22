@@ -1,11 +1,10 @@
 redmine_url_begin = https://code.alten.be/redmine/projects/
 redmine_url_end = /issues
 
-;opera_path = "C:\Program Files (x86)\Opera\launcher.exe"
 browser_path = "C:\Program Files (x86)\Mozilla Firefox\firefox.exe"
-;browser_path = "C:\Program Files (x86)\Opera Developer\launcher.exe"
 code_home = C:\code\
-conemu_exe = "C:\Program Files\Far Manager\ConEmu64.exe"
+;conemu_exe = "C:\Program Files\Far Manager\ConEmu64.exe"
+conemu_exe = "c:/Program Files/ConEmu/ConEmu64.exe"
 
 #+t::
 	MsgBox "Run the example"
@@ -28,7 +27,7 @@ conemu_exe = "C:\Program Files\Far Manager\ConEmu64.exe"
 return
 
 #+p::
-	Gui, Add, DropDownList, vProject, Mercedes_Wips|Oda|Mercedes_BER|Mercedes_LOS|CNOA|Athlon_CarSwitch
+	Gui, Add, DropDownList, vProject, Mercedes_Event|Mercedes_Wips|Oda|Mercedes_BER|Mercedes_LOS|CNOA|Athlon_CarSwitch
 	Gui, Add, Button, default, OK
 	Gui, Add, Button,,Cancel
 	Gui, Show,, Choose project
@@ -39,6 +38,13 @@ ButtonOK:
 	If IsLabel("Case-" . Project) {
 		Loop 1 {
 			Goto Case-%Project%
+                Case-Mercedes_Event:
+                  project_name := "event-manager"
+                    code_path  := code_home . "Mercedes\" . project_name
+                    redmine_path := "mercedes-" . project_name
+                    sol_name := "mercedes-" . project_name . ".sln"
+                          local_url := "http://merecedes-event-manager.local"
+                          break
 		Case-Mercedes_Wips:
 			project_name := "mercedes-wips"
 			code_path    := code_home . "Mercedes\" . project_name
@@ -48,10 +54,10 @@ ButtonOK:
 			break
 		Case-ODA:
 			project_name := "archi-on-web"
-			code_path	 := code_home . "Ordre des Architectes\" . project_name
+			code_path	 := code_home . "CFGOA\" . project_name
 			redmine_name := project_name
 			sol_name     := project_name . "2.sln"
-			local_url	 := "http://www.archi-on-web.local"
+			local_url	 := "http://archi-on-web.local"
 			break
 		Case-Mercedes_BER:
 			project_name := "mercedes-ber"
