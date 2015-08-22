@@ -1,4 +1,11 @@
+;;; init-benchmarking.el --- Module to benchmark emacs initialization steps
+;;; Commentary:
+;;;  Benchmark time consumed by each 'require' call
+;;;  This benchmark is stored in the 'myconfig/require-times' variable
+;;; Code:
+
 (defun myconfig/time-substract-millis (b a)
+  "Internal function to get time ellapsed between B and A in milliseconds."
   (* 1000.0 (float-time (time-subtract b a))))
 
 (defvar myconfig/require-times nil
@@ -20,4 +27,4 @@ LOAD-DURATION is the time taken in milliseconds to load FEATURE.")
                      t)))))
 
 (provide 'init-benchmarking)
-;;; init-benchmarking ends here;
+;;; init-benchmarking ends here
