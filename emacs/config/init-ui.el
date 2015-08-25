@@ -39,6 +39,13 @@
 (add-hook 'term-mode-hook
           (lambda ()
             (setq line-spacing 0)))
+
+
+;;(require-package 'smart-mode-line)
+;;(setq sml/no-confirm-load-theme t)
+;;;; delegate theming to the currently active theme
+;;(setq sml/theme nil)
+;;(add-hook 'after-init-hook #'sml/setup)
 
 (provide 'init-ui)
 ;;; init-ui.el ends here

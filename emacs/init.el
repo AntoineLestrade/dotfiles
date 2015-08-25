@@ -48,12 +48,13 @@
 (require 'init-ibuffer)
 (require 'init-flycheck)
 
-(require 'init-ido)
+;;(require 'init-ido)
 (require 'init-hippie-expand)
 (require 'init-company)
 (require 'init-windows)
 
 (require 'init-editor)
+;;(require 'init-evil)
 
 (require 'init-vc)
 (require 'init-git)
@@ -69,6 +70,7 @@
 (require 'init-rust)
 
 (require 'init-programming-misc)
+(require 'init-helm)
 
 ;; Allow access from emacsclient
 (require 'server)
@@ -93,3 +95,7 @@
 
 (provide 'init)
 ;;; init.el ends here
+
+;; Local Variables:
+;; no-byte-compile: t
+;; End:

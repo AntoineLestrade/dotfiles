@@ -7,6 +7,7 @@
 ;;;      smex: remember recently and most frequently used commands
 ;;;; Code:
 (require 'ido)
+(require-package 'ido-vertical-mode)
 (ido-mode 1)
 (ido-everywhere t)
 (setq ido-enable-flex-matching t
@@ -47,4 +48,8 @@
 ;;(global-set-key (kbd "M-X") 'smex-major-mode-commands)
 
 (provide 'init-ido)
-;;; init-ido.el ends here.
+;;; init-ido.el ends here
+
+;; Local Variables:
+;; no-byte-compile: t
+;; End:

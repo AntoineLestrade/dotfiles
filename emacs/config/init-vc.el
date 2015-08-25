@@ -10,3 +10,7 @@
 
 (provide 'init-vc)
 ;;; init-vc.el ends here
+
+;; Local Variables:
+;; no-byte-compile: t
+;; End:

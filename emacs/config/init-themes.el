@@ -2,7 +2,8 @@
 (require-package 'color-theme-sanityinc-tomorrow)
 (require-package 'moe-theme)
 
-(setq-default custom-enabled-themes '(sanityinc-tomorrow-night))
+;(setq-default custom-enabled-themes '(sanityinc-tomorrow-night))
+(setq-default custom-enabled-themes '(sanityinc-tomorrow-day))
 
 (defun reapply-themes ()
   "Forcibly load the themes listed in `custom-enabled-themes'."
@@ -14,3 +15,4 @@
 (add-hook 'after-init-hook 'reapply-themes)
 
 (provide 'init-themes)
+;;; init-themes.el ends here
