@@ -21,14 +21,18 @@
 ;    (setq racer-cmd (expand-file-name "racer/target/release/racer.exe" current-config-dir))
 ;    (setq racer-rust-path "d:/ProgramFiles/Rust_src/src")
                                         ;    ))
-(if (executable-find "racer")
-    (require-package 'racer)
-  (add-hook 'rust-mode-hook
-            (lambda()
-              #'racer-activate
-              #'racer-turn-on-eldoc)
-            )
-  )
+;;(if (executable-find "racer")
+;;    (require-package 'racer)
+;;  (add-hook 'rust-mode-hook
+;;            (lambda()
+;;              #'racer-activate
+;;              #'racer-turn-on-eldoc)
+;;            )
+;;  )
+(require-package 'racer)
+(add-hook 'rust-mode-hook #'racer-mode)
+(add-hook 'racer-mode-hook #'eldoc-mode)
+
 
 ;;(add-hook 'company-mode-hook
 ;;          (lambda ()
@@ -38,3 +42,7 @@
 
 (provide 'init-rust)
 ;;; init-rust.el ends here
+
+;; Local variables:
+;; no-byte-compile: t
+;; End:
