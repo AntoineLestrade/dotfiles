@@ -1,15 +1,11 @@
 " vim: set foldmethod=marker et sts=4 sw=4:
+let g:is_nvim = has('nvim')
 " Switches {{{
 let g:enable_cursorline = 0
 let g:echo_startup_time = 1
-let g:enable_completion = 1
-
+let g:enable_completion = has('lua') && !g:is_nvim
 let g:has_persistent_undo = has('persistent_undo')
 " }}}
-
-function! s:source_rc(path) " {{{
-    execute 'source' fnameescape(expand('~/vimfiles/rc/' . a:path))
-endfunction " }}}
 
 " Startup {{{
 if g:echo_startup_time && has('vim_starting') && has('reltime')
@@ -19,26 +15,27 @@ endif
 " }}}
 " Initialization {{{
 let g:is_windows = has('win32') || has('win64')
-" if empty($MYVIMRC)
-"     let $MYVIMRC = substitute($VIMINIT, "^source ", "", "g")
-"     let g:rc_dir = strpart($MYVIMRC, 0, strridx($MYVIMRC, (g:is_windows ? '\' : '/')))
-" elseif has('win32') || has('win64')
-"     let  g:rc_dir = strpart($MYVIMRC, 0, strridx($MYVIMRC, (g:is_windows ? '\' : '/'))) . '/vimfiles'
-" else
-"     let g:rc_dir = strpart($MYVIMRC, 0, strridx($MYVIMRC, (g:is_windows ? '\' : '/'))) . '/.vim'
-" endif
-if g:is_windows
-    let g:rc_dir = $HOME.'/vimfiles'
-    let $CACHE = $HOME.'/vimcache'
+if g:is_nvim
+    if g:is_windows
+        let g:rc_dir = $HOME.'/_nvim'
+        let $CACHE = $HOME.'/nvimcache'
+    else
+        let g:rc_dir = $HOME.'/.nvim'
+        let $CACHE = $HOME.'/.nvimcache'
+    endif
 else
-    let g:rc_dir = $HOME.'/.vim'
-    let $CACHE = $HOME.'/.vimcache'
+    if g:is_windows
+        let g:rc_dir = $HOME.'/vimfiles'
+        let $CACHE = $HOME.'/vimcache'
+    else
+        let g:rc_dir = $HOME.'/.vim'
+        let $CACHE = $HOME.'/.vimcache'
+    endif
 endif
 let s:neobundle_dir = expand('$CACHE/neobundle')
-"let g:plugins_dir = g:rc_dir.'/plugged'
-"let g:plugins_dir = $HOME.'/system-settings/vim/plugged'
-"let g:vim_plug_dir = g:plugins_dir.'/vim-plug'
-"let &runtimepath = g:rc_dir.','.g:vim_plug_dir.','.&runtimepath
+function! s:source_rc(path) " {{{
+    execute 'source' fnameescape(expand(g:rc_dir . '/rc/' . a:path))
+endfunction " }}}
 " }}} Initialization
 " Plugins {{{
 if !isdirectory(expand($CACHE))
@@ -50,37 +47,22 @@ if !isdirectory(expand($CACHE))
 endif
 
 " ## Initialize
-set runtimepath+=~/vimcache/neobundle/neobundle.vim
-if 0 " has('vim_starting')
-    if finddir('neobundle.vim','.;') != ''
-        execute 'set runtimepath^=' . 
-                    \ fnamemodify(finddir('neobundle.vim', '.;'), ':p')
-    elseif &runtimepath !~ '/neobundle.vim'
-        if !isdirectory(s:neobundle_dir.'/neobundle.vim')
-            execute '!git clone git://github.com/Shougo/neobundle.vim.git '.s:neobundle_dir.'/neobundle.vim'
-        endif
-        execute 'set runtimepath^='.s:neobundle_dir.'/neobundle.vim'
-    endif
-endif
+execute 'set runtimepath+='.s:neobundle_dir.'/neobundle.vim'
 
 call neobundle#begin(s:neobundle_dir)
-if neobundle#has_cache()
-    NeoBundleLoadCache
-else
+if neobundle#load_cache()
     NeoBundleFetch 'Shougo/neobundle.vim'
-    NeoBundle 'Shougo/vimproc.vim'
-"    NeoBundle 'Shougo/vimproc.vim', {
-"                \ 'build': {
-"                \       'windows': 'tools\\update-dll-mingw',
-"                \       'cygwin': 'make -f make_cygwin.mak',
-"                \       'unix': 'make -f make_unix.mak',
-"                \ }
-"                \}
+    NeoBundle 'Shougo/vimproc.vim', {
+                \ 'build': {
+                \       'windows': 'tools\\update-dll-mingw',
+                \       'cygwin': 'make -f make_cygwin.mak',
+                \       'unix': 'make -f make_unix.mak',
+                \   }
+                \ }
 
     "call neobundle#load_toml('~/vimfiles/rc/neobundle.toml', { 'lazy':  1 })
     call neobundle#load_toml(expand(g:rc_dir.'/rc/neobundle.toml'))
-
-    " NeoBundleSaveCache
+    NeoBundleSaveCache
 endif
 
 call s:source_rc('plugins.vim')
@@ -173,42 +155,9 @@ endfunction " }}}
 autocmd BufWinEnter,ColorScheme * call s:hl_trailing_spaces()
 " ## }}}
 " }}}
-" Key bindings {{{
-nnoremap ^ :
-let mapleader=","
+call s:source_rc('mappings.vim')
 
-imap jk <Esc>
-omap jk <Esc>
-cmap jk <Esc>
-
-" ## Folding {{{
-nmap <leader>f0 :set foldlevel=0<CR>
-nmap <leader>f1 :set foldlevel=1<CR>
-nmap <leader>f2 :set foldlevel=2<CR>
-nmap <leader>f3 :set foldlevel=3<CR>
-nmap <leader>f4 :set foldlevel=4<CR>
-nmap <leader>f5 :set foldlevel=5<CR>
-nmap <leader>f6 :set foldlevel=6<CR>
-nmap <leader>f7 :set foldlevel=7<CR>
-nmap <leader>f8 :set foldlevel=8<CR>
-nmap <leader>f9 :set foldlevel=9<CR>
-" ## }}}
-" ## Visual shifting {{
-vnoremap < <gv
-vnoremap > >gv
-" }}
-" }}}
-
-if 0
-
-Plug 'xolox/vim-misc' " Vim-notes dependency
-Plug 'xolox/vim-notes'
-
-Plug 'scrooloose/syntastic'
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+if 0 " {{{
 
 if g:enable_completion && has("lua")
     Plug 'Shougo/neosnippet.vim'
@@ -304,7 +253,7 @@ Plug 'junegunn/vim-oblique'
             autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
             autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
     " }
-  
+
     " Snippets {
             " Use honza's snippets.
             let g:neosnippet#snippets_directory='~/.vim/neosnippets'
@@ -322,7 +271,7 @@ Plug 'junegunn/vim-oblique'
             set completeopt-=preview
     " }
 
-call plug#end()
+call plug#end() " }}}
 end
 
 " Create needed directories {{{
@@ -333,7 +282,7 @@ function! s:initialize_directories() " {{{
     endif
 
     for [dirname, settingname] in items(dir_list)
-        let directory = g:rc_dir . '/' . dirname . '/'
+        let directory = $CACHE . '/' . dirname . '/'
         if exists("*mkdir")
             if !isdirectory(directory)
                 call mkdir(directory)
@@ -353,11 +302,10 @@ call s:initialize_directories()
 
 " Colorscheme {{{
 if has('vim_starting')
-    "syntax enable
     syntax on
     set background=dark
     set t_Co=256
-    if &t_Co < 256 || !has('gui')
+    if (&t_Co < 256 || !has('gui')) && !g:is_nvim
         " colorscheme base16-default
         colorscheme default
     else
@@ -369,6 +317,32 @@ if has('vim_starting')
         endtry
     endif
 endif
+// TODO: Test
+function! EnableLightTheming () " {{{
+    set background=light
+    try
+        colorscheme solarized
+    catch
+        colorscheme default
+    endtry
+    call extend(g:lightline, { 'colorscheme': 'solarized' })
+    call lightline#init()
+    call lightline#colorscheme()
+endfunction " }}}
+command! -bang LightTheming call EnableLightTheming()
+
+function! EnableDarkTheming() " {{{
+    set background=dark
+    try
+        colorscheme hybrid
+    catch
+        colorscheme darkblue
+    endtry
+    call extend(g:lightline, { 'colorscheme': 'jellybeans' })
+    call lightline#init()
+    call lightline#colorscheme()
+endfunction " }}}
+command! -bang DarkTheming call EnableDarkTheming()
 " }}} Colorscheme
 
 " Finally {{{
@@ -377,7 +351,6 @@ if filereadable($HOME.'/_vimrc.last')
 endif
 
 " ## Unlet useless variables {{{
-"
 unlet g:echo_startup_time
 unlet g:has_persistent_undo
 " ## }}}

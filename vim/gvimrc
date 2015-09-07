@@ -1,5 +1,6 @@
 
-set guifont=DejaVu_Sans_Mono_for_Powerline
+" set guifont=DejaVu_Sans_Mono_for_Powerline
+set guifont=Consolas
 " Gui options
 " default windows: egmrLtT
 " default unix aegimrLtT

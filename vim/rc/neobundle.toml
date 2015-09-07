@@ -2,7 +2,16 @@
 [[plugins]]
 repository = 'kshenoy/vim-signature'
 
+[[plugins]]
+repository = 'tpope/vim-dispatch'
+
 # Unite {{{
+[[plugins]]
+repository = 'Shougo/unite-outline'
+
+[[plugins]]
+repository = 'tsukkee/unite-tag'
+
 [[plugins]]
 repository = 'Shougo/neomru.vim'
 filetypes  = 'all'
@@ -28,10 +37,21 @@ insert     = 1 # Autoload when enter in insert mode
 [[plugins]]
 repository = 'itchyny/lightline.vim'
 
-
+# ## Colorschemes {{{
 [[plugins]]
 repository = 'w0ng/vim-hybrid'
+
+[[plugins]]
+repository = 'chriskempson/base16-vim'
+
+[[plugins]]
+repository = 'altercation/vim-colors-solarized'
+# ## }}}
 # }}}
+
+[[plugins]]
+repository = 'xolox/vim-notes'
+depends    = 'xolox/vim-misc'
 
 # Development {{{
 # ## SQL{{{
@@ -58,11 +78,22 @@ commands   = 'Gtiv'
 [[plugins]]
 repository = 'rhysd/committia.vim'
 # ## }}}
-# ## Rust {{{
+## Rust {{{
 [[plugins]]
 repository = 'rust-lang/rust.vim'
-#filetype   = 'rs'
+filetype   = 'rs'
+
+[[plugins]]
+repository = 'phildawes/racer'
+
 # ## }}}
+# ## Syntastic {{{
+[[plugins]]
+repository = 'srooloose/syntastic'
+
+[[plugins]]
+repository = 'syngan/vim-vimlint'
+depends    = 'ynkdir/vim-vimlparser'
 # }}}
 
 # Filetypes {{{
@@ -70,4 +101,9 @@ repository = 'rust-lang/rust.vim'
 repository = 'cespare/vim-toml'
 filetypes = 'toml'
 # }}}
+
+# TODO: TO TEST
+[[plugins]]
+repository = "OrangeT/vim-csharp"
+
 # vim: set foldmethod=marker:
