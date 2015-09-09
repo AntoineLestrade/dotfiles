@@ -54,7 +54,7 @@
 (require 'init-windows)
 
 (require 'init-editor)
-;;(require 'init-evil)
+(require 'init-evil)
 
 (require 'init-vc)
 (require 'init-git)

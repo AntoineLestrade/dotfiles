@@ -1,3 +1,7 @@
+;;; init-magit.el --- .
+;;; Commentary:
+;;; Code:
+
 (require-package 'magit)
 ;(require-package 'git-commit-mode) TODO: Check (removed?)
 ;(require-package 'git-rebase-mode)
@@ -12,8 +16,8 @@
 
 (setq-default
  magit-diff-refine-hunk t
- magit-completing-read-function 'magit-ido-completing-read)
-(setq magit-last-seen-setup-instructions "1.4.0")
+ magit-completing-read-function 'helm-completing-read-with-cands-in-buffer)
+;;(setq magit-last-seen-setup-instructions "1.4.0")
 
 (global-set-key [(meta f12)] 'magit-status)
 
@@ -35,3 +39,7 @@
 
 (provide 'init-git)
 ;;; init-git.el ends here
+
+;; Local Variables:
+;; no-byte-compile: t
+;; End:
