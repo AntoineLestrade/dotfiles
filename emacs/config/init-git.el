@@ -16,7 +16,9 @@
 
 (setq-default
  magit-diff-refine-hunk t
- magit-completing-read-function 'helm-completing-read-with-cands-in-buffer)
+ ;;magit-completing-read-function 'helm-completing-read-with-cands-in-buffer
+ magit-completing-read-function 'helm--completing-read-default
+)
 ;;(setq magit-last-seen-setup-instructions "1.4.0")
 
 (global-set-key [(meta f12)] 'magit-status)
