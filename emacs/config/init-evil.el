@@ -72,6 +72,10 @@
 (define-key evil-normal-state-map (kbd "C-S-u") 'al/evil-scroll-up-other-window)
 
 
+;; Anzu improvments
+(require-package 'evil-anzu)
+(require 'evil-anzu)
+
 
 
 (provide 'init-evil)

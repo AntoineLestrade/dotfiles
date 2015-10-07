@@ -8,3 +8,7 @@
 
 (provide 'init-ahk)
 ;;; init-ahk ends here
+
+;; Local variables:
+;;   no-byte-compile: t
+;; End:

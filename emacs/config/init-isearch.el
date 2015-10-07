@@ -1,3 +1,12 @@
+;;; init-isearch.el --- Emacs config: Search
+;;; Copyright (c) 2015 Antoine Lestrade
+;;;
+;;; Author: Antoine Lestrade <antoine.letrade@gmail.com>
+;;; Version 0.0.1
+;;; Commentary:
+;;;
+;;; Code:
+
 ;; Show number of matches when search
 (require-package 'anzu)
 (global-anzu-mode t)
@@ -29,3 +38,7 @@
 
 (provide 'init-isearch)
 ;;; init-isearch.el ends here.
+
+;; Local Variables:
+;; no-byte-compile: t
+;; End:
