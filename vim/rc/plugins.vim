@@ -115,6 +115,11 @@ if neobundle#tap('sqlserver.vim') " {{{
 endif " }}}
 " ## }}}
 " ## Rust {{{
+if neobundle#tap('rust') " {{{
+    let g:rust_fold = 1
+    let g:ftplugin_rust_sourc_path = 'D:/ProgramFiles/Rust_src/src'
+    call neobundle#untap()
+endif " }}}
 if neobundle#tap('racer') " {{{
     let g:racer_cmd = "racer.exe"
     let $RUST_SRC_PATH="D:/ProgramFiles/Rust_src/src"

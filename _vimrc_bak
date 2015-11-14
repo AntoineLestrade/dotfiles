@@ -185,10 +185,6 @@ endif
 " }}}
 " }}}
 
-if filereadable(expand("~/_vimrc.local_before"))
-    source ~/_vimrc.local_before
-endif
-
 " NeoBundle {{{=======================
 " Maybe interessant other Plugin manager: https://github.com/junegunn/vim-plug
 " ## AutoInstall {{{
@@ -1031,8 +1027,6 @@ call neobundle#end()
 " END Plugin}}}
 
 " Vim Setup {{{========================
-filetype plugin indent on
-
 " ## Basic Options {{{
 set display=lastline           " display as mutch as possible of the last line
 "set list
@@ -1052,11 +1046,6 @@ if has('clipboard')
     endif
 endif
 " }}}
-
-" ## Encoding {{{
-set encoding=utf-8
-set termencoding=utf-8
-"}}}
 
 " ## Folding {{{
 "set foldcolumn=0
@@ -1154,22 +1143,12 @@ nmap <Del> "_dl
 " }}}
 
 " Highlight End-of-Line {{{
-function! s:hl_trailing_spaces() "{{{
-    highlight! link TrailingSpaces Error
-    syntax match TrailingSpaces containedin=ALL /\s\+$/
-endfunction "}}}
-
-Autocmd BufWinEnter,ColorScheme * call s:hl_trailing_spaces()
-
 function! s:remove_trailing_white_spaces()
     let pos = winsaveview()
     execute '%s/\s\+$//g'
     call winrestview(pos)
 endfunction
 command! RemoveTrailingWhiteSpaces call <SID>remove_trailing_white_spaces()
-command! -range=% TrimSpace  <line1>,<line2>s!\s*$!!g | nohlsearch
-" remove trail ^M
-command! -range=% RemoveTrailM  <line1>,<line2>s!\r$!!g | nohlsearch
 "}}}
 
 " ## TabLine {{{
@@ -1429,9 +1408,6 @@ if neobundle#tap('unite-outline')
     let g:unite_source_outline_ctags_program = 'c:/NoInstall_Programs/ctags58/ctags.exe'
     call neobundle#untap()
 endif
-" }}}
-" #### Vimproc {{{
-
 " }}}
 " #### Shougo/vimfiler.vim {{{
 if neobundle#tap('vimfiler.vim')
@@ -1999,12 +1975,6 @@ if neobundle#tap('tagbar')
     call neobundle#untap()
 endif
 "}}}
-" #### rust-lang/rust {{{
-if neobundle#tap('rust')
-    let g:rust_fold = 1
-    call neobundle#untap()
-endif
-" }}}
 " }}}
 
 " ## Web development {{{
@@ -2110,9 +2080,6 @@ endif
 " end Plugins }}}
 
 " Finally {{{==========================
-if filereadable($HOME.'/vimfiles/vimrc')
-    source $HOME/vimfiles/vimrc
-endif
 " Installation check.
 NeoBundleCheck
 if !has('vim_starting')
@@ -2574,5 +2541,137 @@ endfunction
 " }
 endif
 "}}}
+
+
+
+
+" ======================================
+" Refactoring from new
+" ======================================
+if 0 " {{{
+
+Plug 'xolox/vim-misc' " Vim-notes dependency
+Plug 'xolox/vim-notes'
+
+Plug 'scrooloose/syntastic'
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+if g:enable_completion && has("lua")
+    Plug 'Shougo/neosnippet.vim'
+    Plug 'Shougo/neosnippet-snippets'
+    Plug 'Shougo/neocomplete.vim' " {{{
+    let g:neocomplete_enable_fuzzy_completion_start_length = 1
+
+            let g:neocomplete#force_overwrite_completefunc = 1
+    " }}}
+endif
+
+Plug 'kana/vim-textobj-user'
+Plug 'thinca/vim-quickrun'
+Plug 'osyo-manga/vim-precious' " {{{
+let g:markdown_fenced_languages = [
+    \  'coffee',
+    \  'css',
+    \  'erb=eruby',
+    \  'javascript',
+    \  'js=javascript',
+    \  'json=javascript',
+    \  'ruby',
+    \  'sass',
+    \  'xml',
+    \  'python',
+    \  'vim',
+    \]
+
+" }}}
+
+" TO TEST:
+Plug 'junegunn/vim-pseudocl'
+Plug 'junegunn/vim-oblique'
+
+" neocomplete {
+            "let g:neocomplete#use_vimproc = 1
+            " Define dictionary.
+            "let g:neocomplete#sources#dictionary#dictionaries = {
+                        "\ 'default' : '',
+                        "\ 'vimshell' : $HOME.'/.vimshell_hist',
+                        "\ 'scheme' : $HOME.'/.gosh_completions'
+                        "\ }
+            " Define keyword.
+                let g:neocomplete#keyword_patterns = {}
+                let g:neocomplete#keyword_patterns._ = '\h\w*'
+            let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+            let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+            let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+            let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+            let g:neocomplete#sources#omni#input_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
+            let g:neocomplete#sources#vim#complete_functions = {
+                    \     'Unite': 'unite#complete_source',
+                    \     'VimShell': 'vimshell#complete',
+                    \     'VimFiler': 'vimfiler#complete',
+                    \ }
+            "call neocomplete#custom#source('ultisnips', 'rank', 500)
+            " Plugin key-mappings {
+                    function! CleverCr()
+                        if pumvisible()
+                            if neosnippet#expandable()
+                                let exp = "\<Plug>(neosnippet_expand)"
+                                return exp . neocomplete#close_popup()
+                            else
+                                return neocomplete#close_popup()
+                            endif
+                        else
+                            return "\<CR>"
+                        endif
+                    endfunction
+                     "<CR> close popup and save indent or expand snippet
+                    imap <expr> <CR> CleverCr()
+                     "<C-h>, <BS>: " close popup and delete backword char.
+                    inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+                 "<TAB>: completion.
+                inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+            " }
+            " Enable omni completion.
+            autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+            autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+            autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+            autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+            autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+            autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+            autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+            " Enable heavy omni completion.
+    " Normal Vim omni-completion {
+            " Enable omni-completion.
+            autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+            autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+            autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+            autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+            autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+            autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+            autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+    " }
+
+    " Snippets {
+            " Use honza's snippets.
+            let g:neosnippet#snippets_directory='~/.vim/neosnippets'
+             "Enable neosnippet snipmate compatibility mode
+            let g:neosnippet#enable_snipmate_compatibility = 1
+             "For snippet_complete marker.
+                if has('conceal')
+                    set conceallevel=2 concealcursor=i
+                endif
+             "Enable neosnippets when using go
+            let g:go_snippet_engine = "neosnippet"
+            " Disable the neosnippet preview candidate window
+            " When enabled, there can be too much visual noise
+            " especially when splits are used.
+            set completeopt-=preview
+    " }
+
+call plug#end() " }}}
+end
 
 " vim:fdm=marker:ts=4:sw=4:sts=4
