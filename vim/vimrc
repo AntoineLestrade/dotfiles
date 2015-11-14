@@ -4,6 +4,7 @@ let g:is_nvim = has('nvim')
 let g:enable_cursorline = 0
 let g:echo_startup_time = 1
 let g:enable_completion = has('lua') && !g:is_nvim
+
 let g:has_persistent_undo = has('persistent_undo')
 " }}}
 
@@ -17,13 +18,18 @@ endif
 let g:is_windows = has('win32') || has('win64')
 if g:is_nvim
     if g:is_windows
-        let g:rc_dir = $HOME.'/_nvim'
+        if $XDG_CONFIG_HOME
+            let g:rc_dir = $XDG_CONFIG_HOME.'/nvim'
+        else
+            let g:rc_dir = $APPDATA.'/nvim'
+        endif
         let $CACHE = $HOME.'/nvimcache'
     else
         let g:rc_dir = $HOME.'/.nvim'
         let $CACHE = $HOME.'/.nvimcache'
     endif
 else
+    set nocompatible
     if g:is_windows
         let g:rc_dir = $HOME.'/vimfiles'
         let $CACHE = $HOME.'/vimcache'
@@ -32,19 +38,20 @@ else
         let $CACHE = $HOME.'/.vimcache'
     endif
 endif
-let s:neobundle_dir = expand('$CACHE/neobundle')
+let s:neobundle_dir = $CACHE.'/neobundle'
+
 function! s:source_rc(path) " {{{
     execute 'source' fnameescape(expand(g:rc_dir . '/rc/' . a:path))
 endfunction " }}}
 " }}} Initialization
 " Plugins {{{
-if !isdirectory(expand($CACHE))
-    if g:is_windows
-        call mkdir(expand($CACHE))
-    else
-        call mkdir(expand($CACHE), 'p')
-    endif
-endif
+"if !isdirectory(expand($CACHE))
+"    if g:is_windows
+"        call mkdir(expand($CACHE))
+"    else
+"        call mkdir(expand($CACHE), 'p')
+"    endif
+"endif
 
 " ## Initialize
 execute 'set runtimepath+='.s:neobundle_dir.'/neobundle.vim'
@@ -52,15 +59,15 @@ execute 'set runtimepath+='.s:neobundle_dir.'/neobundle.vim'
 call neobundle#begin(s:neobundle_dir)
 if neobundle#load_cache()
     NeoBundleFetch 'Shougo/neobundle.vim'
-    NeoBundle 'Shougo/vimproc.vim', {
-                \ 'build': {
-                \       'windows': 'tools\\update-dll-mingw',
-                \       'cygwin': 'make -f make_cygwin.mak',
-                \       'unix': 'make -f make_unix.mak',
-                \   }
-                \ }
+    NeoBundle 'Shougo/vimproc.vim'
+"    NeoBundle 'Shougo/vimproc.vim', {
+"                \ 'build': {
+"                \       'windows': 'tools\\update-dll-mingw',
+"                \       'cygwin': 'make -f make_cygwin.mak',
+"                \       'unix': 'make -f make_unix.mak',
+"                \ }
+"                \}
 
-    "call neobundle#load_toml('~/vimfiles/rc/neobundle.toml', { 'lazy':  1 })
     call neobundle#load_toml(expand(g:rc_dir.'/rc/neobundle.toml'))
     NeoBundleSaveCache
 endif
@@ -159,6 +166,15 @@ call s:source_rc('mappings.vim')
 
 if 0 " {{{
 
+Plug 'xolox/vim-misc' " Vim-notes dependency
+Plug 'xolox/vim-notes'
+
+Plug 'scrooloose/syntastic'
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
 if g:enable_completion && has("lua")
     Plug 'Shougo/neosnippet.vim'
     Plug 'Shougo/neosnippet-snippets'
@@ -227,7 +243,7 @@ Plug 'junegunn/vim-oblique'
                             return "\<CR>"
                         endif
                     endfunction
-                     "<CR> close popup and save indent or expand snippet 
+                     "<CR> close popup and save indent or expand snippet
                     imap <expr> <CR> CleverCr()
                      "<C-h>, <BS>: " close popup and delete backword char.
                     inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
@@ -317,7 +333,7 @@ if has('vim_starting')
         endtry
     endif
 endif
-// TODO: Test
+" TODO: Test
 function! EnableLightTheming () " {{{
     set background=light
     try
