@@ -622,9 +622,6 @@ NeoBundleFetch 'Shougo/neobundle.vim'
     " #### majutsushi/tagbar {{{
     NeoBundleLazy 'majutsushi/tagbar', { 'autoload': { 'commands': ['TagbarToggle'] } }
     " }}}
-    " #### rust-lang/rust {{{
-    NeoBundle 'rust-lang/rust', { 'rtp': 'src/etc/vim' }
-    " }}}
     " }}}
 
     " ## Web development {{{

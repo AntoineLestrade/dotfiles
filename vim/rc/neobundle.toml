@@ -33,59 +33,15 @@ repository = 'Shougo/neocomplete'
 depends    = 'Shougo/context_filetype.vim'
 insert     = 1 # Autoload when enter in insert mode
 # }}}
-# UI {{{
-[[plugins]]
-repository = 'itchyny/lightline.vim'
-
-# ## Colorschemes {{{
-[[plugins]]
-repository = 'w0ng/vim-hybrid'
-
-[[plugins]]
-repository = 'chriskempson/base16-vim'
-
-[[plugins]]
-repository = 'altercation/vim-colors-solarized'
-# ## }}}
-# }}}
 
 [[plugins]]
 repository = 'xolox/vim-notes'
 depends    = 'xolox/vim-misc'
 
 # Development {{{
-# ## SQL{{{
-[[plugins]]
-repository = 'sqlserver.vim'
-filetypes  = 'sql'
-# ## }}}
-# ## Powershell {{{
-[[plugins]]
-repository = 'PProvost/vim-ps1'
-# ## }}}
-# ## Git {{{
-[[plugins]]
-repository = 'tpope/vim-fugitive'
-
-[[plugins]]
-repository = 'airblade/vim-gitgutter'
-
-[[plugins]]
-repository = 'gregsexton/gitv'
-depends    = 'tpope/vim-fugitive'
-commands   = 'Gtiv'
-
-[[plugins]]
-repository = 'rhysd/committia.vim'
-# ## }}}
 ## Rust {{{
 [[plugins]]
-repository = 'rust-lang/rust.vim'
-filetype   = 'rs'
-
-[[plugins]]
 repository = 'phildawes/racer'
-
 # ## }}}
 # ## Syntastic {{{
 [[plugins]]
@@ -106,4 +62,3 @@ filetypes = 'toml'
 [[plugins]]
 repository = "OrangeT/vim-csharp"
 
-# vim: set foldmethod=marker:
