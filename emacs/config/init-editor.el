@@ -19,6 +19,8 @@
 
 (global-visual-line-mode t)
 
+(setq visible-bell t)
+
 ;; modeline settings
 (line-number-mode t)
 (column-number-mode t)
@@ -136,3 +138,7 @@
 
 (provide 'init-editor)
 ;;; init-editor.el ends here
+
+;; Local Variables:
+;; no-byte-compile: t
+;; End:
