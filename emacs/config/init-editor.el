@@ -136,6 +136,13 @@
 (projectile-global-mode t)
 
 
+;; HideShow
+(diminish 'hs-minor-mode)
+(add-hook 'prog-mode-hook (lambda ()
+                            (hs-minor-mode 1)))
+
+
+
 (provide 'init-editor)
 ;;; init-editor.el ends here
 

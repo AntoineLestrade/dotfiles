@@ -1,9 +1,10 @@
 ;;; init-themes.el --- .
 ;;; Commentary:
 ;;; Code:
-(require-package 'color-theme-sanityinc-solarized)
-(require-package 'color-theme-sanityinc-tomorrow)
-
+;;(require-package 'color-theme-sanityinc-solarized)
+;;(require-package 'color-theme-sanityinc-tomorrow)
+(require-package 'spacemacs-theme)
+;; TODO: TEST
 (setq-default custom-enabled-themes '(sanityinc-tomorrow-night))
 ;; ;(setq-default custom-enabled-themes '(sanityinc-tomorrow-day))
 
