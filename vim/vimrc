@@ -42,6 +42,7 @@ endif
 " Vimplug {{{
 silent! if plug#begin($CACHE.'/plugged')
 
+Plug 'mattn/emmet-vim'
 " ## Development {{{
 Plug 'scrooloose/syntastic'
 " #### Powershell {{{
