@@ -14,6 +14,9 @@ if g:echo_startup_time && has('vim_starting') && has('reltime')
     autocmd VimEnter * let s:startuptime = reltime(s:startuptime) | redraw | echomsg 'startuptime: ' . reltimestr(s:startuptime)
 endif
 " }}}
+if filereadable($HOME.'/_vimrc.before')
+    source $HOME/_vimrc.before
+endif
 " Initialization {{{
 let g:is_windows = has('win32') || has('win64')
 if g:is_nvim
