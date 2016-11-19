@@ -3,7 +3,7 @@ let g:is_nvim = has('nvim')
 " Switches {{{
 let g:enable_cursorline = 0
 let g:echo_startup_time = 1
-let g:enable_completion = has('lua') && !g:is_nvim
+let g:enable_completion = 0
 
 let g:has_persistent_undo = has('persistent_undo')
 " }}}
@@ -46,8 +46,59 @@ endif
 silent! if plug#begin($CACHE.'/plugged')
 
 Plug 'mattn/emmet-vim'
+" ## Completion {{{
+if has('lua') && g:enable_completion
+    Plug 'Shougo/neocomplete.vim' " {{{
+    let g:neocomplete#enable_at_startup = 1
+ "       let g:neocomplete#disable_auto_complete = 0
+ "       let g:neocomplete#enable_insert_char_pre = 0
+
+ "       let g:neocomplete#enable_smart_case = 1
+ "       let g:neocomplete#enable_camel_case = 1
+
+ "       let g:neocomplete#enable_fuzzy_completion = 1
+
+ "       let g:neocomplete#sources#syntax#min_keyword_length = 3
+ "       let g:neocomplete#auto_completion_start_length = 2
+ "       let g:neocomplete#manual_completion_start_length = 0
+ "       let g:neocomplete#min_keyword_length = 3
+
+ "       let g:neocomplete#enable_complete_select = 1
+ "       try
+ "           let completeopt_save = &completeopt
+ "           set completeopt+=noinsert,noselect
+ "       catch
+ "           let g:neocomplete#enable_complete_select = 0
+ "       finally
+ "           let &completeopt = completeopt_save
+ "       endtry
+ "       let g:neocomplete#enable_auto_select = 1
+ "       let g:neocomplete#enable_refresh_always = 1
+ "       let g:neocomplete#enable_cursor_hold_i = 0
+
+ "       let g:neocomplete#enable_auto_delimiter = 1
+
+ "       let g:neocomplete#max_list = 100
+ "       let g:neocomplete#force_overwrite_completefunc = 1
+ "       if !exists('g:neocomplete#sources#omni#input_patterns')
+ "           let g:neocomplete#sources#omni#input_patterns = {}
+ "       endif
+
+ "       if !exists('g:neocomplete#sources')
+ "           let g:neocomplete#sources = {}
+ "       endif
+        "let g:neocomplete#sources.rust = ['buffer', 'omni']
+        " if patter matches, local omnifunc will be called
+    if !exists('g:neocomplete#sources#omni#input_patterns')
+        let g:neocomplete#sources#omni#input_patterns = {}
+    endif
+    let g:neocomplete#sources#omni#input_patterns.rust = 
+        \ '[^.[:digit:] *\t]\%(\.\|\::\)\%(\h\w*\)\?'
+    " }}}
+    Plug 'Shougo/neco-vim' " Vim source for neocomplete
+endif
+" ## }}}
 " ## Development {{{
-Plug 'scrooloose/syntastic'
 " #### Powershell {{{
 Plug 'PProvost/vim-ps1'
 " #### }}}
@@ -58,7 +109,20 @@ let g:ftplugin_rust_source_path = 'D:/ProgramFiles/Rust_src/src'
 " }}}
 " }}}
 " #### SQL {{{
-Plug 'sqlserver.vim', { 'for': 'sql' }
+Plug 'sqlserver.vim', { 'for': 'sql' } " {{{
+let g:sql_type_default = "sqlserver" " }}}
+" #### }}}
+" #### Syntax checking {{{
+Plug 'scrooloose/syntastic' " {{{
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wg = 0
+"let g:syntastic_vimlint_options = { 'EVL103': 1 }
+" }}}
+" #### }}}
+" #### TOML {{{
+Plug 'cespare/vim-toml', { 'for': 'toml' }
 " #### }}}
 " #### Git {{{
 Plug 'tpope/vim-fugitive'
@@ -216,6 +280,9 @@ function! s:syntastic() " {{{
     call lightline#update()
 endfunction " }}}
 " lightline.vim }}}
+if has('signs')
+    Plug 'mattesgroeger/vim-bookmarks'
+endif
 " ## }}}
 call plug#end()
 endif
