@@ -68,6 +68,7 @@
 (require 'init-csharp)
 (require 'init-powershell)
 (require 'init-rust)
+(require 'init-gherkin)
 
 (require 'init-programming-misc)
 (require 'init-helm)
