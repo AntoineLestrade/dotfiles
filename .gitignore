@@ -2,12 +2,17 @@ emacs/auto-save-list
 emacs/cache
 emacs/elpa
 emacs/eshell
+emacs/ido.last
+emacs/libs
 emacs/places
 emacs/savefiles
 emacs/server
+emacs/vimish-fold
 emacs/custom.el
 
 vim/backup
 vim/plugged
 vim/swap
 vim/undo
+
+FontsAndColorsBackup_*
