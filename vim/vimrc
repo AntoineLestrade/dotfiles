@@ -42,14 +42,19 @@ else
     endif
 endif
 " }}} Initialization
-" Vimplug {{{
-silent! if plug#begin($CACHE.'/plugged')
+" Plugins {{{
+" silent! if plug#begin($CACHE.'/plugged')
+execute 'set rtp+='.$CACHE.'/dein_plugins/repos/github.com/Shougo/dein.vim'
+if dein#load_state($CACHE.'/dein_plugins')
+    call dein#begin($CACHE.'/dein_plugins')
+    call dein#add($CACHE.'/dein_plugins/repos/github.com/Shougo/dein.vim')
 
-Plug 'mattn/emmet-vim'
-" ## Completion {{{
-if has('lua') && g:enable_completion
-    Plug 'Shougo/neocomplete.vim' " {{{
-    let g:neocomplete#enable_at_startup = 1
+    call dein#add('will133/vim-dirdiff')
+    call dein#add('mattn/emmet-vim')
+    " ## Completion {{{
+    if has('lua') && g:enable_completion
+        call dein#add('Shougo/neocomplete.vim') " {{{
+        let g:neocomplete#enable_at_startup = 1
  "       let g:neocomplete#disable_auto_complete = 0
  "       let g:neocomplete#enable_insert_char_pre = 0
 
@@ -89,211 +94,212 @@ if has('lua') && g:enable_completion
  "       endif
         "let g:neocomplete#sources.rust = ['buffer', 'omni']
         " if patter matches, local omnifunc will be called
-    if !exists('g:neocomplete#sources#omni#input_patterns')
-        let g:neocomplete#sources#omni#input_patterns = {}
-    endif
-    let g:neocomplete#sources#omni#input_patterns.rust = 
-        \ '[^.[:digit:] *\t]\%(\.\|\::\)\%(\h\w*\)\?'
-    " }}}
-    Plug 'Shougo/neco-vim' " Vim source for neocomplete
-endif
-" ## }}}
-" ## Development {{{
-" #### Powershell {{{
-Plug 'PProvost/vim-ps1'
-" #### }}}
-" #### Rust {{{
-Plug 'rust-lang/rust.vim', { 'for': 'rust' } " {{{
-let g:rust_fold = 1
-let g:ftplugin_rust_source_path = 'D:/ProgramFiles/Rust_src/src'
-" }}}
-" }}}
-" #### SQL {{{
-Plug 'sqlserver.vim', { 'for': 'sql' } " {{{
-let g:sql_type_default = "sqlserver" " }}}
-" #### }}}
-" #### Syntax checking {{{
-Plug 'scrooloose/syntastic' " {{{
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wg = 0
-"let g:syntastic_vimlint_options = { 'EVL103': 1 }
-" }}}
-" #### }}}
-" #### TOML {{{
-Plug 'cespare/vim-toml', { 'for': 'toml' }
-" #### }}}
-" #### Git {{{
-Plug 'tpope/vim-fugitive'
-Plug 'rhysd/committia.vim'
-Plug 'airblade/vim-gitgutter'
-
-Plug 'gregsexton/gitv', { 'on': 'Gitv' }
-" #### }}}
-" ## }}}
-" ## User interface {{{
-Plug 'w0ng/vim-hybrid'
-Plug 'chriskempson/base16-vim'
-Plug 'altercation/vim-colors-solarized'
-Plug 'itchyny/lightline.vim' " {{{
-set laststatus=2
-set noshowmode
-" let g:lightline = {... {{{
-let g:lightline = {
-\   'colorscheme': 'jellybeans',
-\   'active': {
-\       'left': [
-\           ['mode', 'paste'],
-\           ['git_changes', 'readonly', 'fugitive'],
-\           ['ctrlpmark', 'filename']
-\       ],
-\       'right': [
-\           ['lineinfo'],
-\           ['percent'],
-\           ['fileformat', 'fileencoding', 'filetype', '#warningmsg#', 'syntastic', '*']
-\       ]
-\   },
-\   'component': {
-\       'paste': '%{&paste?"!":""}'
-\   },
-\   'component_function': {
-\     'mode'         : 'MyMode',
-\     'git_changes'  : 'MyGitGutterStatus',
-\     'fugitive'     : 'MyFugitive',
-\     'filename'     : 'MyFilename',
-\     'readonly'     : 'MyReadonly',
-\     'ctrlpmark'    : 'CtrlPMark',
-\     'bufferline'   : 'MyBufferline',
-\     'fileformat'   : 'MyFileformat',
-\     'fileencoding' : 'MyFileencoding',
-\     'filetype'     : 'MyFiletype'
-\   },
-\   'component_expand': {
-\       'syntastic': 'SyntasticStatuslineFlag',
-\   },
-\   'component_type': {
-\       'syntastic': 'middle',
-\   },
-\   'subseparator': {
-\       'left': '|', 'right': '|'
-\   }
-\ }
-" }}}
-" let g:lighline.mode_map = {... {{{
-let g:lightline.mode_map = {
-    \ 'n'      : ' N ',
-    \ 'i'      : ' I ',
-    \ 'R'      : ' R ',
-    \ 'v'      : ' V ',
-    \ 'V'      : 'V-L',
-    \ 'c'      : ' C ',
-    \ "\<C-v>" : 'V-B',
-    \ 's'      : ' S ',
-    \ 'S'      : 'S-L',
-    \ "\<C-s>" : 'S-B',
-    \ '?'      : '      ' } " }}}
-function! MyModified() " {{{
-    return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
-endfunction " }}}
-function! MyFilename() " {{{
-    let fname = expand('%:t')
-    let mod = MyModified()
-    return fname == 'ControlP' ? g:lightline.ctrlp_item :
-                \ fname == '__Tagbar__' ? g:lightline.fname :
-                \ fname =~ '__Gundo\|NERD_tree' ? '' :
-                \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
-                \ &ft == 'unite' ? unite#get_status_string() :
-                \ &ft == 'vimshell' ? vimshell#get_status_string() :
-                \ ('') .
-                \ ('' != fname ? fname : '[No Name]') .
-                \ ('' != mod ? ' ' . mod : '')
-endfunction " }}}
-function! MyMode() " {{{
-    let fname = expand('%:t')
-    return fname == '__Tagbar__' ? 'Tagbar' :
-                \ fname == 'ControlP' ? 'CtrlP' :
-                \ winwidth('.') > 60 ? lightline#mode() : ''
-endfunction " }}}
-function! MyGitGutterStatus() " {{{
-    if !exists('GitGutterGetHunxSummary')
-        return ''
-    endif
-    let hunks = GitGutterGetHunkSummary()
-    let symbols = ['+', ' ~', ' -']
-    if empty(hunks) || !exists('*fugitive#head') || !strlen(fugitive#head())
-        return ''
-    else
-        let res = ''
-        for i in [0, 1, 2]
-            let res .= symbols[i] . hunks[i]
-        endfor
-        return res
-    endif
-endfunction " }}}
-function! MyFugitive() " {{{
-    try
-        if expand('%:t') !~? 'Tagbar' && exists('*fugitive#head')
-            "let mark = '± '
-            let _ = fugitive#head()
-            "return strlen(_) ? mark._ : ''
-            return _
+        if !exists('g:neocomplete#sources#omni#input_patterns')
+            let g:neocomplete#sources#omni#input_patterns = {}
         endif
-    catch
-    endtry
-    return ''
-endfunction " }}}
-function! MyReadonly() " {{{
-    return &ft !~? 'help' && &readonly ? '≠' : '' " or ⭤
-endfunction " }}}
-function! CtrlPMark() " {{{
-    if expand('%:t') =~ 'ControlP'
-        call lightline#link('iR'[g:lightline.ctrlp_regex])
-        return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
-                    \ , g:lightline.ctrlp_next], 0)
-    else
+        let g:neocomplete#sources#omni#input_patterns.rust = 
+            \ '[^.[:digit:] *\t]\%(\.\|\::\)\%(\h\w*\)\?'
+        " }}}
+        call dein#add('Shougo/neco-vim') " Vim source for neocomplete
+    endif
+    " ## }}}
+    " ## Development {{{
+    " #### Git {{{
+    call dein#add('tpope/vim-fugitive')
+    call dein#add('rhysd/committia.vim')
+    call dein#add('airblade/vim-gitgutter')
+
+    call dein#add('gregsexton/gitv', { 'on': 'Gitv' })
+    " #### }}}
+    " #### Powershell {{{
+    call dein#add('PProvost/vim-ps1')
+    " #### }}}
+    " #### Rust {{{
+    call dein#add('rust-lang/rust.vim', { 'lazy': 1, 'on_ft': 'rust'}) " {{{
+    let g:rust_fold = 1
+    let g:ftplugin_rust_source_path = 'D:/ProgramFiles/Rust_src/src'
+    " }}}
+    " }}}
+    " #### SQL {{{
+    call dein#add('sqlserver.vim', { 'lazy': 1, 'on_ft': 'sql' }) " {{{
+    let g:sql_type_default = "sqlserver" " }}}
+    " #### }}}
+    " #### Syntax checking {{{
+    call dein#add('scrooloose/syntastic') " {{{
+    let g:syntastic_always_populate_loc_list = 1
+    let g:syntastic_auto_loc_list = 1
+    let g:syntastic_check_on_open = 1
+    let g:syntastic_check_on_wg = 0
+    "let g:syntastic_vimlint_options = { 'EVL103': 1 }
+    augroup AutoSyntastic " {{{
+        autocmd!
+        autocmd BufWritePost *.c,*.cpp,*.perl,*.py,*rs call s:syntastic()
+    augroup END " }}}
+    function! s:syntastic() " {{{
+        SyntasticCheck
+        call lightline#update()
+    endfunction " }}}
+    " }}}
+    " #### }}}
+    " #### TOML {{{
+    call dein#add('cespare/vim-toml', { 'lazy': 1, 'on_ft': 'toml' })
+    " #### }}}
+    " ## }}}
+    " ## User interface {{{
+    call dein#add('w0ng/vim-hybrid')
+    call dein#add('chriskempson/base16-vim')
+    call dein#add('altercation/vim-colors-solarized')
+    call dein#add('itchyny/lightline.vim') " {{{
+    set laststatus=2
+    set noshowmode
+    " let g:lightline = {... {{{
+    let g:lightline = {
+    \   'colorscheme': 'jellybeans',
+    \   'active': {
+    \       'left': [
+    \           ['mode', 'paste'],
+    \           ['git_changes', 'readonly', 'fugitive'],
+    \           ['ctrlpmark', 'filename']
+    \       ],
+    \       'right': [
+    \           ['lineinfo'],
+    \           ['percent'],
+    \           ['fileformat', 'fileencoding', 'filetype', '#warningmsg#', 'syntastic', '*']
+    \       ]
+    \   },
+    \   'component': {
+    \       'paste': '%{&paste?"!":""}'
+    \   },
+    \   'component_function': {
+    \     'mode'         : 'MyMode',
+    \     'git_changes'  : 'MyGitGutterStatus',
+    \     'fugitive'     : 'MyFugitive',
+    \     'filename'     : 'MyFilename',
+    \     'readonly'     : 'MyReadonly',
+    \     'ctrlpmark'    : 'CtrlPMark',
+    \     'bufferline'   : 'MyBufferline',
+    \     'fileformat'   : 'MyFileformat',
+    \     'fileencoding' : 'MyFileencoding',
+    \     'filetype'     : 'MyFiletype'
+    \   },
+    \   'component_expand': {
+    \       'syntastic': 'SyntasticStatuslineFlag',
+    \   },
+    \   'component_type': {
+    \       'syntastic': 'middle',
+    \   },
+    \   'subseparator': {
+    \       'left': '|', 'right': '|'
+    \   }
+    \ }
+    " }}}
+    " let g:lighline.mode_map = {... {{{
+    let g:lightline.mode_map = {
+        \ 'n'      : ' N ',
+        \ 'i'      : ' I ',
+        \ 'R'      : ' R ',
+        \ 'v'      : ' V ',
+        \ 'V'      : 'V-L',
+        \ 'c'      : ' C ',
+        \ "\<C-v>" : 'V-B',
+        \ 's'      : ' S ',
+        \ 'S'      : 'S-L',
+        \ "\<C-s>" : 'S-B',
+        \ '?'      : '      ' } " }}}
+    function! MyModified() " {{{
+        return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+    endfunction " }}}
+    function! MyFilename() " {{{
+        let fname = expand('%:t')
+        let mod = MyModified()
+        return fname == 'ControlP' ? g:lightline.ctrlp_item :
+                    \ fname == '__Tagbar__' ? g:lightline.fname :
+                    \ fname =~ '__Gundo\|NERD_tree' ? '' :
+                    \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
+                    \ &ft == 'unite' ? unite#get_status_string() :
+                    \ &ft == 'vimshell' ? vimshell#get_status_string() :
+                    \ ('') .
+                    \ ('' != fname ? fname : '[No Name]') .
+                    \ ('' != mod ? ' ' . mod : '')
+    endfunction " }}}
+    function! MyMode() " {{{
+        let fname = expand('%:t')
+        return fname == '__Tagbar__' ? 'Tagbar' :
+                    \ fname == 'ControlP' ? 'CtrlP' :
+                    \ winwidth('.') > 60 ? lightline#mode() : ''
+    endfunction " }}}
+    function! MyGitGutterStatus() " {{{
+        if !exists('GitGutterGetHunxSummary')
+            return ''
+        endif
+        let hunks = GitGutterGetHunkSummary()
+        let symbols = ['+', ' ~', ' -']
+        if empty(hunks) || !exists('*fugitive#head') || !strlen(fugitive#head())
+            return ''
+        else
+            let res = ''
+            for i in [0, 1, 2]
+                let res .= symbols[i] . hunks[i]
+            endfor
+            return res
+        endif
+    endfunction " }}}
+    function! MyFugitive() " {{{
+        try
+            if expand('%:t') !~? 'Tagbar' && exists('*fugitive#head')
+                "let mark = '± '
+                let _ = fugitive#head()
+                "return strlen(_) ? mark._ : ''
+                return _
+            endif
+        catch
+        endtry
         return ''
+    endfunction " }}}
+    function! MyReadonly() " {{{
+        return &ft !~? 'help' && &readonly ? '≠' : '' " or ⭤
+    endfunction " }}}
+    function! CtrlPMark() " {{{
+        if expand('%:t') =~ 'ControlP'
+            call lightline#link('iR'[g:lightline.ctrlp_regex])
+            return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
+                        \ , g:lightline.ctrlp_next], 0)
+        else
+            return ''
+        endif
+    endfunction " }}}
+    function! MyFileformat() " {{{
+        return winwidth(0) > 90 ? &fileformat : ''
+    endfunction " }}}
+    function! MyFiletype() " {{{
+        return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+    endfunction " }}}
+    function! MyFileencoding() " {{{
+        if winwidth(0) < 80
+            return ''
+        endif
+        let baseenc = strlen(&fenc) ? &fenc : &enc
+        if (&bomb)
+            let baseenc = baseenc . ' BOM'
+        endif
+        return baseenc
+    endfunction " }}}
+    " lightline.vim }}}
+    if has('signs')
+        call dein#add('mattesgroeger/vim-bookmarks')
     endif
-endfunction " }}}
-function! MyFileformat() " {{{
-    return winwidth(0) > 90 ? &fileformat : ''
-endfunction " }}}
-function! MyFiletype() " {{{
-    return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
-endfunction " }}}
-function! MyFileencoding() " {{{
-    if winwidth(0) < 80
-        return ''
-    endif
-    let baseenc = strlen(&fenc) ? &fenc : &enc
-    if (&bomb)
-        let baseenc = baseenc . ' BOM'
-    endif
-    return baseenc
-endfunction " }}}
-augroup AutoSyntastic " {{{
-    autocmd!
-    autocmd BufWritePost *.c,*.cpp,*.perl,*.py,*rs call s:syntastic()
-augroup END " }}}
-function! s:syntastic() " {{{
-    SyntasticCheck
-    call lightline#update()
-endfunction " }}}
-" lightline.vim }}}
-if has('signs')
-    Plug 'mattesgroeger/vim-bookmarks'
+    " ## }}}
+    call dein#end()
+    call dein#save_state()
 endif
-" ## }}}
-call plug#end()
-endif
-"  Vimplug }}}
+"  Plguins }}}
 " Vim settings {{{
 filetype plugin indent on
 
 " ## Basic options {{{
 set autoread                   " Automatically read file again which has been changed outside of Vim
 set backspace=indent,eol,start " Working of <BS>,<Del>,CTRL-W,CTRL-U
-set display=lastline
+set display=lastline           " display as much as possible the last line
 set formatoptions+=j
 set hidden                     " Display another buffer when current buffer isn't saved.
 set history=1000               " Store a ton of history (default is 20)

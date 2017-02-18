@@ -29,7 +29,7 @@ def get_errors (config_files):
                 try:
                     root = ET.fromstring(s)
                     for cs in root.find("connectionStrings").iter("add"):
-                        match = re.match(r'.*data source=(.*?);.*initial catalog=(.*?);.*', cs.get('connectionString'),  re.IGNORECASE)
+                        match = re.match(r'.*data source=(.*?);.*initial catalog=(.*?);.*', cs.get('connectionString'), re.IGNORECASE)
                         if not match:
                             print((bcolors.WARNING + "ERROR {0}" + bcolors.ENDC).format(cs.get('connectionString')))
                             continue
