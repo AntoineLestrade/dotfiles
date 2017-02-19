@@ -119,8 +119,7 @@ if dein#load_state($CACHE.'/dein_plugins')
     endif
     " ## }}}
     if has('python3')
-        call dein#add('Shougo/denite.nvim')
-        nnoremap <silent> ;r :<C-u>Denite -buffer-name=register register neoyank<CR>
+        call dein#add('Shougo/denite.nvim', { 'lazy': 1, 'on_cmd': 'Denite', 'hook_source': 'source '. s:get_rc_script('plugins/denite.vim') })
     endif
 
     call dein#end()
