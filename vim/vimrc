@@ -60,9 +60,12 @@ if dein#load_state($CACHE.'/dein_plugins')
     call dein#add('will133/vim-dirdiff')
     call dein#add('mattn/emmet-vim')
     " ## Completion {{{
-    if has('lua') && g:enable_completion
-        call dein#add('Shougo/neocomplete.vim', { 'lazy': 1, 'on_event': 'InsertEnter', 'hook_source': 'source '.s:get_rc_script('plugins/neocomplete.vim') }) " {{{
-        " }}}
+    if g:enable_completion
+        if g:is_nvim
+            call dein#add('Shougo/deoplete.nvim', { 'lazy': 1, 'on_event': 'InsertEnter', 'hook_source': 'source '.s:get_rc_script('plugins/deoplete.vim') })
+        elseif has('lua')
+            call dein#add('Shougo/neocomplete.vim', { 'lazy': 1, 'on_event': 'InsertEnter', 'hook_source': 'source '.s:get_rc_script('plugins/neocomplete.vim') })
+        endif
         call dein#add('Shougo/neco-vim') " Vim source for neocomplete
     endif
     " ## }}}
@@ -88,21 +91,8 @@ if dein#load_state($CACHE.'/dein_plugins')
     let g:sql_type_default = "sqlserver" " }}}
     " #### }}}
     " #### Syntax checking {{{
-    call dein#add('scrooloose/syntastic') " {{{
-    let g:syntastic_always_populate_loc_list = 1
-    let g:syntastic_auto_loc_list = 1
-    let g:syntastic_check_on_open = 1
-    let g:syntastic_check_on_wg = 0
-    "let g:syntastic_vimlint_options = { 'EVL103': 1 }
-    augroup AutoSyntastic " {{{
-        autocmd!
-        autocmd BufWritePost *.c,*.cpp,*.perl,*.py,*rs call s:syntastic()
-    augroup END " }}}
-    function! s:syntastic() " {{{
-        SyntasticCheck
-        call lightline#update()
-    endfunction " }}}
-    " }}}
+    call dein#add('scrooloose/syntastic')
+    call dein#add('syngan/vim-vimlint', { 'depends': 'ynkdir/vim-vimlparser' })
     " #### }}}
     " #### TOML {{{
     call dein#add('cespare/vim-toml', { 'lazy': 1, 'on_ft': 'toml' })
@@ -126,6 +116,19 @@ if dein#load_state($CACHE.'/dein_plugins')
     call dein#save_state()
 endif
 call s:source_rc('plugins/lightline.vim')
+    let g:syntastic_always_populate_loc_list = 1
+    let g:syntastic_auto_loc_list = 1
+    let g:syntastic_check_on_open = 1
+    let g:syntastic_check_on_wg = 0
+    "let g:syntastic_vimlint_options = { 'EVL103': 1 }
+    augroup AutoSyntastic " {{{
+        autocmd!
+        autocmd BufWritePost *.c,*.cpp,*.perl,*.py,*rs call s:syntastic()
+    augroup END " }}}
+    function! s:syntastic() " {{{
+        SyntasticCheck
+        call lightline#update()
+    endfunction " }}}
 "  Plguins }}}
 " Vim settings {{{
 filetype plugin indent on
@@ -227,14 +230,17 @@ command! -range=% RemoveTrailM <line1>,<line2>s!\r$!!g | nohlsearch
 nnoremap ^ :
 let mapleader=','
 
-imap jk <Esc>
-omap jk <Esc>
-cmap jk <Esc>
+"inoremap jk <Esc>
+"onoremap jk <Esc>
+"cnoremap jk <Esc>
+inoremap jj <Esc>
+onoremap jj <Esc>
+cnoremap jj <Esc>
 
-imap <C-h> <Left>
-imap <C-j> <Down>
-imap <C-k> <Up>
-imap <C-l> <Right>
+inoremap <C-h> <Left>
+inoremap <C-j> <Down>
+inoremap <C-k> <Up>
+inoremap <C-l> <Right>
 
 " Move around windows {{{
 nmap <A-h> <C-w>h
@@ -270,7 +276,22 @@ nmap <leader>f8 :set foldlevel=8<CR>
 nmap <leader>f9 :set foldlevel=9<CR>
 " ## }}}
 
-" ## Visual shifting {{
+" ## Shifting {{
+" Move up and down current lines
+"nnoremap <Up> mz:m+<CR>'z
+"nnoremap <Down> mz:m+<CR>'z
+"inoremap <Up> <C-o>mz:m+<CR>'z
+"inoremap <Down> <C-o>mz:m+<CR>'z
+"vnoremap <Up> :m'>+<CR>'<my'>mzgv'yo'z
+"vnoremap <Down> :m'<-2'><CR>ly'<mzgv'yo'z
+
+nnoremap <Left> <<
+nnoremap <Right> >>
+inoremap <Left> <C-o><<
+inoremap <Right> <C-o>>>
+vnoremap <Left> <gv
+vnoremap <Right> >gv
+
 vnoremap < <gv
 vnoremap > >gv
 " }}
