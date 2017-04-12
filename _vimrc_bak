@@ -24,21 +24,7 @@ Autocmd BufWinEnter,ColorScheme *vimrc call s:hl_my_autocmd()
 " }}}
 
 " Environment {{{=====================
-" ## Basics {{{
-if !WINDOWS()
-    set shell=/bin/sh
-endif
-" }}}
-
 if g:use_mswin_vim " {{{
-" Set options and add mapping such that Vim behaves a lot like MS-Windows
-"
-" Maintainer:	Bram Moolenaar <Bram@vim.org>
-" Last change:	2012 Jul 25
-
-" bail out if this isn't wanted (mrsvim.vim uses this).
-
-
 
 " set the 'cpoptions' to its Vim default
 if 1	" only do this when compiled with expression evaluation
@@ -139,46 +125,12 @@ if 1
 endif
 endif
 " }}}
-
-" ## ConEmu specifics {{{
-" ERR: Buggy config (no colors...) correct or remove
-if g:use_conemu_specifics && !empty($CONEMUBUILD)
-    echom "Running in conemu"
-    set termencoding=utf8
-    set term=xterm
-    set t_Co=256
-    "let &t_AB="\e[48;5;%dm"
-    "let &t_AF="\e[38;5;%dm"
-    " termcap codes for cursor shape changes on entry and exit to
-    " /from insert mode
-    " doesn't work
-    "let &t_ti="\e[1 q"
-    "let &t_SI="\e[5 q"
-    "let &t_EI="\e[1 q"
-    "let &t_te="\e[0 q"
-endif
-" }}}
 " }}}
 
 " NeoBundle {{{=======================
 " Maybe interessant other Plugin manager: https://github.com/junegunn/vim-plug
-" ## AutoInstall {{{
-if !filereadable(s:vimfiles_dir.'bundle/neobundle.vim/README.md')
-    echon 'Installing NeoBundle...'
-    "  silent execute '
-    if !isdirectory(s:vimfiles_dir.'bundle')
-        call mkdir(s:vimfiles_dir.'bundle')
-    endif
-    silent execute '!git clone https://github.com/Shougo/neobundle.vim ' .s:vimfiles_dir.'bundle/neobundle.vim'
-endif
-" }}}
-filetype off
-execute 'set runtimepath+='.s:vimfiles_dir.'bundle/neobundle.vim'
-
-call neobundle#begin(expand(s:vimfiles_dir.'bundle'))
 
 function! s:load_bundles() " {{{
-NeoBundleFetch 'Shougo/neobundle.vim'
 
     " ## Unite / Library {{{
     " #### Shougo/unite.vim {{{
@@ -1007,20 +959,6 @@ set virtualedit=block          " Allow virtual editing in Visual block mode
 " ## Global options {{{
 setglobal bomb
 "}}}
-" ## Matching {{{
-set matchtime=2
-set matchpairs+=<:>
-set showmatch
-" }}}
-
-" ## Line numbers {{{
-if 0
-Autocmd InsertEnter * set number norelativenumber
-Autocmd InsertLeave * set nonumber relativenumber
-set nonumber
-set relativenumber
-endif
-" }}}
 
 " ## Tags {{{
 " Ref: http://vimdoc.sourceforge.net/htmldoc/windows.html#CursorHold-example

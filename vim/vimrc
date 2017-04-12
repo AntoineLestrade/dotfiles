@@ -198,6 +198,11 @@ endif
 set wildmenu
 set wildmode=longest:full,full
 " ## }}}
+" ## Matching {{{
+" set matchtime=2
+set matchpairs+=<:>
+set showmatch
+" ## }}}
 " ## Cursorline {{{
 if g:enable_cursorline
     augroup cursorLine
@@ -255,7 +260,7 @@ inoremap <C-j> <Down>
 inoremap <C-k> <Up>
 inoremap <C-l> <Right>
 
-" Move around windows {{{
+" ## Move around windows {{{
 nmap <A-h> <C-w>h
 imap <A-h> <C-o><C-w>h
 nmap <A-j> <C-w>j
@@ -264,8 +269,8 @@ nmap <A-k> <C-w>k
 imap <A-k> <C-o><C-w>k
 nmap <A-l> <C-w>l
 imap <A-l> <C-o><C-w>l
-" }}}
-" Move windows {{{
+" ## }}}
+" ## Move windows {{{
 nmap <C-A-h> <C-w>H
 imap <C-A-h> <C-o><C-w>H
 nmap <C-A-j> <C-w>J
@@ -274,7 +279,7 @@ nmap <C-A-k> <C-w>K
 imap <C-A-k> <C-o><C-w>K
 nmap <C-A-l> <C-w>L
 imap <C-A-l> <C-o><C-w>L
-" }}}
+" ## }}}
 
 " ## Folding {{{
 nmap <leader>f0 :set foldlevel=0<CR>
@@ -289,7 +294,7 @@ nmap <leader>f8 :set foldlevel=8<CR>
 nmap <leader>f9 :set foldlevel=9<CR>
 " ## }}}
 
-" ## Shifting {{
+" ## Shifting {{{
 " Move up and down current lines
 "nnoremap <Up> mz:m+<CR>'z
 "nnoremap <Down> mz:m+<CR>'z
@@ -307,13 +312,16 @@ vnoremap <Right> >gv
 
 vnoremap < <gv
 vnoremap > >gv
-" }}
+" ## }}}
+" ## Buffers {{{
+nnoremap <F5> :buffers<CR>:buffer<Space>
+" }}}
 
-" Save {{{
+" ## Save {{{
 noremap <C-s> :update<CR>
 vnoremap <C-s> <C-c>:update<CR>
 inoremap <C-s> <C-o>:update<CR>
-" }}}
+" ## }}}
 " }}}
 
 " Colorscheme {{{
