@@ -10,7 +10,6 @@ let g:echo_startup_time    = 1
 let g:autoreload_vimrc     = 0
 let g:enable_git           = 1
 "}}}
-" Startup {{{=========================
 " Release autogroup in MyVimrc {{{
 augroup MyVimrc
     autocmd!
@@ -25,34 +24,10 @@ Autocmd BufWinEnter,ColorScheme *vimrc call s:hl_my_autocmd()
 " }}}
 
 " Environment {{{=====================
-" ## Identify platform {{{
-silent function! OSX()
-    return has('macunix')
-endfunction
-silent function! LINUX()
-    return has('unix') && !has('macunix') && !has('win32unix')
-endfunction
-silent function! WINDOWS()
-    return  (has('win16') || has('win32') || has('win64'))
-endfunction
-" }}}
-
 " ## Basics {{{
-set nocompatible        " Must be first line
 if !WINDOWS()
     set shell=/bin/sh
 endif
-" }}}
-
-let s:vimfiles_dir = $HOME . '/.vim/'
-
-" ## Windows Compatible {{{
-" On Windows, also use '.vim' instead of 'vimfiles'; this makes synchronization
-" across (heterogeneous) systems easier.
-"if WINDOWS()
-    "set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
-"          let s:vimfiles_dir = $HOME . '/vimfiles/'
-"endif
 " }}}
 
 if g:use_mswin_vim " {{{
@@ -1025,7 +1000,6 @@ call neobundle#end()
 
 " Vim Setup {{{========================
 " ## Basic Options {{{
-set display=lastline           " display as mutch as possible of the last line
 "set list
 "set listchars=tab:›\ ,trail:•,extends:#,nbsp:.                      " Highlight problematic whitespace
 set virtualedit=block          " Allow virtual editing in Visual block mode
@@ -1033,22 +1007,6 @@ set virtualedit=block          " Allow virtual editing in Visual block mode
 " ## Global options {{{
 setglobal bomb
 "}}}
-
-" ## Clipboard {{{
-if has('clipboard')
-    if has('unnamedplus')  " When possible use + register for copy-paste
-        set clipboard=unnamed,unnamedplus
-    else         " On mac and Windows, use * register for copy-paste
-        set clipboard=unnamed
-    endif
-endif
-" }}}
-
-" ## Folding {{{
-"set foldcolumn=0
-set foldlevelstart=99
-" }}}
-
 " ## Matching {{{
 set matchtime=2
 set matchpairs+=<:>
@@ -1062,12 +1020,6 @@ Autocmd InsertLeave * set nonumber relativenumber
 set nonumber
 set relativenumber
 endif
-" }}}
-
-" ## Close help {{{
-AutocmdFT help nnoremap <buffer> q <C-w>c
-"AutocmdFT help nnoremap <buffer> ;q q
-"AutocmdFT help nnoremap <buffer> Q q
 " }}}
 
 " ## Tags {{{
@@ -1128,12 +1080,6 @@ nnoremap gd :bdelete<CR>
 nnoremap gf <C-^>
 " }}}
 
-" Use <C-L> to clear the highlighting of :set hlsearch.
-"if maparg('<C-L>', 'n') ==# ''
-  "nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
-  "nmap <silent> <leader>/ :set invhlsearch<CR>
-nmap <silent> <leader>/ :nohlsearch<CR><C-L>
-"endif
 
 " Delete without saving in register {{{
 nmap <Del> "_dl
@@ -1485,67 +1431,7 @@ endif
 " }}}
 " #### Lightline {{{ TO CHECK
 if neobundle#tap('lightline.vim')
-    " {{{
-    let g:lightline.mode_map = {
-                \ 'n'      : ' N ',
-                \ 'i'      : ' I ',
-                \ 'R'      : ' R ',
-                \ 'v'      : ' V ',
-                \ 'V'      : 'V-L',
-                \ 'c'      : ' C ',
-                \ "\<C-v>" : 'V-B',
-                \ 's'      : ' S ',
-                \ 'S'      : 'S-L',
-                \ "\<C-s>" : 'S-B',
-                \ '?'      : '      ' } " }}}
 
-    function! MyMode() " {{{
-        let fname = expand('%:t')
-        return fname == '__Tagbar__' ? 'Tagbar' :
-                    \ fname == 'ControlP' ? 'CtrlP' :
-                    \ winwidth('.') > 60 ? lightline#mode() : ''
-    endfunction " }}}
-
-    function! GitGutterStatus() " {{{
-        let hunks = GitGutterGetHunkSummary()
-        let symbols = ['+', ' ~', ' -']
-        if empty(hunks) || !exists('*fugitive#head') || !strlen(fugitive#head())
-            return ''
-        else
-            let res = ''
-            for i in [0, 1, 2]
-                let res .= symbols[i] . hunks[i]
-            endfor
-            return res
-        endif
-    endfunction " }}}
-
-    function! MyFugitive() " {{{
-        try
-            if expand('%:t') !~? 'Tagbar' && exists('*fugitive#head')
-                "let mark = '± '
-                let _ = fugitive#head()
-                "return strlen(_) ? mark._ : ''
-                return _
-            endif
-        catch
-        endtry
-        return ''
-    endfunction " }}}
-
-    function! MyReadonly() " {{{
-        return &ft !~? 'help' && &readonly ? '≠' : '' " or ⭤
-    endfunction " }}}
-
-    function! CtrlPMark() " {{{
-        if expand('%:t') =~ 'ControlP'
-            call lightline#link('iR'[g:lightline.ctrlp_regex])
-            return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
-                        \ , g:lightline.ctrlp_next], 0)
-        else
-            return ''
-        endif
-    endfunction " }}}
 
     function! MyBufferline() " {{{
         call bufferline#refresh_status()
@@ -1564,22 +1450,6 @@ if neobundle#tap('lightline.vim')
         else
             return b . c . a
         endif
-    endfunction " }}}
-
-    function! MyFileformat() " {{{
-        return winwidth('.') > 90 ? &fileformat : ''
-    endfunction " }}}
-
-    function! MyFileencoding() " {{{
-        let baseenc = strlen(&fenc) ? &fenc : &enc
-        if(&bomb)
-            let baseenc = baseenc . ' BOM'
-        endif
-        return winwidth('.') >= 80 ? baseenc : ''
-    endfunction " }}}
-
-    function! MyFiletype() " {{{
-        return winwidth('.') > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
     endfunction " }}}
 
     let g:ctrlp_status_func = {
@@ -1606,14 +1476,6 @@ if neobundle#tap('lightline.vim')
         return lightline#statusline(0)
     endfunction " }}}
 
-    augroup AutoSyntastic  " {{{
-        autocmd!
-        autocmd BufWritePost *.c,*.cpp,*.perl,*py call s:syntastic()
-    augroup END " }}}
-    function! s:syntastic() " {{{
-        SyntasticCheck
-        call lightline#update()
-    endfunction " }}}
     call neobundle#untap()
 endif
 " LightLine }}}
@@ -2549,12 +2411,6 @@ if 0 " {{{
 
 Plug 'xolox/vim-misc' " Vim-notes dependency
 Plug 'xolox/vim-notes'
-
-Plug 'scrooloose/syntastic'
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
 
 if g:enable_completion && has("lua")
     Plug 'Shougo/neosnippet.vim'

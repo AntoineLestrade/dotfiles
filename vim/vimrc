@@ -178,6 +178,15 @@ set smartcase  " Override the ignorecase option if the pattern contains upper ca
 " ## Backup {{{
 set backup
 " ## }}}
+" ## Clipboard {{{
+if has('clipboard')
+    if has('unnamedplus') " When possible use + register for copy-paste
+        set clipboard=unnamed,unnamedplus
+    else
+        set clipboard=unnamed
+    endif
+endif
+" ## }}}
 " ## Undo Basic {{{
 if g:has_persistent_undo
     set undofile        " auotmatically saves undo history
@@ -224,6 +233,10 @@ autocmd BufWinEnter,ColorScheme * call s:hl_trailing_spaces()
 
 command! -range=% RemoveTrailSpace <line1>,<line2>s!\s*$!!g | nohlsearch
 command! -range=% RemoveTrailM <line1>,<line2>s!\r$!!g | nohlsearch
+" ## }}}
+" ## Folding {{{
+set foldcolumn=2
+set foldlevelstart=99
 " ## }}}
 " }}}
 " Key bindings {{{
