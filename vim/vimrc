@@ -102,7 +102,7 @@ if dein#load_state($CACHE.'/dein_plugins')
     call dein#add('w0ng/vim-hybrid')
     call dein#add('chriskempson/base16-vim')
     call dein#add('altercation/vim-colors-solarized')
-    call dein#add('itchyny/lightline.vim', { 'hook_source': 'source '.g:rc_dir.'/rc/plugins/lightline.vim' }) " {{{
+    call dein#add('itchyny/lightline.vim', { 'hook_source': 'source '. s:get_rc_script('plugins/lightline.vim') }) " {{{
     " lightline.vim }}}
     if has('signs')
         call dein#add('mattesgroeger/vim-bookmarks')
@@ -261,14 +261,14 @@ inoremap <C-k> <Up>
 inoremap <C-l> <Right>
 
 " ## Move around windows {{{
-nmap <A-h> <C-w>h
-imap <A-h> <C-o><C-w>h
-nmap <A-j> <C-w>j
-imap <A-j> <C-o><C-w>j
-nmap <A-k> <C-w>k
-imap <A-k> <C-o><C-w>k
-nmap <A-l> <C-w>l
-imap <A-l> <C-o><C-w>l
+nmap <A-S-h> <C-w>h
+imap <A-S-h> <C-o><C-w>h
+nmap <A-S-j> <C-w>j
+imap <A-S-j> <C-o><C-w>j
+nmap <A-S-k> <C-w>k
+imap <A-S-k> <C-o><C-w>k
+nmap <A-S-l> <C-w>l
+imap <A-S-l> <C-o><C-w>l
 " ## }}}
 " ## Move windows {{{
 nmap <C-A-h> <C-w>H
@@ -293,7 +293,6 @@ nmap <leader>f7 :set foldlevel=7<CR>
 nmap <leader>f8 :set foldlevel=8<CR>
 nmap <leader>f9 :set foldlevel=9<CR>
 " ## }}}
-
 " ## Shifting {{{
 " Move up and down current lines
 "nnoremap <Up> mz:m+<CR>'z
@@ -303,12 +302,12 @@ nmap <leader>f9 :set foldlevel=9<CR>
 "vnoremap <Up> :m'>+<CR>'<my'>mzgv'yo'z
 "vnoremap <Down> :m'<-2'><CR>ly'<mzgv'yo'z
 
-nnoremap <Left> <<
-nnoremap <Right> >>
-inoremap <Left> <C-o><<
-inoremap <Right> <C-o>>>
-vnoremap <Left> <gv
-vnoremap <Right> >gv
+"nnoremap <Left> <<
+"nnoremap <Right> >>
+"inoremap <Left> <C-o><<
+"inoremap <Right> <C-o>>>
+"vnoremap <Left> <gv
+"vnoremap <Right> >gv
 
 vnoremap < <gv
 vnoremap > >gv
@@ -407,4 +406,3 @@ unlet g:has_persistent_undo
 
 set secure
 " }}}
-
