@@ -21,7 +21,7 @@ endif
 let g:is_windows = has('win32') || has('win64')
 if g:is_nvim
     if g:is_windows
-        if $XDG_CONFIG_HOME
+        if exists('$XDG_CONFIG_HOME')
             let g:rc_dir = $XDG_CONFIG_HOME.'/nvim'
         else
             let g:rc_dir = $APPDATA.'/nvim'
