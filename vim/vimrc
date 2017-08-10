@@ -87,7 +87,7 @@ if dein#load_state($CACHE.'/dein_plugins')
     " }}}
     " }}}
     " #### SQL {{{
-    call dein#add('sqlserver.vim', { 'lazy': 1, 'on_ft': 'sql' }) " {{{
+    call dein#add('vim-scripts/sqlserver.vim', { 'lazy': 1, 'on_ft': 'sql' }) " {{{
     let g:sql_type_default = "sqlserver" " }}}
     " #### }}}
     " #### Syntax checking {{{
