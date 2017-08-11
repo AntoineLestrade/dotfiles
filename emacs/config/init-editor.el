@@ -1,13 +1,34 @@
 ;;; init-editor --- Core editor config
+;;   Copyright (c) 2017 Antoine Lestrade
+;;
+;;   Author: Antoine Lestrade <antoine.lestrade@gmail.com>
+;;   Version 0.0.1
+;;
 ;;; Commentary:
+;;    Customize core settings of Emacs
 ;;; Code:
+
+;; UI tweaks
+(setq-default use-file-dialog nil)
+(setq-default use-dialog-box nil)
+(setq-default inhibit-startup-screen t)
+(when (fboundp 'scroll-bar-mode)
+  (scroll-bar-mode -1))
+(when (fboundp 'menu-bar-mode)
+  (menu-bar-mode -1))
+(when (fboundp 'tool-bar-mode)
+  (tool-bar-mode -1))
+(when (fboundp 'blink-cursor-mode)
+  (blink-cursor-mode -1))
 
 (require-package 'page-break-lines)
 (global-page-break-lines-mode)
 (diminish 'page-break-lines-mode)
 
-(when (fboundp 'electric-pair-mode)
-  (electric-pair-mode))
+;; Automatically insert closing parenthesis
+;; Replaced by smartparens
+;;(when (fboundp 'electric-pair-mode)
+;;  (electric-pair-mode))
 
 (setq-default indent-tabs-mode nil
 	      tab-width 8)
@@ -17,7 +38,8 @@
           '(lambda ()
              (setq show-trailing-whitespace t)))
 
-(global-visual-line-mode t)
+;; When enabled, commands acts on displayed lines instead of existing lines.
+;;(global-visual-line-mode t)
 
 (setq visible-bell t)
 
@@ -86,11 +108,13 @@
 ;; smart pairing
 (require-package 'smartparens)
 (require 'smartparens-config)
-(setq sp-base-key-bindings 'paredit)
-(setq sp-autoskip-closing-pair 'always)
-(setq sp-hybrid-kill-entire-symbol nil)
-(sp-use-paredit-bindings)
+;; TODO: to check
+;;(setq sp-base-key-bindings 'paredit)
+;;(setq sp-autoskip-closing-pair 'always)
+;;(setq sp-hybrid-kill-entire-symbol nil)
+;;(sp-use-paredit-bindings)
 (show-smartparens-global-mode +1)
+(smartparens-global-mode +1)
 
 
 (require-package 'expand-region)
@@ -106,7 +130,7 @@
 (global-set-key (kbd "C-c p") 'md/duplicate-down)
 (global-set-key (kbd "C-c P") 'md/duplicate-up)
 
-
+;; Highlight escape sequences, like \t, \n...
 (require-package 'highlight-escape-sequences)
 (hes-mode)
 

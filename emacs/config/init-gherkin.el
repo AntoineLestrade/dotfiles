@@ -1,12 +1,13 @@
-;;; init-gherkin.el --- My emacs: Gherkin support configuration
+;;; init-gherkin.el --- Emacs configuration for features support
 ;;;
 ;;; Commentary:
 ;;; Code:
-(require-package 'feature-mode)
-(add-to-list 'auto-mode-alist '("\.feature$" . feature-mode))
+(when (and (bound-and-true-p loc-enable-packages)
+	   (maybe-require-package 'feature-mode))
+  (add-to-list 'auto-mode-alist '("\.feature$" . feature-mode)))
 
 (provide 'init-gherkin)
-;;; init-gherking.el ends here
+;;; init-gherkin.el ends here
 
 ;; Local variables:
 ;;    no-byte-compile: t
