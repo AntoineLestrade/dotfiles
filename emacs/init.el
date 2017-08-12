@@ -50,8 +50,6 @@
 (when (bound-and-true-p loc-enable-projectile)
   (require 'init-projectile))
 
-(require 'init-csharp)
-
 (when (bound-and-true-p loc-enable-rust)
   (require 'init-rust))
 

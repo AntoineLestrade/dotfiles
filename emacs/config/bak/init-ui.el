@@ -1,7 +1,17 @@
+;;; init-ui.el --- My emacs config - User Interface settings
+;;; Commentary:
+;;; Code:
+
+;; Suppress GUI features
+(setq use-file-dialog nil)
+(setq use-dialog-box nil)
+(setq inhibit-startup-screen t)
 ;; TODO: to check
 (setq inhibit-startup-echo-area-message t)
 
 (setq-default indicate-empty-lines t)
+
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
 ;; improve scrolling
 (setq scroll-margin 0
