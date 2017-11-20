@@ -11,6 +11,7 @@ emacs/vimish-fold
 emacs/custom.el
 
 vim/backup
+vim/cache
 vim/plugged
 vim/swap
 vim/undo

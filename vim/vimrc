@@ -26,21 +26,18 @@ if g:is_nvim
         else
             let g:rc_dir = $APPDATA.'/nvim'
         endif
-        let $CACHE = $HOME.'/nvimcache'
     else
         let g:rc_dir = $HOME.'/.nvim'
-        let $CACHE = $HOME.'/.nvimcache'
     endif
 else
     set nocompatible
     if g:is_windows
         let g:rc_dir = $HOME.'/vimfiles'
-        let $CACHE = $HOME.'/vimcache'
     else
         let g:rc_dir = $HOME.'/.vim'
-        let $CACHE = $HOME.'/.vimcache'
     endif
 endif
+let $CACHE = g:rc_dir . '/cache'
 
 function! s:get_rc_script(relative_path)
     return expand(g:rc_dir . '/rc/' . a:relative_path)
