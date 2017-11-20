@@ -9,7 +9,7 @@
 (defconst loc-enable-flycheck t)
 (defconst loc-enable-rust t)
 (defconst loc-enable-helm t)
-(defconst loc-enable-evil nil)
+(defconst loc-enable-evil t)
 (defconst loc-enable-powershell t)
 (defconst loc-enable-gherkin t)
 

@@ -53,6 +53,9 @@
 (when (bound-and-true-p loc-enable-rust)
   (require 'init-rust))
 
+;; TO TEST
+(require 'init-powerline)
+
 
 ;; Move config changes in another file
 (setq custom-file (expand-file-name "custom.el" loc-config-dir))

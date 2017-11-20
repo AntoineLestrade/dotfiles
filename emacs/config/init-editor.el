@@ -60,13 +60,21 @@
 
 ;; Key binding for useful highlihg functions
 ;; Maybe use built-in `hi-lock' if some fonctionnalities are not used
+;; [f3] is for macros: do not use it
+;;;(when (and (bound-and-true-p loc-enable-packages)
+;;;	   (maybe-require-package 'highlight-symbol))
+;;;  (require 'highlight-symbol)
+;;;  (global-set-key [(control f3)] 'highlight-symbol-at-point)
+;;;  (global-set-key [f3] 'highlight-symbol-next)
+;;;  (global-set-key [(shift f3)] 'highligh-symbol-prev)
+;;;  (global-set-key [(meta f3)] 'highlight-symbol-query-replace))
+
+;; Themes
 (when (and (bound-and-true-p loc-enable-packages)
-	   (maybe-require-package 'highlight-symbol))
-  (require 'highlight-symbol)
-  (global-set-key [(control f3)] 'highlight-symbol-at-point)
-  (global-set-key [f3] 'highlight-symbol-next)
-  (global-set-key [(shift f3)] 'highligh-symbol-prev)
-  (global-set-key [(meta f3)] 'highlight-symbol-query-replace))
+	   (maybe-require-package 'ample-theme))
+  ;;(custom-enabled-themes 'ample-flat)
+  (add-hook 'after-init-hook (lambda() (load-theme 'ample-flat)))
+  )
 
 
 (provide 'init-editor)
