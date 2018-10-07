@@ -2,6 +2,7 @@
 function! s:get_rc_script(relative_path)
     return expand(g:rc_dir . '/rc/' . a:relative_path)
 endfunction
+
 function! plugins#init()
     let l:dein_path = $CACHE.'/dein_plugins/repos/github.com/Shougo/dein.vim'
     if !filereadable(expand(l:dein_path.'/README.md'))
@@ -17,12 +18,11 @@ function! plugins#init()
         call dein#add('mattn/emmet-vim')
         " ## Completion {{{
         if g:enable_completion
-            if g:is_nvim
-                call dein#add('Shougo/deoplete.nvim', { 'lazy': 1, 'on_event': 'InsertEnter', 'hook_source': 'source '.s:get_rc_script('plugins/deoplete.vim') })
-            elseif has('lua')
-                call dein#add('Shougo/neocomplete.vim', { 'lazy': 1, 'on_event': 'InsertEnter', 'hook_source': 'source '.s:get_rc_script('plugins/neocomplete.vim') })
-            endif
+            call dein#add('roxma/nvim-yarp')
+            call dein#add('roxma/vim-hug-neovim-rpc')
+            call dein#add('Shougo/deoplete.nvim', { 'lazy': 1, 'on_event': 'InsertEnter', 'hook_source': 'source '.s:get_rc_script('plugins/deoplete.vim') })
             call dein#add('Shougo/neco-vim') " Vim source for neocomplete
+            call dein#add('zchee/deoplete-jedi')
         endif
         " ## }}}
         " ## Development {{{
@@ -70,17 +70,25 @@ function! plugins#init()
         call dein#add('vim-pandoc/vim-pandoc-syntax')
         call dein#add('vim-pandoc/vim-pandoc')
         " ##}}}
-        if has('python3')
-            "call dein#add('Shougo/denite.nvim', { 'lazy': 1, 'on_cmd': 'Denite', 'hook_source': 'source '. s:get_rc_script('plugins/denite.vim') })
-            if g:is_nvim
-                call dein#add('Shougo/deoplete.nvim')
-            else
-                call dein#add('Shougo/denite.nvim', { 'hook_source': 'source '. s:get_rc_script('plugins/denite.vim') })
-            endif
-        endif
+        "if has('python3')
+        "    "call dein#add('Shougo/denite.nvim', { 'lazy': 1, 'on_cmd': 'Denite', 'hook_source': 'source '. s:get_rc_script('plugins/denite.vim') })
+        "    if g:is_nvim
+        "        call dein#add('Shougo/deoplete.nvim')
+        "    else
+        "        call dein#add('Shougo/denite.nvim', { 'hook_source': 'source '. s:get_rc_script('plugins/denite.vim') })
+        "    endif
+        "endif
 
         call dein#end()
         call dein#save_state()
 
     endif
+
+    if g:is_nvim
+        call dein#call_hook('source')
+        "call s:source_rc('plugins/lightline.vim')
+    endif
 endfunction
+
+" vim: set foldmethod=marker et sts=4 sw=4:
+" vim:ft=vim fileformat=unix:

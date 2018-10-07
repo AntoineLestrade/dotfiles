@@ -7,6 +7,4 @@ function! s:check_back_space() abort " {{{
     return !col || getline('.')[col - 1] =~ '\s'
 endfunction " }}}
 
-
-
 let g:deoplete#enable_camel_case = 1

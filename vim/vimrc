@@ -51,7 +51,8 @@ endfunction
 if g:enable_plugins
     call s:source_rc('plugins.vim')
     call plugins#init()
-    call s:source_rc('plugins/lightline.vim')
+    "call s:source_rc('plugins/lightline.vim')
+    "call s:source_rc('plugins/deoplete.vim')
     let g:syntastic_always_populate_loc_list = 1
     let g:syntastic_auto_loc_list = 1
     let g:syntastic_check_on_open = 1
@@ -69,10 +70,10 @@ endif " g:enable_plugins
 "  Plguins }}}
 " Vim settings {{{
 filetype plugin indent on
-
-if g:is_nvim
-    let g:python3_host_prog='D:/Antoine/python_envs/python3/Scripts/python.exe'
-endif
+"if g:is_nvim
+    let g:python3_host_prog = 'D:\Programs_32\Python36-32\python.exe'
+    "let g:python3_host_prog='D:/Antoine/python_envs/python3/Scripts/python.exe'
+"endif
 " ## Basic options {{{
 set autoread                   " Automatically read file again which has been changed outside of Vim
 set backspace=indent,eol,start " Working of <BS>,<Del>,CTRL-W,CTRL-U
