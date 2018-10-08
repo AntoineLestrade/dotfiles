@@ -39,8 +39,6 @@ function! plugins#init()
         " #### }}}
         " #### Rust {{{
         call dein#add('rust-lang/rust.vim', { 'lazy': 1, 'on_ft': 'rust'}) " {{{
-        let g:rust_fold = 1
-        let g:ftplugin_rust_source_path = 'D:/ProgramFiles/Rust_src/src'
         " }}}
         " ### Rust }}}
         " #### SQL {{{
@@ -48,7 +46,7 @@ function! plugins#init()
         let g:sql_type_default = "sqlserver" " }}}
         " #### }}}
         " #### Syntax checking {{{
-        call dein#add('scrooloose/syntastic')
+        call dein#add('scrooloose/syntastic', { 'hook_source': 'source '.s:get_rc_script('plugins/syntastic.vim') })
         call dein#add('syngan/vim-vimlint', { 'depends': 'ynkdir/vim-vimlparser' })
         " #### }}}
         " #### TOML {{{
@@ -84,10 +82,9 @@ function! plugins#init()
 
     endif
 
-    if g:is_nvim
+    "if g:is_nvim
         call dein#call_hook('source')
-        "call s:source_rc('plugins/lightline.vim')
-    endif
+    "endif
 endfunction
 
 " vim: set foldmethod=marker et sts=4 sw=4:
