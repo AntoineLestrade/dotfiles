@@ -249,6 +249,14 @@ vnoremap <C-s> <C-c>:update<CR>
 inoremap <C-s> <C-o>:update<CR>
 " ## }}}
 " }}}
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+    \ }
+
+if executable('python3')
+    com! FormatXML :%!python3 -c "import xml.dom.minidom, sys; print(xml.dom.minidom.parse(sys.stdin).toprettyxml())"
+    nnoremap = :FormatXML<Cr>
+endif
 
 " Colorscheme {{{
 if has('vim_starting')

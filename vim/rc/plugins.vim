@@ -20,6 +20,8 @@ function! plugins#init()
         if g:enable_completion
             call dein#add('roxma/nvim-yarp')
             call dein#add('roxma/vim-hug-neovim-rpc')
+            call dein#add('autozimu/LanguageClient-neovim', { 'rev': 'next', 'build': 'bash install.sh' })
+            call dein#add('junegunn/fzf')
             call dein#add('Shougo/deoplete.nvim', { 'lazy': 1, 'on_event': 'InsertEnter', 'hook_source': 'source '.s:get_rc_script('plugins/deoplete.vim') })
             call dein#add('Shougo/neco-vim') " Vim source for neocomplete
             call dein#add('zchee/deoplete-jedi')
