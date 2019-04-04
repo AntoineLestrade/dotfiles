@@ -53,8 +53,13 @@
 (when (bound-and-true-p loc-enable-rust)
   (require 'init-rust))
 
+(when (bound-and-true-p loc-enable-kotlin)
+  (require 'init-kotlin))
+;;(when (bound-and-true-p loc-enable-markdown)
+;;  (require 'init-markdown))
+
 ;; TO TEST
-(require 'init-powerline)
+;;(require 'init-powerline)
 
 
 ;; Move config changes in another file

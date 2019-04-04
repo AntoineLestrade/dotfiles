@@ -12,6 +12,8 @@
 (defconst loc-enable-evil t)
 (defconst loc-enable-powershell t)
 (defconst loc-enable-gherkin t)
+(defconst loc-enable-kotlin t)
+(defconst loc-enable-markdown t)
 
 (provide 'init-local)
 ;;; init-local.el ends here
