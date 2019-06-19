@@ -1,6 +1,6 @@
 [user]
 	name = Antoine Lestrade
-	email = alestrade@alten.be
+	email = antoine.lestrade@macq.eu
 [diff]
 	tool = gvimdiff
 [alias]
@@ -14,7 +14,7 @@
 	co = checkout
 	cl = clone
 	ci = commit
-	st = status -sb
+	st = status -sbu
 	br = branch
 	unstage = reset HEAD --
 	dc = diff --cached
