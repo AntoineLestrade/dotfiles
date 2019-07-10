@@ -23,10 +23,9 @@
 	prompt = false
 [core]
 	autocrlf = false
-	editor = 'vim.exe'
 	filemode = false
 [push]
-	default = matching
+	#default = matching
 [color]
 	ui = true
 [credential]
