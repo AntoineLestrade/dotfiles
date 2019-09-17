@@ -35,18 +35,29 @@ then
     TYPE=$(echo $BRANCH_NAME | sed s/$REGEX/\\2/g | sed 's/bugfix/fix/g')
     NAME=$(echo $BRANCH_NAME | sed s/$REGEX/\\4/g | sed 's/-/ /g')
 
-    if [[ -z "$TYPE" ]]
+    HEADER=""
+    if [[ "$ISSUE" != "$BRANCH_NAME" ]]
     then
         HEADER="$ISSUE: "
-    else
-        HEADER="$ISSUE: $TYPE: "
     fi
 
-    HEADER="$HEADER$NAME"
-    cat <<-EOF > $COMMIT_MSG_FILE
+    if [[ "$TYPE" != "$BRANCH_NAME" ]]
+    then
+        HEADER="$HEADER$TYPE: "
+    fi
+
+    if [[ "$NAME" != "$BRANCH_NAME" ]]
+    then
+        HEADER="$HEADER$NAME"
+    fi
+
+    if [[ -n "$HEADER" ]]
+    then
+        cat <<-EOF > $COMMIT_MSG_FILE
 $(echo $HEADER)
 $(cat $COMMIT_MSG_FILE)
 EOF
+    fi
 fi
 
 # /usr/bin/perl -i.bak -ne 'print unless(m/^. Please enter the commit message/..m/^#$/)' "$COMMIT_MSG_FILE"
