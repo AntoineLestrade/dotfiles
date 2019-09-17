@@ -14,6 +14,7 @@ function! plugins#init()
         call dein#begin($CACHE.'/dein_plugins')
         call dein#add(l:dein_path)
 
+        call dein#add('tpope/vim-vinegar')
         call dein#add('will133/vim-dirdiff')
         call dein#add('mattn/emmet-vim')
         " ## Completion {{{
