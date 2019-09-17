@@ -6,12 +6,11 @@
 [alias]
 	d = difftool
 	prettylog = log --pretty=oneline --graph --all --decorate --abbrev-commit
-	pushdev = push "origin" development:development
-	pushacc = push "origin" acceptance:acceptance
-	pushmaster = push "origin" master:master
 	last = log -1 --stat
 	cp = cherry-pick
-	co = checkout
+  #co = checkout
+  ff = pull --ff-only
+  rst = restore
 	cl = clone
 	ci = commit
 	st = status -sbu
