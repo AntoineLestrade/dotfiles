@@ -16,6 +16,7 @@
 	ci = commit
 	st = status -sbu
 	br = branch
+  sw = switch
 	unstage = reset HEAD --
 	dc = diff --cached
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %Cblue<%an>%Creset' --abbrev-commit --date=relative --all
@@ -24,6 +25,8 @@
 [core]
 	autocrlf = false
 	filemode = false
+  hooksPath = "C:/Users/Alten/system-settings/git_hooks/macq"
+	autocrlf = false
 [push]
 	#default = matching
 [color]
@@ -37,3 +40,5 @@
 	keepbackups = false
 	prompt = false
 	trustexitcode = false
+
+# vim: ft=gitconfig:et:ts=2:sw=2

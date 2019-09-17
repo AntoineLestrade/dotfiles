@@ -15,5 +15,8 @@ vim/cache
 vim/plugged
 vim/swap
 vim/undo
+# symlink
+vim/init.vim
+vim/.netrwhist
 
 FontsAndColorsBackup_*
