@@ -70,7 +70,7 @@ set history=1000               " Store a ton of history (default is 20)
 set linebreak                  " Vim will wrap long lines at a character in 'breakat'
 set mouse=a                    " Automatically enable mouse usage
 set mousehide                  " Hide the mouse cursor while typing
-set ruler                      " Show the linz and column number of the cursor position. Useless with lightline or something like that
+set ruler                      " Show the line and column number of the cursor position. Useless with lightline or something like that
 set scrolloff=3                " Lines above/below cursor
 set sidescrolloff=5
 set splitright                 " Puts new vsplit windows to the right of the current
@@ -347,3 +347,4 @@ set secure
 
 " vim: set foldmethod=marker et sts=4 sw=4:
 " vim:ft=vim fileformat=unix:
+" vim:foldcolumn=4:

@@ -1,6 +1,5 @@
 [user]
 	name = Antoine Lestrade
-	email = antoine.lestrade@macq.eu
 [diff]
 	tool = gvimdiff
 [alias]

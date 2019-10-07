@@ -22,7 +22,7 @@ function! plugins#init()
             call dein#add('roxma/nvim-yarp')
             call dein#add('roxma/vim-hug-neovim-rpc')
             call dein#add('autozimu/LanguageClient-neovim', { 'rev': 'next', 'build': 'bash install.sh' })
-            call dein#add('junegunn/fzf')
+            "call dein#add('junegunn/fzf')
             call dein#add('Shougo/deoplete.nvim', { 'lazy': 1, 'on_event': 'InsertEnter', 'hook_source': 'source '.s:get_rc_script('plugins/deoplete.vim') })
             call dein#add('Shougo/neco-vim') " Vim source for neocomplete
             call dein#add('zchee/deoplete-jedi')
@@ -60,7 +60,6 @@ function! plugins#init()
         " ## User interface {{{
         call dein#add('w0ng/vim-hybrid')
         call dein#add('chriskempson/base16-vim')
-        call dein#add('altercation/vim-colors-solarized')
         call dein#add('itchyny/lightline.vim', { 'hook_source': 'source '. s:get_rc_script('plugins/lightline.vim') }) " {{{
         " lightline.vim }}}
         if has('signs')
@@ -71,14 +70,15 @@ function! plugins#init()
         call dein#add('vim-pandoc/vim-pandoc-syntax')
         call dein#add('vim-pandoc/vim-pandoc')
         " ##}}}
-        "if has('python3')
-        "    "call dein#add('Shougo/denite.nvim', { 'lazy': 1, 'on_cmd': 'Denite', 'hook_source': 'source '. s:get_rc_script('plugins/denite.vim') })
-        "    if g:is_nvim
-        "        call dein#add('Shougo/deoplete.nvim')
-        "    else
-        "        call dein#add('Shougo/denite.nvim', { 'hook_source': 'source '. s:get_rc_script('plugins/denite.vim') })
-        "    endif
-        "endif
+        if has('python3')
+            if g:is_nvim
+            else
+                call dein#add('roxma/nvim-yarp')
+                call dein#add('roxma/vim-hug-neovim-rpc')
+            endif
+            "call dein#add('Shougo/denite.nvim', { 'lazy': 1, 'on_cmd': 'Denite', 'hook_source': 'source '. s:get_rc_script('plugins/denite.vim') })
+            call dein#add('Shougo/denite.nvim', { 'hook_source': 'source '. s:get_rc_script('plugins/denite.vim') })
+        endif
 
         call dein#end()
         call dein#save_state()
@@ -86,9 +86,10 @@ function! plugins#init()
     endif
 
     "if g:is_nvim
-        call dein#call_hook('source')
+    call dein#call_hook('source')
     "endif
 endfunction
 
 " vim: set foldmethod=marker et sts=4 sw=4:
 " vim:ft=vim fileformat=unix:
+" vim:foldcolumn=3:
