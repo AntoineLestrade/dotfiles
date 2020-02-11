@@ -79,6 +79,7 @@ function! plugins#init()
             "call dein#add('Shougo/denite.nvim', { 'lazy': 1, 'on_cmd': 'Denite', 'hook_source': 'source '. s:get_rc_script('plugins/denite.vim') })
             call dein#add('Shougo/denite.nvim', { 'hook_source': 'source '. s:get_rc_script('plugins/denite.vim') })
         endif
+        call dein#add('dag/vim-fish')
 
         call dein#end()
         call dein#save_state()

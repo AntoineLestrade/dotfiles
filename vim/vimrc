@@ -255,7 +255,7 @@ let g:LanguageClient_serverCommands = {
 
 if executable('python3')
     com! FormatXML :%!python3 -c "import xml.dom.minidom, sys; print(xml.dom.minidom.parse(sys.stdin).toprettyxml())"
-    nnoremap = :FormatXML<Cr>
+    "nnoremap = :FormatXML<Cr>
 endif
 
 " Colorscheme {{{
