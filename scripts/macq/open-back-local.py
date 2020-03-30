@@ -1,3 +1,4 @@
+#!python
 import sys
 import os
 import subprocess
@@ -10,7 +11,8 @@ def project_path(proj_name):
 
 mappings = {
     'carpooling': back_module_path('m3-carpooling'),
-    'libkami': project_path('m3-libkami')
+    'libkami': project_path('m3-libkami'),
+    'camera-integration': os.path.join(root, 'camera-integration'),
 }
 
 idea_path = '"C:/Program Files/JetBrains/IntelliJ IDEA Community Edition 2019.1.3/bin/idea64.exe"'

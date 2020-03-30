@@ -1,4 +1,4 @@
 @echo off
 C:
-cd \Users\Alten\workspace\m3-%1
+cd C:\Users\Alten\workspace\m3-%1
 git st

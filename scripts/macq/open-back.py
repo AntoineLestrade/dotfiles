@@ -10,7 +10,8 @@ def project_path(proj_name):
 
 mappings = {
     'carpooling': back_module_path('m3-carpooling'),
-    'libkami': project_path('m3-libkami')
+    'libkami': project_path('m3-libkami'),
+    'release': os.path.join(root, 'm3-release', 'back'),
 }
 
 idea_path = '"C:/Program Files/JetBrains/IntelliJ IDEA Community Edition 2019.1.3/bin/idea64.exe"'
