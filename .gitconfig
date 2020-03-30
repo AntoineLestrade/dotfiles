@@ -14,6 +14,8 @@
 	ci = commit
 	st = status -sbu
 	br = branch
+	prune = remote prune origin
+	autosq = rebase -i --autosquash origin/develop
   sw = switch
 	unstage = reset HEAD --
 	dc = diff --cached
