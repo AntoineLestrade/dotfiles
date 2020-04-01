@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # An example hook script to prepare the commit log message.
 # Called by "git commit" with the name of the file that has the
@@ -32,13 +32,13 @@ then
 
     REGEX="^\(\(.*\)\/\)\?\(RADM3-[0-9]\+\)\(.*\)$"
     ISSUE=$(echo $BRANCH_NAME | sed s/$REGEX/\\3/g)
-    TYPE=$(echo $BRANCH_NAME | sed s/$REGEX/\\2/g | sed 's/bugfix/fix/g')
+    TYPE=$(echo $BRANCH_NAME | sed s/$REGEX/\\2/g | sed 's/bugfix/fix/g' | sed 's/feature/feat/g')
     NAME=$(echo $BRANCH_NAME | sed s/$REGEX/\\4/g | sed 's/-/ /g')
 
     HEADER=""
     if [[ "$ISSUE" != "$BRANCH_NAME" ]]
     then
-        HEADER="$ISSUE: "
+        HEADER="$ISSUE "
     fi
 
     if [[ "$TYPE" != "$BRANCH_NAME" ]]
