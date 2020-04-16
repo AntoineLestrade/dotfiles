@@ -27,7 +27,7 @@ if g:is_nvim
             let g:rc_dir = $LOCALAPPDATA.'/nvim'
         endif
     else
-        let g:rc_dir = $HOME.'/.nvim'
+        let g:rc_dir = $HOME.'/.config/nvim'
     endif
 else
     set nocompatible
