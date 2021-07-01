@@ -10,9 +10,15 @@ function tbx
         case mongo
             m3-toolbox mongo create
         case kafka
-            m3-toolbox kafka create-missing
+            m3-toolbox kafka create
         case keycloak
+            m3-toolbox keycloak clean
             m3-toolbox keycloak initialize
+        case setup
+            m3-toolbox mongo create
+            m3-toolbox kafka create
+            m3-toolbox keycloak clean --adm-user macq --adm-password itsobvious
+            m3-toolbox keycloak initialize --adm-user macq --adm-password itsobvious
         case '*'
             echo 'ERROR: Unknown command '$cmd
     end

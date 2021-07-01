@@ -1,3 +1,3 @@
 function refresh-conf
-    ansible-playbook -i /usr/lib/macq/m3/bulma/hosts-m3antoine /usr/lib/macq/m3/bulma/roles/install-upgrade.yml --tags m3structure
+    ansible-playbook -i /usr/lib/macq/m3/deployer/hosts-m3antoine /usr/lib/macq/m3/deployer/roles/install-upgrade.yml --tags configuration
 end
