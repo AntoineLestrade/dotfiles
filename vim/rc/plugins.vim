@@ -53,7 +53,7 @@ function! plugins#init()
         call dein#add('syngan/vim-vimlint', { 'depends': 'ynkdir/vim-vimlparser' })
         " #### }}}
         " #### TOML {{{
-        call dein#add('cespare/vim-toml', { 'lazy': 1, 'on_ft': 'toml' })
+        call dein#add('cespare/vim-toml', { 'lazy': 1, 'on_ft': 'toml', 'branch': 'main' })
         " #### }}}
         " ## }}}
 
