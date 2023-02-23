@@ -7,16 +7,16 @@
 	prettylog = log --pretty=oneline --graph --all --decorate --abbrev-commit
 	last = log -1 --stat
 	cp = cherry-pick
-  #co = checkout
-  ff = pull --ff-only
-  rst = restore
+	#co = checkout
+	ff = pull --ff-only
+	rst = restore
 	cl = clone
 	ci = commit
 	st = status -sbu
 	br = branch
 	prune = remote prune origin
 	autosq = rebase -i --autosquash origin/develop
-  sw = switch
+	sw = switch
 	unstage = reset HEAD --
 	dc = diff --cached
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %Cblue<%an>%Creset' --abbrev-commit --date=relative --all
@@ -24,8 +24,9 @@
 	prompt = false
 [core]
 	autocrlf = false
+	editor = vim
 	filemode = false
-  hooksPath = "C:/Users/Alten/system-settings/git_hooks/macq"
+	#hooksPath = "C:/Users/Alten/system-settings/git_hooks/macq"
 	autocrlf = false
 [push]
 	#default = matching

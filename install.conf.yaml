@@ -1,0 +1,15 @@
+- defaults:
+    link:
+      relink: true
+
+- clean: ["~/.config"]
+
+- create:
+    - ~/.config/git
+
+- link:
+    ~/.config/fish: fish
+    ~/.config/git/config: gitconfig
+
+- shell:
+    - [git submodule update --init --recursive, Installing submodules]
