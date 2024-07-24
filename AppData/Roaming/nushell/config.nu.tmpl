@@ -911,7 +911,7 @@ source 'scripts/custom-completions/rustup/rustup-completions.nu'
 source 'scripts/custom-completions/npm/npm-completions.nu'
 {{ end }}
 {{ if lookPath "yarn" }}
-source 'scripts/custom-completions/yarn/yarn-completions.nu'
+source 'scripts/custom-completions/yarn/yarn-v4-completions.nu'
 {{ end }}
 
 
@@ -937,5 +937,9 @@ source 'scripts/custom-completions/just/just-completions.nu'
 source 'scripts/custom-completions/winget/winget-completions.nu'
 {{ end }}
 
+
+{{ if lookPath "starship" }}
+use "./starship-init.nu"
+{{ end }}
 
 #source ~/.oh-my-posh.nu
