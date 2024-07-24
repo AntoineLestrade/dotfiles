@@ -1,0 +1,6 @@
+["AppData/Roaming/nushell/scripts"]
+    type = "archive"
+    url = "https://github.com/nushell/nu_scripts/archive/main.tar.gz"
+    exact = true
+    stripComponents = 1
+    refreshPeriod = "168h"
