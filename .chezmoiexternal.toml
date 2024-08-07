@@ -1,6 +1,77 @@
-["AppData/Roaming/nushell/scripts"]
-    type = "archive"
-    url = "https://github.com/nushell/nu_scripts/archive/main.tar.gz"
-    exact = true
-    stripComponents = 1
-    refreshPeriod = "168h"
+
+
+## Completions from nu_script repo
+
+#### Essentials
+
+[".config/nushell/completions/git-completions.nu"]
+type = "file"
+url = "https://raw.githubusercontent.com/nushell/nu_scripts/main/custom-completions/git/git-completions.nu"
+refreshPeriod = "168h"
+[".config/nushell/completions/curl-completions.nu"]
+type = "file"
+url = "https://raw.githubusercontent.com/nushell/nu_scripts/main/custom-completions/curl/curl-completions.nu"
+refreshPeriod = "168h"
+
+
+
+[".config/nushell/completions/docker-completions.nu"]
+type = "file"
+url = "https://raw.githubusercontent.com/nushell/nu_scripts/main/custom-completions/docker/docker-completions.nu"
+refreshPeriod = "168h"
+
+#### Rust
+[".config/nushell/completions/cargo-completions.nu"]
+type = "file"
+url = "https://raw.githubusercontent.com/nushell/nu_scripts/main/custom-completions/cargo/cargo-completions.nu"
+refreshPeriod = "168h"
+[".config/nushell/completions/rustup-completions.nu"]
+type = "file"
+url = "https://raw.githubusercontent.com/nushell/nu_scripts/main/custom-completions/rustup/rustup-completions.nu"
+refreshPeriod = "168h"
+
+#### NodeJs
+[".config/nushell/completions/npm-completions.nu"]
+type = "file"
+url = "https://raw.githubusercontent.com/nushell/nu_scripts/main/custom-completions/npm/npm-completions.nu"
+refreshPeriod = "168h"
+[".config/nushell/completions/yarn-completions.nu"]
+type = "file"
+url = "https://raw.githubusercontent.com/nushell/nu_scripts/main/custom-completions/yarn/yarn-v4-completions.nu"
+refreshPeriod = "168h"
+
+
+[".config/nushell/completions/rg-completions.nu"]
+type = "file"
+url = "https://raw.githubusercontent.com/nushell/nu_scripts/main/custom-completions/rg/rg-completions.nu"
+refreshPeriod = "168h"
+
+[".config/nushell/completions/just-completions.nu"]
+type = "file"
+url = "https://raw.githubusercontent.com/nushell/nu_scripts/main/custom-completions/just/just-completions.nu"
+refreshPeriod = "168h"
+
+
+[".config/nushell/completions/vscode-completions.nu"]
+type = "file"
+url = "https://raw.githubusercontent.com/nushell/nu_scripts/main/custom-completions/vscode/vscode-completions.nu"
+refreshPeriod = "168h"
+
+
+## Modules from nu_scripts
+
+#### Required
+[".config/nushell/scripts/system/mod.nu"]
+type = "file"
+url = "https://raw.githubusercontent.com/nushell/nu_scripts/main/modules/system/mod.nu"
+refreshPeriod = "168h"
+
+#### fzf
+[".config/nushell/scripts/fzf/fuzzy_history_search.nu"]
+type = "file"
+url = "https://raw.githubusercontent.com/nushell/nu_scripts/main/modules/fuzzy/fuzzy_history_search.nu"
+refreshPeriod = "168h"
+[".config/nushell/scripts/fzf/fuzzy_command_search.nu"]
+type = "file"
+url = "https://raw.githubusercontent.com/nushell/nu_scripts/main/modules/fuzzy/fuzzy_command_search.nu"
+refreshPeriod = "168h"
