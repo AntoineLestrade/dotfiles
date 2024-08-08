@@ -4,3 +4,9 @@
   behind = '⇣${count}'
 [git_metrics]
   disabled = false
+
+[kubernetes]
+  disabled = false
+
+[aws]
+  disabled = true
