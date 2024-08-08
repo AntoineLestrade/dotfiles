@@ -933,6 +933,8 @@ alias hi = fuzzy-history-search
 alias hf = fuzzy-command-search
 {{ end }}
 
+{{ if lookPath "kubectl" }}use kubernetes *{{ end }}
+
 
 {{ if lookPath "starship" }}
 use "./starship-init.nu"

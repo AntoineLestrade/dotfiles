@@ -65,6 +65,10 @@ refreshPeriod = "168h"
 type = "file"
 url = "https://raw.githubusercontent.com/nushell/nu_scripts/main/modules/system/mod.nu"
 refreshPeriod = "168h"
+[".config/nushell/scripts/argx/mod.nu"]
+type = "file"
+url = "https://raw.githubusercontent.com/nushell/nu_scripts/main/modules/argx/mod.nu"
+refreshPeriod = "168h"
 
 #### fzf
 [".config/nushell/scripts/fzf/fuzzy_history_search.nu"]
