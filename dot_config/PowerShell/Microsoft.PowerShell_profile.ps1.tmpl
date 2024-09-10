@@ -5,7 +5,16 @@ Set-PSReadLineKeyHandler -Chord Ctrl+d -Function DeleteCharOrExit
 function exa-full {exa  -alhb --git --icons $args}
 New-Alias ll exa-full
 
-#Invoke-Expression (&starship init powershell)
+
+{{ if lookPath "starship" }}
+Invoke-Expression (&starship init powershell)
+{{ else if lookPath "oh-my-posh"}}
 $THEME_PATH = Join-Path -Path $script:MyInvocation.MyCommand.Path -ChildPath '\..\theme.omp.json'
 oh-my-posh init pwsh --config $THEME_PATH | Invoke-Expression
+{{ end }}
+
+{{ if lookPath "kubectl" }}
+kubectl completion powershell | Out-String | Invoke-Expression
+{{ end }}
+
 $env:POSH_GIT_ENABLED = $true
