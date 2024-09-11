@@ -16,6 +16,9 @@ oh-my-posh init pwsh --config $THEME_PATH | Invoke-Expression
 {{ if lookPath "kubectl" }}
 kubectl completion powershell | Out-String | Invoke-Expression
 {{ end }}
+{{ if lookPath "helm" }}
+helm completion powershell | Out-String | Invoke-Expression
+{{ end }}
 
 $env:POSH_GIT_ENABLED = $true
 
