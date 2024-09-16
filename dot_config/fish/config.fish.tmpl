@@ -7,3 +7,7 @@ set __fish_git_prompt_char_upstream_behind ↓
 
 set LANG en_US.UTF-8
 export LANG
+
+{{ if lookPath "starship" }}
+starship init fish | source
+{{ end }}
