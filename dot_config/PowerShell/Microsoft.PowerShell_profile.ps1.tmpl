@@ -19,6 +19,7 @@ kubectl completion powershell | Out-String | Invoke-Expression
 {{ if lookPath "helm" }}
 helm completion powershell | Out-String | Invoke-Expression
 {{ end }}
+chezmoi completion powershell | Out-String | Invoke-Expression
 
 $env:POSH_GIT_ENABLED = $true
 
