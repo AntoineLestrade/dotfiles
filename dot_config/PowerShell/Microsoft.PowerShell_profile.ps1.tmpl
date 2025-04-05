@@ -6,19 +6,19 @@ function exa-full {exa  -alhb --git --icons $args}
 New-Alias ll exa-full
 
 
-{{ if lookPath "starship" }}
+{{- if lookPath "starship" }}
 Invoke-Expression (&starship init powershell)
-{{ else if lookPath "oh-my-posh"}}
+{{- else if lookPath "oh-my-posh"}}
 $THEME_PATH = Join-Path -Path $script:MyInvocation.MyCommand.Path -ChildPath '\..\theme.omp.json'
 oh-my-posh init pwsh --config $THEME_PATH | Invoke-Expression
-{{ end }}
+{{- end }}
 
-{{ if lookPath "kubectl" }}
+{{- if lookPath "kubectl" }}
 kubectl completion powershell | Out-String | Invoke-Expression
-{{ end }}
-{{ if lookPath "helm" }}
+{{- end }}
+{{- if lookPath "helm" }}
 helm completion powershell | Out-String | Invoke-Expression
-{{ end }}
+{{- end }}
 chezmoi completion powershell | Out-String | Invoke-Expression
 
 $env:POSH_GIT_ENABLED = $true

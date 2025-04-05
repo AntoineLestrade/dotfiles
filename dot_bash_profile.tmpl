@@ -1,0 +1,35 @@
+{{- if lookPath "starship" }}
+eval "$(starship init bash)";
+{{- end }}
+## chezmoi completion
+{{ completion "bash" }}
+
+{{- if lookPath "docker" }}
+
+## Docker completion
+{{ output "docker" "completion" "bash" }}
+{{- end }}
+{{- if lookPath "helm" }}
+
+## Helm completion
+{{ output "helm" "completion" "bash" }}
+{{- end }}
+{{- if lookPath "kubectl" }}
+
+## Kubectl
+{{ output "kubectl" "completion" "bash" }}
+alias k=kubectl
+complete -o default -F __start_kubectl k
+{{- end }}
+
+{{- if lookPath "npm" }}
+## NPM completion
+{{ output "npm" "completion" "bash" }}
+{{- end }}
+{{- if lookPath "pnpm" }}
+## pnpm completion
+{{ output "pnpm" "completion" "bash" }}
+{{- end }}
+
+test -f ~/.profile && . ~/.profile
+test -f ~/.bashrc && . ~/.bashrc
