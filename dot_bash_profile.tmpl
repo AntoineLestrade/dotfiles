@@ -22,10 +22,10 @@ alias k=kubectl
 complete -o default -F __start_kubectl k
 {{- end }}
 
-{{- if lookPath "npm" }}
-## NPM completion
-{{ output "npm" "completion" "bash" }}
-{{- end }}
+{{/* {{- if lookPath "npm" }} */}}
+{{/* ## NPM completion */}}
+{{/* {{ output "npm" "completion" "bash" }} */}}
+{{/* {{- end }} */}}
 {{- if lookPath "pnpm" }}
 ## pnpm completion
 {{ output "pnpm" "completion" "bash" }}
